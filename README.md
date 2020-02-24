@@ -1,37 +1,35 @@
-# {{TEAMNAME}} Final Project
-
-TODO: Fill out this file with the following information
-
+# Senior Squad Final Project
 
 ## Description
+The StayFit! web application is your one-stop shop to reaching your fitness heights.
+Staying fit with StayFit! involves optimizing both nutrition and exercise.
 
-TODO: An English language description of what your application does, intended for a developer
-audience. Pretend this is the real `README.md` for your app that will show up on GitHub: what do you
-want people to know about it? What does it do? Why should they use it/check it out/hack on it? This
-should be approximately two paragraphs. Take a look at the description of your favorite software
-repository for inspiration.
+This web app uses the Edamam Nutrition Analysis API and CRUD infrastructure to give its users the chance to reach their most ambitious fitness goals.
+The components of this web app include:
+- Exercise Grid:        For each specific exercise, users can save their personal record, muscle worked, and day. This component comes with options to organize their   
+                        exercises and track their progress. This will require a database to store these exercise values, in which we'll be implementing MongoDB, and a view model for the grid's layout.
+- Macro Calculator:     Users can calculate their own personal distribution of daily nutrients based on their personal values (e.g. height, weight, age, activity level,
+                        etc.). The calculator will spit out personal daily recommendation on protein, carbohydrates. and fats. This can be implemented either using an external API, or researched equations we can add in. Users can then submit these values, which would store them into the database and be tracked with the Nutrition Tracker component.
+- Nutrition Tracker:    The macros calculated from the Macro Calculator will be displayed as the user's daily goals. Users can input in plain text their specific meal 
+                        that day, and analyze the macros contained in the meal (this is done through the Edamam Nutrition Analysis API). They can then submit these values,which would perform some calculations in the backend, and display how close they are to reaching their nutritional goals for that day. 
 
 ## Authors
 
-TODO: List group members, each group member must EITHER be marked "web programming novice" OR list a
-specialization - you don't need to implement it all yourself, but you do need to be in charge of
-getting it described and added. Your expertise self-evaluation is completely on the honor system.
-
-For instance:
-
 | Member | Web dev level | Specialization |
 | --- | --- | --- |
-| Ned the Novice | web programming novice | |
-| Isaac the Intermediate | Took IT 202, built something in php once | I want to learn about website performance so I will be adding performance tests and keeping a performance log. |
-| Edith the Expert | Interned as a web dev for the last 2 semesters | I will containerize the app and configure it to run within Kubernetes, integrate it with a CI/CD platform so that the deployed version is updated once all tests pass, and I will run a load test with several synthetic long-session users to demonstrate rolling updates to the code. |
+| Justin Thomas | Web Programming Novice | n/a |
+| Jessica DeStefano | Web Programming Novice | n/a |
+| Saema Ansari | Web Programming Novic | n/a |
 
 ## Deliverables for checkpoint 2
 
-Outline in English what the deliverables will be for checkpoint 2. Provide a concise list that is
-amenable to being translated into specific tests. Pro-tip: if you write that concise list here, you
-should be able to easily translate it into a collection of test suites.
-
-For each specialization, you must list specific checkpoints that are relevant to that particular specialization.
+The CRUD deliverables will be a view model of each component (doesn't need to be fancy, just simply an outline we can add style to later).
+We plan to use the MERN stack.
+There should be a login/register screen, where a user can either sign up for the first time or login. This would send a POST request to the
+server, allowing the user to login (if credentials match) or register. 
+On the next screen, they can choose between the three components.
+For this checkpoint, we are simply going to send POST/GET requests to the server with the specific data of the component. The data will be saved in 
+the MongoDB database, and React will handle the UI.
 
 ## Deliverables for checkpoint 4
 
