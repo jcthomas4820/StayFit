@@ -19,7 +19,7 @@ The components of this web app include:
 | --- | --- | --- |
 | Justin Thomas | Web Programming Novice | n/a |
 | Jessica DeStefano | Web Programming Novice | n/a |
-| Saema Ansari | Web Programming Novic | n/a |
+| Saema Ansari | Web Programming Novice | n/a |
 
 ## Deliverables for checkpoint 2
 
