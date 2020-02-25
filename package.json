@@ -1,0 +1,9 @@
+{
+  "name": "final-project-senior-squad-1",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"cd server && node app.js\" \"cd client && npm start\""  },
+  "dependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
