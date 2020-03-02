@@ -10,3 +10,6 @@ Followed these tutorials taking bits and pieces from both, and combined it with 
 
 #### JEST
 Documentation: https://jestjs.io/docs/en/getting-started
+
+#### SECURITY RISKS AND PREVENTION OWASP
+- https://owasp.org/www-project-top-ten/
