@@ -33,10 +33,17 @@ the MongoDB database, and React will handle the UI.
 
 ## Deliverables for checkpoint 4
 
-Outline in English what the deliverables will be for checkpoint 4. Reminder that this is not *due*
-until checkpoint 2, but failing to plan is planning to fail.
-
-For each specialization, you must list specific checkpoints that are relevant to that particular specialization.
+We plan to improve the overall UI in making it more visually pleasing.
+All database information will be reflected on the UI components including:
+- The grid will update with exercises based on input
+- The macro calculator will display the calculations
+- The nutrition tracker will update based on the macro input
+We plan to have the Edamam Nutrition Analysis API integrated into the application.
+We plan to complete the front-end test suite using JEST.
+We plan to complete the back-end test suite using Mocha.
+We plan to incorporate user input error handling, and displaying these messages to the user. For example, this could include
+- Login errors (incorrect username or password)
+- Registration errors (not entering a valid password or attempting to use an in-use username)
 
 ## Deliverables for final project
 
