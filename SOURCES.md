@@ -12,6 +12,9 @@ Parts two and three of this four step tutorial to connect the back and front end
 - https://codingthesmartway.com/the-mern-stack-tutorial-building-a-react-crud-application-from-start-to-finish-part-2/
 - https://codingthesmartway.com/the-mern-stack-tutorial-building-a-react-crud-application-from-start-to-finish-part-3/
 
+#### Handling React Input
+- https://medium.com/the-andela-way/handling-user-input-in-react-crud-1396e51a70bf
+
 #### JEST
 Documentation: https://jestjs.io/docs/en/getting-started
 

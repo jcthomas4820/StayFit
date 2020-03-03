@@ -3,16 +3,24 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test mocha test/integration.js",
+    "test-register": "npm run test -- -g 'register-test'",
+    "test-login": "npm run test -- -g 'login-test'",
+    "test-logout": "npm run test -- -g 'logout-test'",
+    "test-exercise": "npm run test -- -g 'exercise-test'",
+    "test-macro": "npm run test -- -g 'macro-test'",
+    "test-nutrition": "npm run test -- -g 'nutrition-test'",
     "start": "cross-env DEBUG=finalproj-server* node ./bin/www",
     "test-for-coverage": "npm test -- -R min || exit 0",
     "style": "npm run test -- test/style.js",
     "coverage": "cross-env NODE_ENV=test nyc --check-coverage=true --reporter=lcov --reporter=text npm run test-for-coverage"
   },
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "mongoose": "^5.9.2",
     "morgan": "^1.9.1"
   },
