@@ -1,4 +1,5 @@
 import React from "react"
+import axios from "axios";
 import SelectionPage from '../login/selection'
 
 //  first component that will pop up on application. 
@@ -16,10 +17,14 @@ class LoginPage extends React.Component{
     }
 
     handleClick(e){
-    
         let id = e.target.id
-        
         if (id === "login"){
+
+            axios.post('http://localhost:3000/login', {
+                name: 'name',
+                password: 'password',
+            });
+
             //  perform login operations
             //  if there is an error while logging in, update state
                 //  this.setState({loginError: true})
@@ -31,6 +36,10 @@ class LoginPage extends React.Component{
                 //  this.setState({nextPage: true})         //  render function will automatically navigate user to selection page
         }
         else if (id === "register"){
+            axios.post('http://localhost:3000/register', {
+                name: 'name',
+                password: 'password',
+            });
             //  perform register operations
             //  if there is an error while registering, update state
                 //  this.setState({loginError: true})
