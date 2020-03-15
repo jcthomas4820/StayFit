@@ -12,7 +12,7 @@
     "start": "react-scripts start",
     "test": "jest"
   },
-  "proxy": "http://localhost:3000",
+  "proxy": "http://localhost:3001",
   "devDependencies": {
     "jest": "^24.9.0"
   },
