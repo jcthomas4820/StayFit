@@ -6,14 +6,28 @@ const app = express();
 const logger = require('morgan');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const MongoClient = require('mongodb').MongoClient
 
 // Set up a local mongoDB instance
 // https://zellwk.com/blog/local-mongodb/
 const dbURI = require('./config/keys.js').MONGO_URI_USER;
+
 mongoose.connect(dbURI, {useNewUrlParser: true} );
 const db = mongoose.connection;
-db.once('open', _ => { console.log('Database connected:', url) });
+db.once('open', _ => { console.log('Database connected:', dbURI) });
 db.on('error', err => { console.error('connection error:', err) });
+
+// *remove /user from the config
+// const dbName = 'user'
+// let db
+// MongoClient.connect(dbURI, { useNewUrlParser: true }, (err, client) => {
+//   if (err) return console.log(err)
+
+//   // Storing a reference to the database so you can use it later
+//   db = client.db(dbName)
+//   console.log(`Connected MongoDB: ${dbURI}`)
+//   console.log(`Database: ${dbName}`)
+// })
 
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
