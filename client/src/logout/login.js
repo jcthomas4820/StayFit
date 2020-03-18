@@ -1,4 +1,5 @@
 import React from "react"
+import axios from "axios";
 import SelectionPage from '../login/selection'
 
 //  first component that will pop up on application. 
@@ -10,16 +11,29 @@ class LoginPage extends React.Component{
         this.state={
             loginError: false,
             errorMessage: null,
-            nextPage: false
+            nextPage: false,
+            username: "",
+            password: ""
         }
         this.handleClick = this.handleClick.bind(this)      //  required for binding handleClick function to use this state
     }
+    
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
 
     handleClick(e){
-    
         let id = e.target.id
-        
         if (id === "login"){
+            const returningUser = {
+                username: this.state.username,
+                password: this.state.password
+            }
+
+            axios.post('/login', returningUser);
+
             //  perform login operations
             //  if there is an error while logging in, update state
                 //  this.setState({loginError: true})
@@ -31,6 +45,15 @@ class LoginPage extends React.Component{
                 //  this.setState({nextPage: true})         //  render function will automatically navigate user to selection page
         }
         else if (id === "register"){
+            axios({
+                method: 'post',
+                url: '/register',
+                data: {
+                  username: this.state.username,
+                  password: this.state.password,
+                }
+              });
+
             //  perform register operations
             //  if there is an error while registering, update state
                 //  this.setState({loginError: true})
@@ -64,9 +87,9 @@ class LoginPage extends React.Component{
                 <h1>Welcome to StayFit!</h1>
                 <div className = "login/register section">
                     <p>{this.state.errorMessage}</p>
-                    <input id="userName" type="text"></input>
+                    <input id="userName" type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)}></input>
                     <p>username</p> 
-                    <input id="password" type="text"></input>  
+                    <input id="password" type="text" name="password" value={this.state.password} onChange={e => this.handleChange(e)}></input>  
                     <p>password</p> 
                 </div>
                 <div className = "login/register buttons">

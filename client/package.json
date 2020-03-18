@@ -12,14 +12,20 @@
     "start": "react-scripts start",
     "test": "jest"
   },
+  "proxy": "http://localhost:3001",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  },
   "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "jest": "^25.1.0"
   }
 }
