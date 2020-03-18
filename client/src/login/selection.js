@@ -3,6 +3,7 @@ import LoginPage from '../logout/login'
 import Grid from '../grid/grid'
 import MacroCalculator from '../calculator/calculator'
 import NutritionTracker from '../tracker/tracker'
+import { Redirect } from 'react-router-dom'
 
 
 //  allow user to select which component they want to access
@@ -48,9 +49,7 @@ class SelectionPage extends React.Component{
         //  if user selects to log out, send back to login screen
         if (!(this.state.loggedIn)){
             return(
-                <div>
-                    <LoginPage />
-                </div>
+                <Redirect push to='/logout'/>
             )
         }
         
