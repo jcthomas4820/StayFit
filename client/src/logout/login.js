@@ -1,6 +1,5 @@
 import React from "react"
 import axios from "axios";
-import SelectionPage from '../login/selection'
 import { Redirect } from 'react-router-dom'
 
 //  allow user to login/register

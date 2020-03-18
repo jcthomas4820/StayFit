@@ -1,5 +1,4 @@
 import React from "react"
-import SelectionPage from '../login/selection'
 
 class NutritionTracker extends React.Component{
 
@@ -8,7 +7,6 @@ class NutritionTracker extends React.Component{
         this.state={
             apiValues: {protein: null, carbs: null, fats: null},
             todayValues: {protein: null, carbs: null, fats: null},
-            back: false
         }
         this.handleClick = this.handleClick.bind(this)
     }
@@ -33,24 +31,10 @@ class NutritionTracker extends React.Component{
             //  store today's values for macros + apiValues in database
             //  update state accordingly
         }
-    
-        else{
-            //  go back to selection page
-            this.setState({back: true})
-        }
 
     }
 
     render(){
-
-        //  if user selects to go back, render SelecitonPage
-        if (this.state.back){
-            return(
-                <div>
-                    <SelectionPage />
-                </div>
-            )
-        }
 
         return(
             <div className = "NutritionTracker">
@@ -76,7 +60,6 @@ class NutritionTracker extends React.Component{
                     <input id="results" disabled type="text"></input>
                     <button type="button" id="submit" onClick={this.handleClick}>Submit</button> 
                 </div>
-                <button type="button" id="back" onClick={this.handleClick}>go back</button> 
             </div>
         )
 

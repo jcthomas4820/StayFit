@@ -1,5 +1,4 @@
 import React from "react"
-import SelectionPage from '../login/selection'
 
 class Grid extends React.Component{
 
@@ -8,8 +7,7 @@ class Grid extends React.Component{
         this.state={
             exercise: null,             //  replace with array of objects -> {exercise: , personalRecord: , muscle: , day: }
             personalRecord: null, 
-            muscle: null,
-            back: false
+            muscle: null
         }
         this.handleClick = this.handleClick.bind(this)
     }
@@ -19,33 +17,13 @@ class Grid extends React.Component{
         //  set state accordingly via this.setState({})
     }
 
-    handleClick(e){
-    
-        let id = e.target.id
-
-        if (id === 'update'){
+    handleClick(){
             //  grab the inputted values
+            //  save in db
             //  set state with new values
-
-        }
-        else{
-
-            //  go back to selection page
-            this.setState({back: true})
-        }
-
     }
 
     render(){
-
-        //  if user selects to go back, render SelecitonPage
-        if (this.state.back){
-            return(
-                <div>
-                    <SelectionPage />
-                </div>
-            )
-        }
 
         return(
             <div className = "ExerciseGrid">
@@ -65,15 +43,13 @@ class Grid extends React.Component{
                     <p>Muslce</p>
                     <button type="button" id="update" onClick={this.handleClick}>update</button> 
                 </div>
-
-                <button type="button" id="back" onClick={this.handleClick}>go back</button> 
             </div>
         )
 
     }
+}
 
-
-} 
+ 
 
 
 export default Grid

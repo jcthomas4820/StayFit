@@ -1,5 +1,4 @@
 import React from "react"
-import SelectionPage from '../login/selection'
 import axios from 'axios'
 
 //  allow user to calculate their recommended daily macros
@@ -54,24 +53,11 @@ class MacroCalculator extends React.Component{
             //  let user know values were saved
             //  clear the values on the screen (clear state values)
         }
-        else{
-            //  user has chosen to go back to selection page
-            this.setState({back: true})
-        }
 
     }
 
 
     render(){
-
-        //  if user selects to go back, render SelecitonPage
-        if (this.state.back){
-            return(
-                <div>
-                    <SelectionPage />
-                </div>
-            )
-        }
 
         return(
             <div className = "MacroCalculator">
@@ -94,7 +80,6 @@ class MacroCalculator extends React.Component{
                 <div className="CalcButtons">
                     <button type="button" id="calculate" onClick={this.handleClick}>calculate</button>
                     <button type="button" id="submit" onClick={this.handleClick}>submit</button>
-                    <button type="button" id="back" onClick={this.handleClick}>go back</button>
                 </div>
             </div>
 
