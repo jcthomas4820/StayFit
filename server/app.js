@@ -7,14 +7,13 @@ const logger = require('morgan');
 const session = require('express-session');
 const mongoose = require('mongoose');
 
-// Set up mongoDB
-const dbRoute = require('./config/keys.js').mongodb_uri
-mongoose.connect(dbRoute, {useNewUrlParser: true});
-
-// Check the connection
-let db = mongoose.connection;
-db.once('open', () => console.log('MongoDB successfully connected!'));
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// Set up a local mongoDB instance
+// https://zellwk.com/blog/local-mongodb/
+const dbURI = require('./config/keys.js').MONGO_URI_USER;
+mongoose.connect(dbURI, {useNewUrlParser: true} );
+const db = mongoose.connection;
+db.once('open', _ => { console.log('Database connected:', url) });
+db.on('error', err => { console.error('connection error:', err) });
 
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
@@ -25,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Set up sessions 
+// https://medium.com/front-end-weekly/make-sessions-work-with-express-js-using-mongodb-62a8a3423ef5
 var sess = {
     secret: 'ThisIsMySecret',
     cookie: {}
