@@ -29,7 +29,6 @@ class MacroCalculator extends React.Component{
         let id = e.target.id
         if (id === 'calculate'){
             let calories = 0;
-            system.out.println("here");
             if(this.state.userGender === "Female"){
                 calories = 10*(this.state.userWeight) + (6.25 * this.state.userHeight) - 5*this.state.userAge - 161;
             }
