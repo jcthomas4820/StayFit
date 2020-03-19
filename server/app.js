@@ -6,28 +6,15 @@ const app = express();
 const logger = require('morgan');
 const session = require('express-session');
 const mongoose = require('mongoose');
-const MongoClient = require('mongodb').MongoClient
+const MongoStore = require('connect-mongo')(session);
 
 // Set up a local mongoDB instance
 // https://zellwk.com/blog/local-mongodb/
 const dbURI = require('./config/keys.js').MONGO_URI_USER;
-
-mongoose.connect(dbURI, {useNewUrlParser: true} );
+mongoose.connect(dbURI, {useNewUrlParser: true, useCreateIndex: true } );
 const db = mongoose.connection;
-db.once('open', _ => { console.log('Database connected:', dbURI) });
-db.on('error', err => { console.error('connection error:', err) });
-
-// *remove /user from the config
-// const dbName = 'user'
-// let db
-// MongoClient.connect(dbURI, { useNewUrlParser: true }, (err, client) => {
-//   if (err) return console.log(err)
-
-//   // Storing a reference to the database so you can use it later
-//   db = client.db(dbName)
-//   console.log(`Connected MongoDB: ${dbURI}`)
-//   console.log(`Database: ${dbName}`)
-// })
+db.once('open', _ => { console.log('Database connected') });
+db.on('error', err => { console.error('connection error: ', err) });
 
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
@@ -41,9 +28,10 @@ app.use(express.urlencoded({ extended: false }));
 // https://medium.com/front-end-weekly/make-sessions-work-with-express-js-using-mongodb-62a8a3423ef5
 var sess = {
     secret: 'ThisIsMySecret',
-    cookie: {}
+    cookie: {}, 
+    store: new MongoStore({ mongooseConnection: db })
   }
-  app.use(session(sess));
+app.use(session(sess));
 
 // Enable cors and set up the router 
 app.use(cors());

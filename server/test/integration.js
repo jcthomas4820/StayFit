@@ -4,15 +4,13 @@ const axios = require('axios').default;
 const mongoose = require('mongoose');
 const axiosCookieJarSupport = require('axios-cookiejar-support').default;
 const tough = require('tough-cookie');
-
 axiosCookieJarSupport(axios);
 
 const app = require('../app');
 
-const PORT = 3000;
-axios.defaults.withCredentials = true;
-axios.defaults.validateStatus = () => true;
-axios.defaults.baseURL = `http://localhost:${PORT}`;
+const User = require('../models/user');
+
+const PORT = 3001;
 
 describe('application', async () => {
   /* fill these in before each test */
@@ -77,15 +75,12 @@ describe('application', async () => {
     await server.close();
   });
 
-  after(async () => {
-    await mongoose.disconnect();
-  });
-
   describe('unauthenticated state', async () => {
     describe('register-test', async () => {
       it('allows a user to register');
       it('does not allow duplicate usernames');
       it('requires a password to register');
+      it('requires a username to register');
     });
 
     describe('login-test', async () => {
