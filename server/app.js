@@ -8,18 +8,27 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 
-// Set up mongoDB
-const dbURI = require('./config/keys.js').MONGO_URI_USER;
-mongoose.connect(dbURI, {useNewUrlParser: true, useCreateIndex: true } );
-const db = mongoose.connection;
-db.once('open', _ => { console.log('Database connected') });
-db.on('error', err => { console.error('connection error: ', err) });
-
+let dbURI;
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
     /* only log http requests when not testing */
     app.use(logger('dev'));
+
+    // set the dbURI to the actual database
+    dbURI = require('./config/keys.js').MONGO_URI;
+    console.log("Connecting to actual database");
+} else {
+    // connect to the test database
+    dbURI = require('./config/keys.js').MONGO_URI_TEST;
+    console.log("Connecting to test database");
 }
+
+// Complete the database connection
+mongoose.connect(dbURI, {useNewUrlParser: true, useCreateIndex: true } );
+mongoose.connection
+  .once('open', _ => { console.log('Database connected') })
+  .on('error', err => { console.error('connection error: ', err) });
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

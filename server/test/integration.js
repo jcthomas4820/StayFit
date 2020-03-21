@@ -63,8 +63,7 @@ describe('application', async () => {
     server = app.listen(PORT);
 
     // remove all of the users added to the database before testing
-    // TODO: do this when test database is successfully implemented
-    User.deleteMany({}, function(err) { 
+    await User.deleteMany({}, function(err) { 
       console.log('All users removed') 
     });
   });
@@ -114,7 +113,6 @@ describe('application', async () => {
       it('requires an account with username to exist', async () => {
         let user = { username: getRandomString(10), password: getRandomString(10) };
         let result = await client.post('/api/login', user);
-        console.log(" The data!: " + result.data);
         assert.equal(result.data.logError, 'Username does not exist');
       });
 
