@@ -1,8 +1,7 @@
 import React from "react"
 import axios from "axios";
-import SelectionPage from '../login/selection'
+import { Redirect } from 'react-router-dom'
 
-//  first component that will pop up on application. 
 //  allow user to login/register
 class LoginPage extends React.Component{
 
@@ -11,18 +10,20 @@ class LoginPage extends React.Component{
         this.state={
             loginError: false,
             errorMessage: null,
-            nextPage: false,
+            success: false,
             username: "",
             password: ""
         }
         this.handleClick = this.handleClick.bind(this)      //  required for binding handleClick function to use this state
     }
     
+    /*
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
+    */
 
     handleClick(e){
         let id = e.target.id
@@ -72,11 +73,9 @@ class LoginPage extends React.Component{
     render(){
 
         //  when no errors in logging in/registering, direct user to selection page
-        if (this.state.nextPage){
+        if (this.state.success){
             return(
-                <div>
-                    <SelectionPage />
-                </div>
+                <Redirect push to='/selection'/>
             )
         }
 
