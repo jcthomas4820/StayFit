@@ -9,6 +9,8 @@ axiosCookieJarSupport(axios);
 const app = require('../app');
 
 const User = require('../models/user');
+let db;
+let collection;
 
 const PORT = 3001;
 
@@ -54,46 +56,87 @@ describe('application', async () => {
     return s;
   }
 
-  async function createRandomUser(axiosClient) {
-    const newUser = {
-      username: getRandomString(10),
-      password: getRandomString(10)
-    };
-    const response = await axiosClient.post('/register', newUser);
-    return { newUser, response };
-  }
-
   beforeEach(async () => {
     client = axios.create();
     // make a new cookie jar every time you create a new client
     client.defaults.jar = new tough.CookieJar();
-
     server = app.listen(PORT);
+
+    // remove all of the users added to the database before testing
+    // TODO: do this when test database is successfully implemented
+    User.deleteMany({}, function(err) { 
+      console.log('All users removed') 
+    });
   });
 
   afterEach(async () => {
     await server.close();
   });
 
+  after(async () => {
+    await mongoose.connection.close();
+  });
+
   describe('unauthenticated state', async () => {
     describe('register-test', async () => {
-      it('allows a user to register');
-      it('does not allow duplicate usernames');
-      it('requires a password to register');
-      it('requires a username to register');
+      it('allows a user to register', async () => {
+        let result = await client.post('/api/register', {username: getRandomString(10), password: getRandomString(10)});        
+        assert.equal(result.data, 'New user created');
+      });
+
+      it('does not allow duplicate usernames', async () => {
+        let sampleUser = getRandomString(15);
+        await client.post('/api/register', {username: sampleUser, password: getRandomString(10)});
+        let result = await client.post('/api/register', {username: sampleUser, password: getRandomString(10)});
+        assert.equal(result.data.regError, 'Username already exists');
+      });
+
+      it('requires a password to register', async () => {
+        let result = await client.post('/api/register', {username: getRandomString(10), password: ''});
+        assert.equal(result.data.regError, 'Please enter a valid password');
+      });
+
+      it('requires a username to register', async () => {
+        let result = await client.post('/api/register', {username: '', password: getRandomString(10)});
+        assert.equal(result.data.regError, 'Please enter a valid username');
+      });
     });
 
     describe('login-test', async () => {
-      it('allows a registered user to login');
-      it('requires an account with username to exist');
-      it('requires the correct password given a username');
+      it('allows a registered user to login', async () => {
+        let user = { username: getRandomString(10), password: getRandomString(10) };
+        await client.post('/api/register', user);
+        let result = await client.post('/api/login', user);
+
+        assert.equal(result.data, 'User successfully logged in');
+      });
+
+      it('requires an account with username to exist', async () => {
+        let user = { username: getRandomString(10), password: getRandomString(10) };
+        let result = await client.post('/api/login', user);
+        console.log(" The data!: " + result.data);
+        assert.equal(result.data.logError, 'Username does not exist');
+      });
+
+      it('requires the correct password given a username', async () => {
+        let name = getRandomString(10);
+        let user = { username: name, password: getRandomString(10) };
+        await client.post('/api/register', user);
+        let result = await client.post('/api/login', {username: name, password: getRandomString(10)});
+        assert.equal(result.data.logError, 'Incorrect password entered');
+      });
     });
   });
 
   describe('authenticated state', async () => {
     // **** // 
     describe('logout-test', async () => {
-      it('redirects a client to the loggedout main screen once logged out');
+      it('redirects a client to the loggedout main screen once logged out', async () => {
+        let user = { username: getRandomString(10), password: getRandomString(10) };
+        await client.post('/api/register', user);
+        let result = await client.post('/api/logout');
+        assert.equal(result.data, 'User logged out');
+      });
     });
 
     describe('exercise-test', async () => {

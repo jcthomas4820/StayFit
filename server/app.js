@@ -8,8 +8,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 
-// Set up a local mongoDB instance
-// https://zellwk.com/blog/local-mongodb/
+// Set up mongoDB
 const dbURI = require('./config/keys.js').MONGO_URI_USER;
 mongoose.connect(dbURI, {useNewUrlParser: true, useCreateIndex: true } );
 const db = mongoose.connection;
@@ -27,9 +26,9 @@ app.use(express.urlencoded({ extended: false }));
 // Set up sessions 
 // https://medium.com/front-end-weekly/make-sessions-work-with-express-js-using-mongodb-62a8a3423ef5
 var sess = {
-    secret: 'ThisIsMySecret',
-    cookie: {}, 
-    store: new MongoStore({ mongooseConnection: db })
+    secret: require('./config/keys.js').SESSION_SECRET,
+    cookie: {},
+    // store: new MongoStore({mongooseConnection: db})
   }
 app.use(session(sess));
 
