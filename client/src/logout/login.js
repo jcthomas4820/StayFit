@@ -33,42 +33,41 @@ class LoginPage extends React.Component{
                 password: this.state.password
             }
 
-            axios.post('/login', returningUser);
+            axios.post('http://localhost:3001/api/login', returningUser).then((res) => {
+                let err = res.data.logError;
 
-            //  perform login operations
-            //  if there is an error while logging in, update state
-                //  this.setState({loginError: true})
-                //  this.setState({errorMessage: "Incorrect user/pass"})
-                //  this.setState({nextPage: false})
-            // else, update state
-                //  this.setState({loginError: false})
-                //  this.setState({errorMessage: null})
-                //  this.setState({nextPage: true})         //  render function will automatically navigate user to selection page
+                if (err) {
+                    this.setState({errorMessage: err});
+                    this.setState({loginError: true});
+                    this.setState({nextPage: false});
+                }
+                else {
+                    this.setState({errorMessage: null});
+                    this.setState({loginError: false});
+                    this.setState({nextPage: true});
+                }
+            });
         }
         else if (id === "register"){
-            axios({
-                method: 'post',
-                url: '/register',
-                data: {
-                  username: this.state.username,
-                  password: this.state.password,
+            const newUser = {
+                username: this.state.username,
+                password: this.state.password
+            }
+
+            axios.post('http://localhost:3001/api/register', newUser).then((res) => {
+                let err = res.data.regError;
+                if (err) {
+                    this.setState({errorMessage: err});
+                    this.setState({loginError: true});
+                    this.setState({nextPage: false});
                 }
-              });
-
-            //  perform register operations
-            //  if there is an error while registering, update state
-                //  this.setState({loginError: true})
-                //  this.setState({errorMessage: "some error message here"})
-                //  this.setState({nextPage: false})
-            // else, update state
-                //  this.setState({loginError: false})
-                //  this.setState({errorMessage: null})
-                //  this.setState({nextPage: true})         //  render function will automatically navigate user to selection page
+                else {
+                    this.setState({errorMessage: null});
+                    this.setState({loginError: false});
+                    this.setState({nextPage: true});
+                }
+            });
         }
-         
-        // if user successfully logs in without errors, set success in state to true
-        this.setState({success: true})
-
     }
 
     render(){

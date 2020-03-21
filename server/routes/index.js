@@ -1,81 +1,80 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const User = require('../models/user')
+
+// Password encryption 
 const bcrypt = require('bcrypt');
-
 const saltRounds = 10;
-let User = require('../models/user.model');
-let OnlineUser = require('../models/onlineusers.model');
 
-// TODO: setup mongoDB
-
-// get a list of all of the users in the database
 router.get('/', function(req, res){
-  User.find()
-    .then(users => res.json(users))
-    .catch(err => res.status(400).json('Error: ' + err));
+  if (req.session.user == undefined) {
+    return res.json({loggedIn: 'false'});
+  }
+
+  return res.json({loggedIn: 'true'});
 });
 
 router.post('/login', function(req, res) {
-  console.log('logged in');
-
-  const usernameIn = req.body.username;
-  const passwordIn = req.body.password;
-
-  // will return the user if one is found
-  User.findOne({ usernameIn }).then(user => {
-    // Check if user exists
-    if (!user) {
-      return res.json({ error: "Username not found" });
+    // if the user exists, compare the password and detemrine if it matches
+      // if yes -> update the session and send successful mresponse
+      // if no -> send an error response
+    // if the user doesn't exist -> send an error response
+  User.findOne( {username: req.body.username} ).then ( (user) => {
+    if (user) {
+      if (!bcrypt.compareSync(req.body.password, user.password)){
+        return res.json( {logError: 'Incorrect password entered'});
+      }
+      req.session.user = user._id;
+      return res.json('User successfully logged in');
+    }
+    else {
+      return res.json( {logError: 'Username does not exist'});
     }
   });
-
-  bcrypt.compare(passwordIn, user.password).then(matches => {
-    if (!matches) {
-      return res.json({ error: "Incorrect password" });
-    }
-  });
-  
-  const newUser = new OnlineUser({usernameIn});
-  
-  const sessionUser = {
-    username: usernameIn
-  }
-  req.session.user = sessionUser; // update the session user
-
-  newUser.save()
-    .then(() => res.json({ username: usernameIn}));
 });
 
-router.post('/register', function(req, res) {
-  console.log("register");
+router.post('/register', function (req, res) {
+  // Check that the user entered a username
+  if (!req.body.username) {
+    return res.json( {regError : 'Please enter a valid username'} );
+  } 
+
+  // Check that the user entered a password
+  if (!req.body.password) {
+    return res.json( {regError : 'Please enter a valid password'} );
+  }
+
+  // Entries are valid - save them
   const usernameIn = req.body.username;
   const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
 
-  const newUser = new User({usernameIn, hashedPassword});
-  const newUserOn = new OnlineUser({usernameIn});
-
-  const sessionUser = {
-    username: usernameIn
-  }
-  req.session.user = sessionUser; // update the session user
-
-  newUserOn.save();
-  newUser.save()
-  .then(() => res.json({ username: usernameIn , password: hashedPassword}))
+  // Check if the user exists
+    // If yes -> send an error response 
+    // If no -> register the user and send a successful response 
+  User.findOne( {username: usernameIn} ).then ( (user) => {
+    if (user) {
+      return res.json( {regError : 'Username already exists'} );
+    }
+    else {
+      const newUser = new User ({username: usernameIn, password: hashedPassword});
+      newUser.save()
+        .then( (user) => {
+          req.session.user = user._id;
+          return res.json('New user created'); 
+        })
+        .catch( (err) => { console.log(err); })
+    }
+  })
 });
 
+// Todo: connect this to the front end code 
 router.post('/logout', function(req, res) {
-  console.log("logout");
+  if (req.session.user == undefined) {
+    return res.json('There is no one logged in');
+  }
 
-  // to do: set up sessions so that I can logout the user who is on the current session
-  const sessionUser = req.session.user.username;
   req.session.user = null;
-
-  OnlineUser.deleteOne({username: sessionUser }, function(err, result) {
-    if (err) {
-      res.json({ error: err});
-    }
-  });
+  return res.json('User logged out');
 });
 
 module.exports = router;
