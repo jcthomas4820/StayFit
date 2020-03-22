@@ -147,10 +147,169 @@ describe('application', async () => {
     });
 
     // ***** //
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    }
+
     describe('macro-test', async () => {
-      it('allows user to store personal information');
-      it('calculates daily reccomendations based on personal user values');
-      it('allows user to track the macros calculated');
+      it('allows user to store their gender', async () => {
+
+            // login a user
+            let user = { username: getRandomString(10), password: getRandomString(10) };
+            await client.post('/api/register', user);
+
+            // gender err
+            let result = await client.post('/api/calculate', {userGender: 'A',
+                                                               userAge: getRandomInt(1, 101),
+                                                               userHeight: getRandomInt(120, 201),
+                                                               userWeight: getRandomInt(70, 181),
+                                                               userActivityLevel: getRandomInt(1,6)});
+
+            assert.equal(result.data.calcError, 'Please enter a valid gender (M/F)');
+            console.log("calcError: " + result.data.calcError);
+      });
+
+      it('allows user to store their age', async () => {
+
+          // register a user
+          let user = { username: getRandomString(10), password: getRandomString(10) };
+          await client.post('/api/register', user);
+
+          // age err
+          let result = await client.post('/api/calculate', { userGender: 'f',
+                                                         userAge: '',
+                                                         userHeight: getRandomInt(120, 201),
+                                                         userWeight: getRandomInt(70, 181),
+                                                         userActivityLevel: getRandomInt(1,6)});
+          assert.equal(result.data.calcError, 'Please enter a valid age in years');
+
+      });
+
+    it('allows user to store their height', async () => {
+
+        // register a user
+        let user = { username: getRandomString(10), password: getRandomString(10) };
+        await client.post('/api/register', user);
+        // height err
+        let result = await client.post('/api/calculate', { userGender: 'F',
+                                                       userAge: getRandomInt(1, 101),
+                                                       userHeight: -20,
+                                                       userWeight: getRandomInt(70, 181),
+                                                       userActivityLevel: getRandomInt(1,6)});
+        assert.equal(result.data.calcError, 'Please enter a valid height in centimeters');
+    });
+
+    it('allows user to store their weight', async () => {
+
+        // register a user
+        let user = { username: getRandomString(10), password: getRandomString(10) };
+        await client.post('/api/register', user);
+
+        // weight err
+        let result = await client.post('/api/calculate', {userGender: 'm',
+                                                           userAge: getRandomInt(1, 101),
+                                                           userHeight: getRandomInt(120, 201),
+                                                           userWeight: -90,
+                                                           userActivityLevel: getRandomInt(1,6)});
+        assert.equal(result.data.calcError, 'Please enter a valid Weight in pounds');
+    });
+
+    it('allows user to store their activity level', async () => {
+
+        // register a user
+        let user = { username: getRandomString(10), password: getRandomString(10) };
+        await client.post('/api/register', user);
+
+        // activity level err
+        let result = await client.post('/api/calculate', {userGender: 'M',
+                                                           userAge: getRandomInt(1, 101),
+                                                           userHeight: getRandomInt(120, 201),
+                                                           userWeight: getRandomInt(70, 181),
+                                                           userActivityLevel: 6});
+        assert.equal(result.data.calcError, 'Please enter a valid activity level from range(1-5)');
+    });
+
+      it('calculates daily recommendations based on personal user values for male', async () => {
+            // register a user
+            let user = { username: getRandomString(10), password: getRandomString(10) };
+            await client.post('/api/register', user);
+
+            // correct calculation of prot, carbs, and fats for Male
+            let result = await client.post('/api/calculate', { userAge: 25,
+                                                               userGender: 'M',
+                                                               userWeight: 125,
+                                                               userHeight: 171,
+                                                               userActivityLevel: 4});
+            // calculate macros
+            let caloriesPerDay = (10*(125/2.2046)) + (6.25*171) - (5*25) + 5;
+            let macros = { prots: caloriesPerDay*0.35,
+                           carbs: caloriesPerDay*0.35,
+                           fats: caloriesPerDay*0.30 }
+            assert.equal(result.data.macros.prots, macros.prots);
+            assert.equal(result.data.macros.carbs, macros.carbs);
+            assert.equal(result.data.macros.fats, macros.fats);
+      });
+
+      it('calculates daily recommendations based on personal user values for female', async () => {
+            // register a user
+            let user = { username: getRandomString(10), password: getRandomString(10) };
+
+            await client.post('/api/register', user);
+            // correct calculation of prot, carbs, and fats for Female
+            result = await client.post('/api/calculate', { userAge: 22,
+                                                           userGender: 'f',
+                                                           userWeight: 120,
+                                                           userHeight: 160,
+                                                           userActivityLevel: 3});
+            // calculate macros
+            caloriesPerDay = (10*(120/2.2046)) + (6.25*160) - (5*22) - 161;
+            macros = { prots: caloriesPerDay*0.35,
+                       carbs: caloriesPerDay*0.35,
+                       fats: caloriesPerDay*0.30 }
+            assert.equal(result.data.macros.prots, macros.prots);
+            assert.equal(result.data.macros.carbs, macros.carbs);
+            assert.equal(result.data.macros.fats, macros.fats);
+
+      });
+      it('allows user to track the macros calculated', async () => {
+
+            // register a user
+            let user = { username: getRandomString(10), password: getRandomString(10) };
+            await client.post('/api/register', user);
+
+            // calculate and submit caloriesPerDay
+            client.post('/api/calculate', {userGender: 'f',
+                                           userAge: 22,
+                                           userHeight: 160,
+                                           userWeight: 120,
+                                           userActivityLevel: 3});
+            // calculate macros
+            let caloriesPerDay = (10*120) + (6.25*160) - (5*22) - 161;
+            let macros = { prots: caloriesPerDay*0.35,
+                           carbs: caloriesPerDay*0.35,
+                           fats: caloriesPerDay*0.30 }
+            // submit macros
+            let result = await client.post('/api/submit', {data: macros});
+            assert.equal(result.data, 'Data saved');
+      });
+
+      it('throws error if user tracks macros without calculating them first', async () => {
+
+            // register a user
+            let user = { username: getRandomString(10), password: getRandomString(10) };
+            await client.post('/api/register', user);
+
+            // submit macros with null values
+            let macros = { prots: null,
+                           carbs: null,
+                           fats: null}
+            result = await client.post('/api/submit', {data: null});
+            assert.equal(result.data.submitError, 'Data sent for submission is null. Try again');
+
+      });
     });
 
     describe('nutrition-test', async () => {
