@@ -30,11 +30,19 @@ class MacroCalculator extends React.Component{
             submitErrMessage: null,
 
             // nextPage state
-            nextPage: false
+            nextPage: false,
+
+            results: null
         }
         this.handleClick = this.handleClick.bind(this)
     }
 
+    // Throws error during runtime
+    /*handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }*/
 
     handleClick(e){
 
@@ -70,7 +78,7 @@ class MacroCalculator extends React.Component{
                  this.setState({calcError: false});
                  this.setState({calcSuccess: true});
                  this.setState({calcErrMessage: null});
-                 console.log("Values calculated: " + dataCalculated);
+                 this.setState({results: dataCalculated});
              }
          });
         }
@@ -78,24 +86,22 @@ class MacroCalculator extends React.Component{
             //  error check: ensure values are calculated before submission, by checking this.state.calcSuccess
             if(this.state.calcSuccess === false){
                 //  display err message to user, prompt them to enter data and press calculate first
+                this.setState({results: 'You must calculate macros before submitting'});
             }
             else{
                 //  grab this.state.data, store this data into database
                  axios.post('http://localhost:3001/api/submit', this.state.data).then((res) => {
-                    let err = res.data.submitErr;
+                    let err = res.data.submitError;
                     if(err){
                         // there should not be any err but if in case there is, do this
                         this.setState({submit: false});
-                        this.setState({nextPage: false});
                         this.setState({submitError: true});
                         this.setState({submitErrMessage: err});
-
                          // let user know values were not saved and to try again by pressing Submit
-                         console.log("Values not saved");
+                         this.setState({results: submitErrMessage});
                     }
                     else{
                         this.setState({submit: true});
-                        this.setState({nextPage: true});
                         this.setState({submitError: false});
                         this.setState({submitErrMessage: null});
                         //  clear the values on the screen (clear state values) .
@@ -106,7 +112,7 @@ class MacroCalculator extends React.Component{
                         this.setState({userActivityLevel: null});
 
                         //  let user know values were saved
-                        console.log("Values saved");
+                        this.setState({results: 'Your macro values are saved.'});
                     }
                  });
             }
@@ -120,6 +126,15 @@ class MacroCalculator extends React.Component{
             this.setState({userWeight: null});
             this.setState({userActivityLevel: null});
 
+            this.setState({calcError: false});
+            this.setState({calcSuccess: false});
+            this.setState({calcErrMessage: null});
+
+            this.setState({submit: false});
+            this.setState({submitErr: false});
+            this.setState({submitErrMessage: null});
+
+            this.setState({results: null});
             this.setState({nextPage: true});
         }
 
@@ -128,7 +143,7 @@ class MacroCalculator extends React.Component{
 
     render(){
 
-        //  when no errors in logging in/registering, direct user to selection page
+        //  If user selected Back, direct user to selection page
         if (this.state.nextPage){
             return(
                 <Redirect push to='/selection'/>
@@ -139,15 +154,15 @@ class MacroCalculator extends React.Component{
             <div className = "MacroCalculator">
                 <h1>Macro Calculator</h1>
                 <div className = "UserValues">
-                    <input id="userGender" type="text" name="gender" value={this.state.userGender}/>
+                    <input id="userGender" type="text" name="gender" value={this.state.userGender} onChange={e => this.handleChange(e)}/>
                     <p>Gender (M/F)</p>
-                    <input id="userAge" type="number" name="age" value={this.state.userAge}/>
+                    <input id="userAge" type="number" name="age" value={this.state.userAge} onChange={e => this.handleChange(e)}/>
                     <p>Age</p>
-                    <input id="userWeight" type="number" name="weight" value={this.state.userWeight}/>
+                    <input id="userWeight" type="number" name="weight" value={this.state.userWeight} onChange={e => this.handleChange(e)}/>
                     <p>Weight (cm)</p>
-                    <input id="userHeight" type="number" name="height" value={this.state.userHeight}/>
+                    <input id="userHeight" type="number" name="height" value={this.state.userHeight} onChange={e => this.handleChange(e)}/>
                     <p>Height (lbs)</p>
-                    <input id="userActivityLevel" type="number" name="activity level number" value={this.state.userActivityLevel}/>
+                    <input id="userActivityLevel" type="number" name="activity level number" value={this.state.userActivityLevel} onChange={e => this.handleChange(e)}/>
                     <p>Activity Level (1-sedentary, 2-lightly active, 3-moderately active, 4-very active, 5-extra active)</p>
                 </div>
                 <div className="Results">

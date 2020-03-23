@@ -154,22 +154,22 @@ describe('application', async () => {
       return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
-    describe('macro-test', async () => {
+    describe('calculate-test', async () => {
       it('allows user to store their gender', async () => {
 
-            // login a user
-            let user = { username: getRandomString(10), password: getRandomString(10) };
-            await client.post('/api/register', user);
+        // login a user
+        let user = { username: getRandomString(10), password: getRandomString(10) };
+        await client.post('/api/register', user);
 
-            // gender err
-            let result = await client.post('/api/calculate', {userGender: 'A',
-                                                               userAge: getRandomInt(1, 101),
-                                                               userHeight: getRandomInt(120, 201),
-                                                               userWeight: getRandomInt(70, 181),
-                                                               userActivityLevel: getRandomInt(1,6)});
+        // gender err
+        let result = await client.post('/api/calculate', {userGender: 'A',
+                                                           userAge: getRandomInt(1, 101),
+                                                           userHeight: getRandomInt(120, 201),
+                                                           userWeight: getRandomInt(70, 181),
+                                                           userActivityLevel: getRandomInt(1,6)});
 
-            assert.equal(result.data.calcError, 'Please enter a valid gender (M/F)');
-            console.log("calcError: " + result.data.calcError);
+        assert.equal(result.data.calcError, 'Please enter a valid gender (M/F)');
+        console.log("calcError: " + result.data.calcError);
       });
 
       it('allows user to store their age', async () => {
@@ -274,6 +274,8 @@ describe('application', async () => {
             assert.equal(result.data.macros.fats, macros.fats);
 
       });
+      });
+      describe('submit-test', async () => {
       it('allows user to track the macros calculated', async () => {
 
             // register a user
@@ -306,10 +308,35 @@ describe('application', async () => {
             let macros = { prots: null,
                            carbs: null,
                            fats: null}
-            result = await client.post('/api/submit', {data: null});
+            result = await client.post('/api/submit', {data: macros});
             assert.equal(result.data.submitError, 'Data sent for submission is null. Try again');
 
       });
+
+       it('throws error if a registered user tries to submit macros without logging in', async () => {
+            // register, login, then logout a user
+            let user = { username: getRandomString(10), password: getRandomString(10) };
+            await client.post('/api/register', user);
+            await client.post('/api/logout', user);
+
+             // submit macros
+            let macros = { prots: 100,
+                           carbs: 200,
+                           fats: 300}
+            result = await client.post('/api/submit', {data: macros});
+            assert.equal(result.data.submitError, 'You must be logged in to do that');
+
+        });
+       it('throws error if an unregistered user tries to submit macros', async () => {
+            // submit macros
+            let macros = { prots: 100,
+                           carbs: 200,
+                           fats: 300}
+            result = await client.post('/api/submit', {data: macros});
+            assert.equal(result.data.submitError, 'You must be logged in to do that');
+
+        });
+
     });
 
     describe('nutrition-test', async () => {
