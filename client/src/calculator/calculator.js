@@ -26,7 +26,7 @@ class MacroCalculator extends React.Component{
 
             // submit state
             submit: false,
-            submitErr: false;
+            submitError: false;
             submitErrMessage: null,
 
             // nextPage state
@@ -131,7 +131,7 @@ class MacroCalculator extends React.Component{
             this.setState({calcErrMessage: null});
 
             this.setState({submit: false});
-            this.setState({submitErr: false});
+            this.setState({submitError: false});
             this.setState({submitErrMessage: null});
 
             this.setState({results: null});
