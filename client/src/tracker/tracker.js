@@ -16,7 +16,7 @@ class NutritionTracker extends React.Component{
         //  need to bind componentDidMount????
     }
 
-    componentDidMount(){
+    componentWillMount(){
         //  load relevant data from database
         //  set state accordingly via this.setState({})
         //  load api????

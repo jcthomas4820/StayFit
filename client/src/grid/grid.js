@@ -5,21 +5,20 @@ class Grid extends React.Component{
     constructor(){
         super()
         this.state={
+            row0List: ["", "", ""],
             row1List: ["", "", ""],
-            row2List: ["", "", ""],
-            row3List: ["", "", ""]
+            row2List: ["", "", ""]
         }
 
     }
 
-    componentDidMount(){
+    componentWillMount(){
 
-        //  load lists from databse for each row, save in state
+        //  load each row data from databse for each row, save in state
             // for example:
                 //  load list from database, assign to tempList
                 //  let tempList=["bicep curl", "25lb 4s10r", "3/24/20"]
-                //  this.setState({ row1List: tempList })
-        
+                //  this.setState({ row0List: tempList })
     }
 
     render(){
@@ -28,9 +27,9 @@ class Grid extends React.Component{
             
             <div className = "ExerciseGrid">
                 <h1>Exercise Grid</h1>
+                < Row rowList={this.state.row0List} rowNum={0} />
                 < Row rowList={this.state.row1List} rowNum={1} />
                 < Row rowList={this.state.row2List} rowNum={2} />
-                < Row rowList={this.state.row3List} rowNum={3} />
             </div>
             
         )
