@@ -40,7 +40,6 @@ class MacroCalculator extends React.Component{
 
             case "gender":
                 this.setState({gender: value})
-                //console.log("Setting State: " + this.state.gender)
                 break
             case "age":
                 this.setState({age: value})
@@ -54,8 +53,8 @@ class MacroCalculator extends React.Component{
             case "activityLevel":
                 this.setState({activityLevel: value})
                 break
-            //default:
-                //
+            default:
+                return
 
         }
 
@@ -102,8 +101,8 @@ class MacroCalculator extends React.Component{
                 case "extra active":
                     activityFactor = 1.9
                     break
-                //default:
-                    //
+                default:
+                    return
             }
 
             let calories = activityFactor*((10*this.state.weight)+(6.25*this.state.height)-(5*this.state.age)+genderFactor)
