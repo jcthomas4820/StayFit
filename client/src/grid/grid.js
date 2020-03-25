@@ -1,11 +1,22 @@
 import React from "react"
 
+/*
+Grid acts as the parent component, and Row acts as the child.
+Grid will 
+    - load saved data from database for each row, update its own state (see componentWillMount())
+    - render 3 new child Row components
+Row will
+    - display ui of each row
+    - allow user to edit its rows
+    - once user saves, it will store this row's content in database (see handleSave())
+*/
+
 class Grid extends React.Component{
 
     constructor(){
         super()
         this.state={
-            row0List: ["", "", ""],
+            row0List: ["", "", ""],         // [exercise, progress, date] 
             row1List: ["", "", ""],
             row2List: ["", "", ""]
         }
@@ -16,9 +27,9 @@ class Grid extends React.Component{
 
         //  load each row data from databse for each row, save in state
             // for example:
-                //  load list from database, assign to tempList
-                //  let tempList=["bicep curl", "25lb 4s10r", "3/24/20"]
-                //  this.setState({ row0List: tempList })
+                //  load list from database, assign state as follows:
+                //  let tempList=["bicep curl", "25lb 4s10r", "3/24/20"]   --> this is the values from the database stored as a list
+                //  this.setState({ row0List: tempList })      --> save as the appropriate row's list
     }
 
     render(){
@@ -83,7 +94,7 @@ class Row extends React.Component{
     }
 
     handleSave(e){
-        //  store this row's (defined by this.state.rowNum) name, progress, and date in database
+        //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
     }
 
     componentWillReceiveProps(props){
