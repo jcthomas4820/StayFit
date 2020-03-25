@@ -13,7 +13,7 @@ class NutritionTracker extends React.Component{
         this.handleAnalysis = this.handleAnalysis.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)    
         this.handleChange = this.handleChange.bind(this)     
-        //  need to bind componentDidMount????
+        //  need to bind componentWillMount????
     }
 
     componentWillMount(){
@@ -22,6 +22,8 @@ class NutritionTracker extends React.Component{
         //  load api????
     }
 
+    //  function handles text changes in textarea
+        //  allows changes to appear on webpage in the textarea
     handleChange(e){
         this.setState({userInput: e.target.value})
     }
@@ -32,12 +34,10 @@ class NutritionTracker extends React.Component{
 
     }
 
-    //  function handles text changes in textarea
-        //  allows changes to appear on webpage in the textarea
     handleSubmit(){
 
-        //  submit values to database
-        //  update state's todayValues
+        //  submit state values to database
+        //  update state's todayValues (e.g. todayValues = todayValues+apiValues)
     }
    
 

@@ -18,9 +18,9 @@ class MacroCalculator extends React.Component{
             weight: "",
             height: "",
             activityLevel: "",
-            carbsG: "",
-            protG: "",
-            fatG: "",
+            carbs: null,
+            prot: null, 
+            fats: null, 
             results: ""
         }
        
@@ -68,7 +68,11 @@ class MacroCalculator extends React.Component{
             age: "",
             weight: "",
             height: "",
-            activityLevel: ""
+            activityLevel: "",
+            carbs: null,
+            prot: null, 
+            fats: null, 
+            results: ""
         })
     }
 
@@ -82,6 +86,7 @@ class MacroCalculator extends React.Component{
 
         if (button === "calculate"){
 
+            /*
             //  perform macro results calculation using Mifflin-St. Jeor equation (https://www.healthline.com/nutrition/how-to-count-macros#step-by-step)
             const genderFactor = this.state.gender === "male" ? 5 : -161
             let activityFactor=0
@@ -113,16 +118,93 @@ class MacroCalculator extends React.Component{
             //  save in state results
             this.setState({carbsG:carbs, fatsG:fats, protG:protein})
             this.setState({results: carbs+" g carbs, " + fats+" g fats, " + protein+" g protein"})
+            */
+
+            //  grab user entered values
+           const userData = {
+                userAge: this.state.age,
+                userGender: this.state.gender,
+                userWeight: this.state.weight,
+                userHeight: this.state.height,
+                userActivityLevel: this.state.activityLevel
+            }
+        
+            //  perform macro calculations using Mifflin-St. Jeor equation (https://www.healthline.com/nutrition/how-to-count-macros#step-by-step)
+           // send user entered data to the server to calculate the required data
+          axios.post('http://localhost:3001/api/calculator', userData).then((res) => {
+            // grab data returned by server
+            let err = res.data.calcError;
+            let dataCalculated = res.data.dataCalculated;
+
+            if (err) {
+                //this.setState({calcError: true});
+                //this.setState({calcSuccess: false});
+                //this.setState({calcErrMessage: err});
+                //console.log("Err: Values not calculated: ");
+                this.setState({results: "Error during calculation"})
+            }
+            else {
+                // update state to reflect values calculated for macros
+                //this.setState({data: dataCalculated})
+                this.setState({carbs: dataCalculated.carbs})
+                this.setState({prot: dataCalculated.prot})
+                this.setState({fats: dataCalculated.fats})
+                /*
+                // update state for calc
+                this.setState({calcError: false});
+                this.setState({calcSuccess: true});
+                this.setState({calcErrMessage: null});
+                this.setState({results: dataCalculated});
+                */
+               this.setState({results: this.state.carbs + "g carbs, " + this.state.prot + "g protein, " + this.state.fats + "g fats"})
+            }
+        });
+        
         }
-
-
-
 
         else if(button === "submit"){
 
-            //  check if calculated first
+            //  error check: ensure values are calculated before submission, see if results contain "carbs"
+            if(!(this.state.results.includes("carbs"))){
+                //  display err message to user, prompt them to enter data and press calculate first
+                this.setState({results: 'You must calculate macros before submitting'});
+            }
+            else{
+                //  grab this.state.data, store this data into database
+                let data = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
+                 axios.post('http://localhost:3001/api/submit', data).then((res) => {
+                    let err = res.data.submitError;
+                    if(err){
+                        /*
+                        // there should not be any err but if in case there is, do this
+                        this.setState({submit: false});
+                        this.setState({submitError: true});
+                        this.setState({submitErrMessage: err});
+                         // let user know values were not saved and to try again by pressing Submit
+                         this.setState({results: submitErrMessage});
+                         */
+                        this.setState({results: err})
+                    }
+                    else{
+                        /*
+                        this.setState({submit: true});
+                        this.setState({submitError: false});
+                        this.setState({submitErrMessage: null});
+                        //  clear the values on the screen (clear state values) .
+                        this.setState({userAge: null});
+                        this.setState({userGender: null});
+                        this.setState({userHeight: null});
+                        this.setState({userWeight: null});
+                        this.setState({userActivityLevel: null});
+                        */
 
-            //  save state values in database (for use by Nutrition Tracker)
+                        //  clear all values
+                        this.clearForm()
+                        //  let user know values were saved
+                        this.setState({results: 'Your macro values are saved.'});
+                    }
+                 });
+            }
         }
 
 
