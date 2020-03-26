@@ -5,60 +5,73 @@ class NutritionTracker extends React.Component{
     constructor(){
         super()
         this.state={
-            apiValues: {protein: null, carbs: null, fats: null},
-            todayValues: {protein: null, carbs: null, fats: null},
+            apiValues: [0, 0, 0],            //  [protein, carbs, fats]
+            todayValues: [0, 0, 0],     
+            goalValues: [0, 0, 0],
+            userInput: "",
+            errMsg: ""
         }
-        this.handleClick = this.handleClick.bind(this)
+        this.handleAnalysis = this.handleAnalysis.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)    
+        this.handleChange = this.handleChange.bind(this)     
+        //  need to bind componentWillMount????
     }
 
-    componentDidMount(){
+    componentWillMount(){
         //  load relevant data from database
-        //  set state accordingly via this.setState({})
+        //  load list from database, assign state as follows:
+            //  let tempList=[x, x, x]   --> this is the values from the database stored as a list
+            //  this.setState({ todayValues: tempList })      --> save as the appropriate lists for todayValues and goalValues
+        
+            //  load api (if long operation)????
     }
 
-    handleClick(e){
-    
-        let id = e.target.id
+    //  function handles text changes in textarea
+        //  allows changes to appear on webpage in the textarea
+    handleChange(e){
+        this.setState({userInput: e.target.value})
+    }
 
-        if (id === "analyze"){
-            //  grab user input
-            //  make api call
-            //  set state with apiValues
-            //  set text appropriately on screen
-        }
-
-        else if (id === "submit"){
-            //  store today's values for macros + apiValues in database
-            //  update state accordingly
-        }
+    handleAnalysis(){
+        
+        //  api operations, set apiValues in state
+        //  if err, this.setState({errMsg: err})
 
     }
+
+    handleSubmit(){
+
+        //  update state's todayValues (e.g. todayValues = todayValues+apiValues)
+        //  submit state data for todayValues and goalValues in database 
+        //  if err, this.setState({errMsg: err})
+    }
+   
 
     render(){
 
         return(
-            <div className = "NutritionTracker">
+            <div className="NutritionTracker">
                 <h1>Nutrition Tracker</h1>
-                <div className="dailyGoals">
-                    <h2>Daily Goals</h2>
-                    <h3>Protein: </h3>
-                    <h3>Carbs: </h3>
-                    <h3>Fats: </h3>
+                <p>{this.state.errMsg}</p>
+                <div className="DailyGoals">
+                    <h3><u>Daily Goals</u></h3>
+                    <p>Protein: {(this.state.goalValues)[0]}g</p>
+                    <p>Carbs: {(this.state.goalValues)[1]}g</p>
+                    <p>Fats: {(this.state.goalValues)[2]}g</p>
                 </div>
-                    
-                <div className="today">
-                    <h2>Today</h2>
-                    <h3>Protein: </h3>
-                    <h3>Carbs: </h3>
-                    <h3>Fats: </h3>
+                <div className="ProgressToday">
+                    <h3><u>Progress Today</u></h3>
+                    <p>Protein: {(this.state.todayValues)[0]}g</p>
+                    <p>Carbs: {(this.state.todayValues)[1]}g</p>
+                    <p>Fats: {(this.state.todayValues)[2]}g</p>
                 </div>
-                    
-                <div className="analysis">
-                    <input id="mealInput" type="text"></input>
-                    <p>Input Your Meal</p>
-                    <button type="button" id="analyze" onClick={this.handleClick}>Analyze Meal</button> 
-                    <input id="results" disabled type="text"></input>
-                    <button type="button" id="submit" onClick={this.handleClick}>Submit</button> 
+                <div className="APIBlock">
+                    <h3>Input Meal:</h3>
+                    <textarea cols="50" rows="10" name="user_meal" value={this.state.userInput} onChange={this.handleChange}></textarea>
+                    <button name="analyze" onClick={this.handleAnalysis}>analyze</button>
+                    <h3>Analysis:</h3>
+                    <textarea cols="30" rows="5" name="api_analysis" disabled></textarea>
+                    <button name="submit" onClick={this.handleSubmit}>submit</button>
                 </div>
             </div>
         )
