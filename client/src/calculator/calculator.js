@@ -5,7 +5,7 @@ Form written as controlled component:
 
 import React from "react"
 import axios from 'axios'
-import { thisExpression } from "@babel/types"
+//import { thisExpression } from "@babel/types"
 
 //  allow user to calculate their recommended daily macros
 class MacroCalculator extends React.Component{
@@ -21,7 +21,8 @@ class MacroCalculator extends React.Component{
             carbs: null,
             prot: null, 
             fats: null, 
-            results: ""
+            results: "",
+            errorMsg: ""
         }
        
         this.handleChange = this.handleChange.bind(this)
@@ -60,7 +61,7 @@ class MacroCalculator extends React.Component{
 
     }
 
-    //  function used to clear all values in the form except results
+    //  function used to clear all values on screen
     clearForm(){
         document.getElementById("macro-calculator").reset()         //  reset radio buttons
         this.setState({                 //  reset state
@@ -72,7 +73,8 @@ class MacroCalculator extends React.Component{
             carbs: null,
             prot: null, 
             fats: null, 
-            results: ""
+            results: "",
+            errorMsg: ""
         })
     }
 
@@ -81,45 +83,11 @@ class MacroCalculator extends React.Component{
     handleClick(e){
 
         //  ensure state has all proper values (no neg, numbers not alpha, all values are entered, etc.)
-        //  if errors present, report in results field and return
+        //  if errors present, update in state
 
         const button = e.target.name
 
         if (button === "calculate"){
-
-            /*
-            //  perform macro results calculation using Mifflin-St. Jeor equation (https://www.healthline.com/nutrition/how-to-count-macros#step-by-step)
-            const genderFactor = this.state.gender === "male" ? 5 : -161
-            let activityFactor=0
-            switch(this.state.activityLevel){
-                case "sedentary":
-                    activityFactor = 1.2
-                    break
-                case "lightly active":
-                    activityFactor = 1.375
-                    break
-                case "moderatively active":
-                    activityFactor = 1.55
-                    break
-                case "very active":
-                    activityFactor = 1.725
-                    break
-                case "extra active":
-                    activityFactor = 1.9
-                    break
-                default:
-                    return
-            }
-
-            let calories = activityFactor*((10*this.state.weight)+(6.25*this.state.height)-(5*this.state.age)+genderFactor)
-            const carbs = Math.floor((0.5*calories)/4)
-            const fats = Math.floor((0.25*calories)/9)
-            const protein = Math.floor((0.25*calories)/4)
-
-            //  save in state results
-            this.setState({carbsG:carbs, fatsG:fats, protG:protein})
-            this.setState({results: carbs+" g carbs, " + fats+" g fats, " + protein+" g protein"})
-            */
 
             //  grab user entered values
            const userData = {
@@ -138,26 +106,14 @@ class MacroCalculator extends React.Component{
             let dataCalculated = res.data.dataCalculated;
 
             if (err) {
-                //this.setState({calcError: true});
-                //this.setState({calcSuccess: false});
-                //this.setState({calcErrMessage: err});
-                //console.log("Err: Values not calculated: ");
-                this.setState({results: "Error during calculation"})
+                this.setState({errorMsg: "Error during calculation"})
             }
             else {
                 // update state to reflect values calculated for macros
-                //this.setState({data: dataCalculated})
                 this.setState({carbs: dataCalculated.carbs})
                 this.setState({prot: dataCalculated.prot})
                 this.setState({fats: dataCalculated.fats})
-                /*
-                // update state for calc
-                this.setState({calcError: false});
-                this.setState({calcSuccess: true});
-                this.setState({calcErrMessage: null});
-                this.setState({results: dataCalculated});
-                */
-               this.setState({results: this.state.carbs + "g carbs, " + this.state.prot + "g protein, " + this.state.fats + "g fats"})
+                this.setState({results: this.state.carbs + "g carbs, " + this.state.prot + "g protein, " + this.state.fats + "g fats"})
             }
         });
         
@@ -168,7 +124,7 @@ class MacroCalculator extends React.Component{
             //  error check: ensure values are calculated before submission, see if results contain "carbs"
             if(!(this.state.results.includes("carbs"))){
                 //  display err message to user, prompt them to enter data and press calculate first
-                this.setState({results: 'You must calculate macros before submitting'});
+                this.setState({errorMsg: 'You must calculate macros before submitting'});
             }
             else{
                 //  grab this.state.data, store this data into database
@@ -176,29 +132,9 @@ class MacroCalculator extends React.Component{
                  axios.post('http://localhost:3001/api/submit', data).then((res) => {
                     let err = res.data.submitError;
                     if(err){
-                        /*
-                        // there should not be any err but if in case there is, do this
-                        this.setState({submit: false});
-                        this.setState({submitError: true});
-                        this.setState({submitErrMessage: err});
-                         // let user know values were not saved and to try again by pressing Submit
-                         this.setState({results: submitErrMessage});
-                         */
-                        this.setState({results: err})
+                        this.setState({errorMsg: err})
                     }
                     else{
-                        /*
-                        this.setState({submit: true});
-                        this.setState({submitError: false});
-                        this.setState({submitErrMessage: null});
-                        //  clear the values on the screen (clear state values) .
-                        this.setState({userAge: null});
-                        this.setState({userGender: null});
-                        this.setState({userHeight: null});
-                        this.setState({userWeight: null});
-                        this.setState({userActivityLevel: null});
-                        */
-
                         //  clear all values
                         this.clearForm()
                         //  let user know values were saved
@@ -215,17 +151,10 @@ class MacroCalculator extends React.Component{
 //  note: radio buttons only allow one selection per name attribute
     render(){
 
-        //  If user selected Back, direct user to selection page
-        if (this.state.nextPage){
-            return(
-                <Redirect push to='/selection'/>
-            )
-        }
-
         return(
             <div className="MacroCalculator">
                 <h1>Macro Calculator</h1>
-                
+                <p>{this.state.errorMsg}</p>
                 <form id="macro-calculator" >
                     
                     <label>

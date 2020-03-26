@@ -57,7 +57,8 @@ class Row extends React.Component{
             progress: "",
             date: "",
             rowNum: null,
-            status: "disabled"
+            status: "disabled",
+            errMsg: ""
         }
         this.handleEdit = this.handleEdit.bind(this)
         this.handleSave = this.handleSave.bind(this)
@@ -95,6 +96,7 @@ class Row extends React.Component{
 
     handleSave(e){
         //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
+        //  if err, this.setState({errMsg: err})
     }
 
     componentWillReceiveProps(props){
@@ -107,6 +109,7 @@ class Row extends React.Component{
     render(){
         return(
             <div className="Row">
+                <p>{this.state.errMsg}</p>
                 <div>
                     Name <br/> <input name="name" onChange={this.handleChange} value={this.state.name} disabled={this.state.status}/> 
                     <button onClick={this.handleEdit}>edit</button>

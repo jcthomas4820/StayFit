@@ -17,13 +17,14 @@ class LoginPage extends React.Component{
         this.handleClick = this.handleClick.bind(this)      //  required for binding handleClick function to use this state
     }
     
-    
+    /*
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
-    
+    */
+
     handleClick(e){
         let id = e.target.id
         if (id === "login"){
@@ -44,7 +45,6 @@ class LoginPage extends React.Component{
                     this.setState({errorMessage: null});
                     this.setState({loginError: false});
                     this.setState({nextPage: true});
-                    this.setState({success:true})
                 }
             });
         }
@@ -65,7 +65,6 @@ class LoginPage extends React.Component{
                     this.setState({errorMessage: null});
                     this.setState({loginError: false});
                     this.setState({nextPage: true});
-                    this.setState({success:true})
                 }
             });
         }
@@ -94,10 +93,6 @@ class LoginPage extends React.Component{
                 <div className = "login/register buttons">
                     <button type="button" id="login" onClick={this.handleClick}>login</button>
                     <button type="button" id="register" onClick={this.handleClick}>register</button>
-                </div>
-                <div className="Errors">
-                    Errors Displayed Here:
-                    <textArea disabled value={this.state.errorMessage}></textArea>
                 </div>
             </div>
         )

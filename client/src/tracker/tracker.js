@@ -5,10 +5,11 @@ class NutritionTracker extends React.Component{
     constructor(){
         super()
         this.state={
-            apiValues: {protein: null, carbs: null, fats: null},
-            todayValues: {protein: 0, carbs: 0, fats: 0},
-            goalValues: {protein: 0, carbs: 0, fats: 0},
-            userInput: ""
+            apiValues: [0, 0, 0],            //  [protein, carbs, fats]
+            todayValues: [0, 0, 0],     
+            goalValues: [0, 0, 0],
+            userInput: "",
+            errMsg: ""
         }
         this.handleAnalysis = this.handleAnalysis.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)    
@@ -18,8 +19,11 @@ class NutritionTracker extends React.Component{
 
     componentWillMount(){
         //  load relevant data from database
-        //  set state accordingly via this.setState({})
-        //  load api????
+        //  load list from database, assign state as follows:
+            //  let tempList=[x, x, x]   --> this is the values from the database stored as a list
+            //  this.setState({ todayValues: tempList })      --> save as the appropriate lists for todayValues and goalValues
+        
+            //  load api (if long operation)????
     }
 
     //  function handles text changes in textarea
@@ -30,14 +34,16 @@ class NutritionTracker extends React.Component{
 
     handleAnalysis(){
         
-        //  api operations
+        //  api operations, set apiValues in state
+        //  if err, this.setState({errMsg: err})
 
     }
 
     handleSubmit(){
 
-        //  submit state values to database
         //  update state's todayValues (e.g. todayValues = todayValues+apiValues)
+        //  submit state data for todayValues and goalValues in database 
+        //  if err, this.setState({errMsg: err})
     }
    
 
@@ -46,17 +52,18 @@ class NutritionTracker extends React.Component{
         return(
             <div className="NutritionTracker">
                 <h1>Nutrition Tracker</h1>
+                <p>{this.state.errMsg}</p>
                 <div className="DailyGoals">
                     <h3><u>Daily Goals</u></h3>
-                    <p>Protein: {this.state.goalValues.protein}g</p>
-                    <p>Carbs: {this.state.goalValues.carbs}g</p>
-                    <p>Fats: {this.state.goalValues.fats}g</p>
+                    <p>Protein: {(this.state.goalValues)[0]}g</p>
+                    <p>Carbs: {(this.state.goalValues)[1]}g</p>
+                    <p>Fats: {(this.state.goalValues)[2]}g</p>
                 </div>
                 <div className="ProgressToday">
                     <h3><u>Progress Today</u></h3>
-                    <p>Protein: {this.state.todayValues.protein}g</p>
-                    <p>Carbs: {this.state.todayValues.carbs}g</p>
-                    <p>Fats: {this.state.todayValues.fats}g</p>
+                    <p>Protein: {(this.state.todayValues)[0]}g</p>
+                    <p>Carbs: {(this.state.todayValues)[1]}g</p>
+                    <p>Fats: {(this.state.todayValues)[2]}g</p>
                 </div>
                 <div className="APIBlock">
                     <h3>Input Meal:</h3>
