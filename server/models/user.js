@@ -11,7 +11,6 @@ const userSchema = new Schema({
   username: { type: String, require: true, unique: true },
   password: { type: String, require: true },
   macros: { type: macrosSchema, require: false },
-  loggedIn: { type: Boolean, require: true}
 }, { timestamps: true }
 );
 

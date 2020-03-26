@@ -84,42 +84,67 @@ router.post('/calculate', function(req, res){
     }
 
     // error check inputs
-    if(!req.body.userAge || Number.isNaN(Number(req.body.userAge)) || req.body.userAge <= 0){
-        return res.json({calcError: 'Please enter a valid age in years'});
+    if(!req.body.userGender || req.body.userGender === ''){
+        return res.json({calcError: 'You must select a gender to calculate the macros'});
     }
-    if(!req.body.userGender || !(req.body.userGender === 'M' || req.body.userGender === 'F' ||
-        req.body.userGender === 'f' || req.body.userGender === 'm')){
-        return res.json({calcError: 'Please enter a valid gender (M/F)'});
+    else if(!req.body.userAge || req.body.userAge === ""){
+        return res.json({calcError: 'You must enter an age to calculate the macros'});
     }
-    if(!req.body.userHeight || Number.isNaN(Number(req.body.userHeight)) || req.body.userHeight < 0){
-        return res.json({calcError: 'Please enter a valid height in centimeters'});
+    else if(Number.isNaN(Number(req.body.userAge)) || req.body.userAge < 0){
+        return res.json({calcError: 'Please enter a valid age to calculate the macros'});
     }
-    if(!req.body.userWeight || Number.isNaN(Number(req.body.userWeight)) || req.body.userWeight < 0){
-        return res.json({calcError: 'Please enter a valid Weight in pounds'});
+    else if(!req.body.userWeight || req.body.userWeight === ''){
+        return res.json({calcError: 'You must enter a weight (kg) to calculate the macros'});
     }
-    if(!req.body.userActivityLevel || Number.isNaN(Number(req.body.userActivityLevel)) || req.body.userActivityLevel < 1 || req.body.userActivityLevel > 5){
-        return res.json({calcError: 'Please enter a valid activity level from range(1-5)'});
+    else if(Number.isNaN(Number(req.body.userWeight)) || req.body.userWeight <= 0){
+        return res.json({calcError: 'Please enter a valid weight (kg) to calculate the macros'});
     }
-
-    // grab and convert userAge from pounds to kilograms
-    let weight = req.body.userWeight/2.2046;
+    else if(!req.body.userHeight || req.body.userHeight === ''){
+        return res.json({calcError: 'You must enter a height (cm) to calculate the macros'});
+    }
+    else if(Number.isNaN(Number(req.body.userHeight)) || req.body.userHeight <= 0){
+        return res.json({calcError: 'Please enter a valid height (cm) to calculate the macros'});
+    }
+    else if(!req.body.userActivityLevel || req.body.userActivityLevel === ''){
+        return res.json({calcError: 'You must select an activity level to calculate the macros'});
+    }
 
     // grab other user data values
+    let gender = req.body.userGender;
     let age = req.body.userAge;
+    let weight = req.body.userWeight;
     let height = req.body.userHeight;
     let activityLevel = req.body.userActivityLevel;
-    let gender = req.body.userGender;
+
+    // calculate the macros: https://www.healthline.com/nutrition/how-to-count-macros#step-by-step
+    // get the activity factor based on activity level
+    let activityFactor = 0;
+    if(activityLevel === " Sedentary"){
+        activityFactor = 1.2;
+    }
+    else if(activityLevel === " Lightly Active"){
+        activityFactor = 1.375;
+    }
+    else if(activityLevel === " Moderately Active"){
+        activityFactor = 1.55;
+    }
+    else if(activityLevel === " Very Active"){
+        activityFactor = 1.725;
+    }
+    else if(activityLevel === " Extra Active"){
+        activityFactor = 1.9;
+    }
+
 
     // calculate caloriesPerDay based on gender
-    let caloriesPerDay = (10*weight) + (6.25*height) - (5*age);
-    if(gender === 'M'|| gender === 'm'){
+    let caloriesPerDay = ((10*weight) + (6.25*height) - (5*age))*activityFactor;
+    if(gender === 'Male'){
         caloriesPerDay = caloriesPerDay + 5;
     }
     else{
         caloriesPerDay = caloriesPerDay - 161;
     }
 
-    // calculate macros for the user
     let macros = {  prots: caloriesPerDay*0.35,
                     carbs: caloriesPerDay*0.35,
                     fats: caloriesPerDay*0.30 }
@@ -137,20 +162,18 @@ router.post('/submit', function(req, res){
 
     // get user provided data
     let data = req.body.data;
-
     // check if data sent is null
     if(!data || !data.prots || !data.carbs || !data.fats){
-      return res.json({submitError: 'Data sent for submission is null. Try again'});
+      return res.json({submitError: 'You must calculate macros before submitting'});
     }
-
     // save data to DB
     // https://mongoosejs.com/docs/tutorials/findoneandupdate.html
     User.findOneAndUpdate({_id: req.session.user}, {$set : {macros: data}}, {new: true, useFindAndModify: false}, (error, doc) => {
       if(error){
-        return res.json({submitError: 'Error: Data not saved'});
+        return res.json({submitError: 'Error: Data not saved. Please try again.'});
       }
       else{
-        return res.json('Data saved');
+        return res.json('Your macro values are saved');
       }
     });
 });
