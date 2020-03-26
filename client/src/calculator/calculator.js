@@ -76,6 +76,7 @@ class MacroCalculator extends React.Component{
         })
     }
 
+
     //  function used to handle calculate and submission
     handleClick(e){
 
@@ -213,6 +214,13 @@ class MacroCalculator extends React.Component{
 
 //  note: radio buttons only allow one selection per name attribute
     render(){
+
+        //  If user selected Back, direct user to selection page
+        if (this.state.nextPage){
+            return(
+                <Redirect push to='/selection'/>
+            )
+        }
 
         return(
             <div className="MacroCalculator">
