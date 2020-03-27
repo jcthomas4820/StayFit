@@ -7,11 +7,12 @@ const macrosSchema = new Schema({
   fats: {type: Number, require: true}
 });
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+{
   username: { type: String, require: true, unique: true },
   password: { type: String, require: true },
   macros: { type: macrosSchema, require: false },
-}, { timestamps: true }
+} , {timestamps: true}
 );
 
 module.exports = mongoose.model('User', userSchema);

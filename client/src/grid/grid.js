@@ -20,16 +20,28 @@ class Grid extends React.Component{
             row1List: ["", "", ""],
             row2List: ["", "", ""]
         }
-
     }
 
     componentWillMount(){
-
-        //  load each row data from databse for each row, save in state
+        // load each row data from databse for each row, save in state
             // for example:
                 //  load list from database, assign state as follows:
                 //  let tempList=["bicep curl", "25lb 4s10r", "3/24/20"]   --> this is the values from the database stored as a list
                 //  this.setState({ row0List: tempList })      --> save as the appropriate row's list
+        axios.get('http://localhost:3001/api/get-grid-data').then((res) => {
+            let err = res.data.getGridError;
+            let exercise1 = res.data.exercise1;
+            let exercise2 = res.data.exercise2;
+            let exercise3 = res.data.exercise3;
+            if(err){
+                console.log(err);
+            }
+            else{
+                this.setState({ row0List: exercise1,
+                                row1List: exercise2,
+                                row2List: exercise3 });
+            }
+    });
     }
 
     render(){
@@ -95,8 +107,48 @@ class Row extends React.Component{
     }
 
     handleSave(e){
-        //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
-        //  if err, this.setState({errMsg: err})
+        let name = this.state.name;
+        let progress = this.state.progress;
+        let date = this.state.date;
+        let rowNum = this.state.rowNum;
+
+        if(name === ""){
+            this.setState({errMsg: 'You must provide a name for the exercise'});
+        }
+        else if( progress === ""){
+            this.setState({errMsg: 'You must provide the progress of the exercise'})
+        }
+        else if(date === ""){
+            this.setState({errMsg: 'You must provide a date'})
+        }
+        else if (!rowNum){
+            console.log("Row number not updated")
+        }
+        else{
+            //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
+            //  if err, this.setState({errMsg: err})
+           const data = {
+                exerciseNumber: rowNum,
+                exerciseName: name,
+                exerciseProgress: progress,
+                exerciseDate: date
+            }
+            axios.post('http://localhost:3001/api/save-grid-data', data).then((res) => {
+                        let err = res.data.saveGridError;
+                        if(err){
+                            if(err === "Invalid exercise number"){
+                                console.log("Row Number was not saved properly")
+                            }
+                            else{
+                                this.setState({errMsg: err});
+                            }
+                        }
+                        else{
+                            this.setState({errMsg: res.data})
+                        }
+                });
+
+        }
     }
 
     componentWillReceiveProps(props){
@@ -129,8 +181,5 @@ class Row extends React.Component{
         )
     }
 }
-
- 
-
 
 export default Grid

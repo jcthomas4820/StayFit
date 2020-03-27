@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
+const Grid = require('../models/grid')
 
 // Password encryption 
 const bcrypt = require('bcrypt');
@@ -15,6 +16,7 @@ router.get('/', function(req, res){
 });
 
 router.post('/login', function(req, res) {
+
     // if the user exists, compare the password and determine if it matches
       // if yes -> update the session and send successful response
       // if no -> send an error response
@@ -25,13 +27,21 @@ router.post('/login', function(req, res) {
         return res.json( {logError: 'Incorrect password entered'});
       }
       req.session.user = user._id;
+
+//    // update the session if user exists
+//    Grid.findOne( {username: req.body.username} )
+//        .then ( (user) => {
+//            req.session.user = user._id;
+//         })
+//         .catch( (err) => { console.log("2 " + err); });
       return res.json('User successfully logged in');
     }
     else {
       return res.json( {logError: 'Username does not exist'});
     }
   });
-});
+
+  });
 
 router.post('/register', function (req, res) {
   // Check that the user entered a username
@@ -56,14 +66,23 @@ router.post('/register', function (req, res) {
       return res.json( {regError : 'Username already exists'} );
     }
     else {
-      const newUser = new User ({username: usernameIn, password: hashedPassword, loggedIn: true});
+      const exercise = {name: "", progress: "", date: ""};
+      const newUserGrid = new Grid ({username: usernameIn, exercise1: exercise, exercise2: exercise, exercise3: exercise});
+      // save the user grid
+      newUserGrid.save()
+//        .then( (user) => {
+//          req.session.user= user._id;
+//          return res.json('New user created');
+//        })
+      const newUser = new User ({username: usernameIn, password: hashedPassword});
       newUser.save()
         .then( (user) => {
           req.session.user = user._id;
-          return res.json('New user created'); 
+          return res.json('New user created');
         })
-        .catch( (err) => { console.log(err); })
+        .catch( (err) => { console.log("4 " + err); })
     }
+
   })
 });
 
@@ -166,6 +185,7 @@ router.post('/submit', function(req, res){
     if(!data || !data.prots || !data.carbs || !data.fats){
       return res.json({submitError: 'You must calculate macros before submitting'});
     }
+
     // save data to DB
     // https://mongoosejs.com/docs/tutorials/findoneandupdate.html
     User.findOneAndUpdate({_id: req.session.user}, {$set : {macros: data}}, {new: true, useFindAndModify: false}, (error, doc) => {
@@ -176,5 +196,138 @@ router.post('/submit', function(req, res){
         return res.json('Your macro values are saved');
       }
     });
+});
+
+router.get('/get-grid-data', function(req, res){
+
+    if (!req.session.user || req.session.user === undefined) {
+      return res.json({getGridError: 'The user is not logged in'});
+    }
+
+    User.findOne( {_id: req.session.user} )
+        .then ( (user) => {
+            if (user) {
+                Grid.findOne({username: user.username})
+                .then ((user1) => {
+                    if(user1){
+//                        let e1 = {name: "", progress: "", date: ""}
+//                        let e2 = {null;}
+//                        let e3 = null;
+//                        if(user1.exercise1 === undefined){
+//                            e1 = {name: "", progress: "", date: ""};
+//                        }
+//                        else{
+//                            //e1 = {name: user1.exercise1.name, progress: user1.exercise1.progress, date: user1.exercise1.date};
+//                            e1 = user1.exercise1;
+//                        }
+//                        if(user1.exercise2 === undefined){
+//                            e2 = {name: "", progress: "", date: ""};
+//                        }
+//                        else{
+//                            e2 = {name: user1.exercise2.name, progress: user1.exercise2.progress, date: user1.exercise2.date};
+//                        }
+//                         if(user1.exercise3 === undefined){
+//                             e3 = {name: "", progress: "", date: ""};
+//                         }
+//                         else{
+//                            e3 = {name: user1.exercise3.name, progress: user1.exercise3.progress, date: user1.exercise3.date};
+//                         }
+
+
+                        return res.json({exercise1: user1.exercise1}, {exercise2: user1.exercise2}, {exercise3: user1.exercise3});
+                    }
+                    return res.json({getGridError: 'The user is not logged in 2'});
+                })
+                .catch((err) => { console.log("5 " + err)});
+            }
+            else {
+                return res.json({getGridError: 'The user is not logged in 1'});
+            }
+        })
+        .catch( (err) => { console.log("1 " + err) });
+
+});
+
+router.post('/save-grid-data', function(req, res){
+     // check of user is logged in
+    if (!req.session.user || req.session.user === undefined) {
+      return res.json({saveGridError: 'You must be logged in to do that'});
+    }
+
+    // get user provided data
+    let EName = req.body.exerciseName;
+    let EProgress = req.body.exerciseProgress;
+    let EDate = req.body.exerciseDate;
+    let ENumber = req.body.exerciseNumber;
+
+    // check if exercise number is sent
+    if(!ENumber || Number.isNaN(Number(ENumber)) || ENumber < 1 || ENumber > 3){
+        return res.json({saveGridError: 'Invalid exercise number'});
+    }
+    // check if the data contains all 3 components: name, progress, and date
+    if(!EName || EName === ""){
+        return res.json({saveGridError: 'You must provide a name for the exercise'})
+    }
+    if(!EProgress || EProgress === ""){
+        return res.json({saveGridError: 'You must provide the progress of the exercise'})
+    }
+    if(!EDate || EDate === ""){
+        return res.json({saveGridError: 'You must provide a date'});
+    }
+
+    // save data to DB
+    // https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+    let username1 = "";
+     User.findOne( {_id: req.session.user} ).then ( (user) => {
+        if (user) {
+            username1 = user.username;
+        }
+        else {
+            return res.json({saveGridError: 'You must be logged in to do that'});
+        }
+      });
+//          Grid.findOne( {_id: req.session.user} ).then ( (user) => {
+//                  if (user) {
+//                      return res.json("user found");
+//                  }
+//                  else {
+//                      return res.json("user not found");
+//                  }
+//                })
+//                .catch((err) => { return res.json("error" + err)});
+    let data = {name: EName, progress: EProgress, date: EDate}
+
+    if(ENumber === 1 ){
+        Grid.findOneAndUpdate({_id: req.session.usergrid}, {exercise1: data}, {new: true, useFindAndModify: false}, (error, doc) => {
+          if(error){
+            return res.json({saveGridError: 'Error: Data not saved. Please try again.'});
+          }
+          else{
+            return res.json(doc);
+          }
+        });
+    }else if(ENumber === 2){
+        Grid.findOneAndUpdate({_id: req.session.usergrid}, {exercise2: data}, {new: true, useFindAndModify: false}, (error, doc) => {
+          if(error){
+            return res.json({saveGridError: 'Error: Data not saved. Please try again.'});
+          }
+          else{
+            return res.json(doc);
+          }
+        });
+    }
+    else{
+
+       Grid.findOneAndUpdate({_id: req.session.usergrid}, {exercise3: data}, {new: true, useFindAndModify: false}, (error, doc) => {
+         if(error){
+           return res.json({saveGridError: 'Error: Data not saved. Please try again.'});
+         }
+         else{
+            // print doc to see the updated document, if doc is null then no user was found
+           return res.json(doc);
+         }
+       });
+    }
+
 });
 module.exports = router;
