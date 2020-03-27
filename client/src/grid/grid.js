@@ -129,6 +129,7 @@ class Row extends React.Component{
             //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
             //  if err, this.setState({errMsg: err})
            const data = {
+                exerciseNumber: rowNum,
                 exerciseName: name,
                 exerciseProgress: progress,
                 exerciseDate: date
