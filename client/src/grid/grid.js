@@ -104,6 +104,7 @@ class Row extends React.Component{
 
         //  change all inputs to be enabled
         this.setState({status: ""})
+        this.setState({editPressed: true})
     }
 
     handleSave(e){
@@ -128,7 +129,6 @@ class Row extends React.Component{
             //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
             //  if err, this.setState({errMsg: err})
            const data = {
-                exerciseNumber: rowNum,
                 exerciseName: name,
                 exerciseProgress: progress,
                 exerciseDate: date
@@ -136,12 +136,7 @@ class Row extends React.Component{
             axios.post('http://localhost:3001/api/save-grid-data', data).then((res) => {
                         let err = res.data.saveGridError;
                         if(err){
-                            if(err === "Invalid exercise number"){
-                                console.log("Row Number was not saved properly")
-                            }
-                            else{
-                                this.setState({errMsg: err});
-                            }
+                              this.setState({errMsg: err});
                         }
                         else{
                             this.setState({errMsg: res.data})

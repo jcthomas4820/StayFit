@@ -9,9 +9,9 @@ const macrosSchema = new Schema({
 
 const userSchema = new Schema(
 {
-  username: { type: String, require: true, unique: true },
+  username: { type: String, require: true},
   password: { type: String, require: true },
-  macros: { type: macrosSchema, require: false },
+  macros: { type: macrosSchema, require: false }
 } , {timestamps: true}
 );
 
