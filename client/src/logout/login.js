@@ -10,20 +10,19 @@ class LoginPage extends React.Component{
         this.state={
             loginError: false,
             errorMessage: null,
-            success: false,
             username: "",
             password: ""
         }
         this.handleClick = this.handleClick.bind(this)      //  required for binding handleClick function to use this state
     }
     
-    /*
+
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
-    */
+
 
     handleClick(e){
         let id = e.target.id
@@ -73,7 +72,7 @@ class LoginPage extends React.Component{
     render(){
 
         //  when no errors in logging in/registering, direct user to selection page
-        if (this.state.success){
+        if (this.state.nextPage){
             return(
                 <Redirect push to='/selection'/>
             )

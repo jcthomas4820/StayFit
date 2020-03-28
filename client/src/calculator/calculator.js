@@ -93,29 +93,29 @@ class MacroCalculator extends React.Component{
 
             //  ensure state has all proper values (no neg, numbers not alpha, all values are entered, etc.)
             //  if errors present, update in state
-            if(gender.equals("")){
-                this.setState({results: "You must select a gender to calculate the macros"});
+            if(gender === ""){
+                this.setState({errorMsg: "You must select a gender to calculate the macros"});
             }
             else if(age === ""){
-                this.setState({results: "You must enter an age to calculate the macros"});
+                this.setState({errorMsg: "You must enter an age to calculate the macros"});
             }
             else if(Number.isNaN(Number(age)) || age < 0){
-                this.setState({results: "Please enter a valid age to calculate the macros"});
+                this.setState({errorMsg: "Please enter a valid age to calculate the macros"});
             }
             else if(weight === ""){
-                this.setState({results: "You must enter a weight (kg) to calculate the macros"});
+                this.setState({errorMsg: "You must enter a weight (kg) to calculate the macros"});
             }
             else if(Number.isNaN(Number(weight)) || weight <= 0){
-                this.setState({results: "Please enter a valid weight (kg) to calculate the macros"});
+                this.setState({errorMsg: "Please enter a valid weight (kg) to calculate the macros"});
             }
             else if(height === ""){
-                this.setState({results: "You must enter a height (cm) to calculate the macros"});
+                this.setState({errorMsg: "You must enter a height (cm) to calculate the macros"});
             }
             else if(Number.isNaN(Number(height)) || height <= 0 ){
-                this.setState({results: "Please enter a valid height (cm) to calculate the macros"});
+                this.setState({errorMsg: "Please enter a valid height (cm) to calculate the macros"});
             }
             else if(activityLevel === ""){
-                this.setState({results: "You must select an activity level to calculate the macros"});
+                this.setState({errorMsg: "You must select an activity level to calculate the macros"});
             }
             else{
                     //  grab user entered values
@@ -165,7 +165,7 @@ class MacroCalculator extends React.Component{
                         //  clear all values
                         this.clearForm()
                         //  let user know values were saved
-                        this.setState({results: res.data});
+                        this.setState({errorMsg: res.data});
                     }
                  });
             }

@@ -1,4 +1,5 @@
 import React from "react"
+import axios from 'axios'
 
 /*
 Grid acts as the parent component, and Row acts as the child.
@@ -113,6 +114,7 @@ class Row extends React.Component{
         let date = this.state.date;
         let rowNum = this.state.rowNum;
 
+        // check if all inputs have been provided
         if(name === ""){
             this.setState({errMsg: 'You must provide a name for the exercise'});
         }
@@ -122,7 +124,7 @@ class Row extends React.Component{
         else if(date === ""){
             this.setState({errMsg: 'You must provide a date'})
         }
-        else if (!rowNum){
+        else if (rowNum === ""){
             console.log("Row number not updated")
         }
         else{
@@ -159,19 +161,17 @@ class Row extends React.Component{
             <div className="Row">
                 <p>{this.state.errMsg}</p>
                 <div>
-                    Name <br/> <input name="name" onChange={this.handleChange} value={this.state.name} disabled={this.state.status}/> 
                     <button onClick={this.handleEdit}>edit</button>
                     <button onClick={this.handleSave}>save</button>
                 </div>
                 <div>
-                    Progress <br/> <input name="progress" onChange={this.handleChange} value={this.state.progress} disabled={this.state.status} /> 
-                    <button onClick={this.handleEdit}>edit</button>
-                    <button onClick={this.handleSave}>save</button>
+                    Name <br/> <input name="name" onChange={this.handleChange} value={this.state.name} disabled={this.state.status}/>
                 </div>
                 <div>
-                    Date <br/> <input name="date" onChange={this.handleChange} value={this.state.date} disabled={this.state.status} /> 
-                    <button onClick={this.handleEdit}>edit</button>
-                    <button onClick={this.handleSave}>save</button>
+                    Progress <br/> <input name="progress" onChange={this.handleChange} value={this.state.progress} disabled={this.state.status} />
+                </div>
+                <div>
+                    Date <br/> <input name="date" onChange={this.handleChange} value={this.state.date} disabled={this.state.status} />
                 </div>
             </div>
         )
