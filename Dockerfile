@@ -1,19 +1,25 @@
-#   specify node version
-FROM node:10.15.0
+#   build a Node Docker Image for our app
 
-#   specify directory of app
+#   build from the latest node image from Docker Hub (base image)
+FROM node:latest
+
+#   create a new directory
+RUN mkdir -p /usr/src/app
+
+#   assign /usr/src/app as the working directory
 WORKDIR /usr/src/app
 
-#   install the dependencies from package.json and package-lock.json
-COPY package*.json ./
-#   run npm install for node_modules
+#   copy package.json to the directory (for our dependencies)
+COPY package.json /usr/src/app/
+
+#   install the dependencies in package.json
 RUN npm install
 
-#   bundle the app source
-COPY . .
+#   copy entire local directory (our app) into working directory in order to bundle app source code
+COPY . /usr/src/app
 
-#   use port 8080
-EXPOSE 8080
+#   container will listen on port 3000
+EXPOSE 3000
 
-#   run the app
-CMD ["npm", "start"]
+#   npm start, execute the container
+CMD [ "npm", "start" ]
