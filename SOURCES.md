@@ -20,3 +20,18 @@ Documentation: https://jestjs.io/docs/en/getting-started
 
 #### SECURITY RISKS AND PREVENTION OWASP
 - https://owasp.org/www-project-top-ten/
+
+#### Get random int 
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+
+#### Get random string
+- https://gist.github.com/6174/6062387#gistcomment-2915959
+
+#### Macros calculation
+- https://www.healthline.com/nutrition/how-to-count-macros#step-by-step
+
+#### Date conversion to string
+- https://www.tutorialrepublic.com/faq/how-to-get-day-month-and-year-from-a-date-object-in-javascript.php
+
+#### FindOneAndUpdate
+- https://mongoosejs.com/docs/tutorials/findoneandupdate.html

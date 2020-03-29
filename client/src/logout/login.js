@@ -15,7 +15,7 @@ class LoginPage extends React.Component{
         }
         this.handleClick = this.handleClick.bind(this)      //  required for binding handleClick function to use this state
     }
-    
+   
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -79,9 +79,9 @@ class LoginPage extends React.Component{
                 <div className = "login/register section">
                     <p>{this.state.errorMessage}</p>
                     <input id="userName" type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)}></input>
-                    <p>username</p> 
-                    <input id="password" type="text" name="password" value={this.state.password} onChange={e => this.handleChange(e)}></input>  
-                    <p>password</p> 
+                    <p>username</p>
+                    <input id="password" type="text" name="password" value={this.state.password} onChange={e => this.handleChange(e)}></input>
+                    <p>password</p>
                 </div>
                 <div className = "login/register buttons">
                     <button type="button" id="login" onClick={this.handleClick}>login</button>
@@ -93,7 +93,7 @@ class LoginPage extends React.Component{
     }
 
 
-} 
+}
 
 
 export default LoginPage
