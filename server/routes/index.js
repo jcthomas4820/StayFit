@@ -155,7 +155,7 @@ router.post('/calculate', function(req, res){
     }
 
 
-    let macros = {  prots: caloriesPerDay*0.35,
+    let macros = {  prot: caloriesPerDay*0.35,
                     carbs: caloriesPerDay*0.35,
                     fats: caloriesPerDay*0.30 }
 
@@ -173,7 +173,7 @@ router.post('/submit', function(req, res){
     // get user provided data
     let data = req.body.data;
     // check if data sent is null
-    if(!data || !data.prots || !data.carbs || !data.fats){
+    if(!data || !data.prot || !data.carbs || !data.fats){
       return res.json({submitError: 'You must calculate macros before submitting'});
     }
 

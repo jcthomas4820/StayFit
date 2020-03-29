@@ -426,7 +426,7 @@ describe('application', async () => {
 
             // calculate macros
             let caloriesPerDay = (((10*125) + (6.25*171) - (5*25))*activityFactor) + 5;
-            let expectedMacros = { prots: caloriesPerDay*0.35,
+            let expectedMacros = { prot: caloriesPerDay*0.35,
                            carbs: caloriesPerDay*0.35,
                            fats: caloriesPerDay*0.30 }
             assert.deepEqual(result.data.macros, expectedMacros);
@@ -447,7 +447,7 @@ describe('application', async () => {
             let activityFactor = 1.725;
             // calculate macros
             caloriesPerDay = (((10*(50)) + (6.25*160) - (5*22))*activityFactor) - 161;
-            let expectedMacros = { prots: caloriesPerDay*0.35,
+            let expectedMacros = { prot: caloriesPerDay*0.35,
                        carbs: caloriesPerDay*0.35,
                        fats: caloriesPerDay*0.30 }
             assert.deepEqual(result.data.macros, expectedMacros);
