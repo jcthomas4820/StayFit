@@ -8,7 +8,7 @@ class LoginPage extends React.Component{
     constructor(){
         super()
         this.state={
-            loginError: false,
+            loginError: true,
             errorMessage: null,
             username: "",
             password: ""
