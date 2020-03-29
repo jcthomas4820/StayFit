@@ -66,7 +66,7 @@ class LoginPage extends React.Component{
     render(){
 
         //  when no errors in logging in/registering, direct user to selection page
-        if (!this.state.loginError){
+        if (this.state.loginError){
             return(
                 <Redirect push to='/selection'/>
             )
@@ -95,5 +95,4 @@ class LoginPage extends React.Component{
 
 } 
 
-
-export default LoginPaged
+export default LoginPage
