@@ -51,12 +51,10 @@ class LoginPage extends React.Component{
                 if (err) {
                     this.setState({errorMessage: err});
                     this.setState({loginError: true});
-                    this.setState({success: false});
                 }
                 else {
                     this.setState({errorMessage: null});
                     this.setState({loginError: false});
-                    this.setState({success: true});
                 }
             });
         }
@@ -71,12 +69,10 @@ class LoginPage extends React.Component{
                 if (err) {
                     this.setState({errorMessage: err});
                     this.setState({loginError: true});
-                    this.setState({nextPage: false});
                 }
                 else {
                     this.setState({errorMessage: null});
                     this.setState({loginError: false});
-                    this.setState({nextPage: true});
                 }
             });
         }
