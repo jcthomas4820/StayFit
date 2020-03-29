@@ -15,7 +15,7 @@ class LoginPage extends React.Component{
         }
         this.handleClick = this.handleClick.bind(this)      //  required for binding handleClick function to use this state
     }
-
+   
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value

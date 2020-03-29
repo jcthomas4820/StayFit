@@ -1,0 +1,19 @@
+# define the services for our app (mongo)
+
+version: "2"
+services:
+  app:                              # define a service, called app
+    container_name: app             # with container name, app
+    restart: always                 # restart the container automatically if it failes
+    build: .                        # build the app image using the Dockerfile in the current directory
+    ports:                          # map the host port to the container port
+      - "3000:3000"
+    links:                          # pull the standard mongo image from Docker Hub
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:                        # enable persistent storage, /data/db is a mounting point allowing old containers to transfer their data
+      - /data/db
+    ports:
+      - "27017:27017"
