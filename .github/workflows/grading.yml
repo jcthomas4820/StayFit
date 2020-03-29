@@ -46,7 +46,7 @@ jobs:
         CI: true
 
   grade-4:
-    name: exercise tests
+    name: get-grid-data tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -60,6 +60,20 @@ jobs:
         CI: true
 
   grade-5:
+    name: save-grid-data tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npm ci
+      - run: npm run test-exercise
+        env:
+          CI: true
+
+  grade-6:
     name: calculate tests
     runs-on: ubuntu-latest
     steps:
@@ -73,7 +87,7 @@ jobs:
       env:
         CI: true
 
-  grade-6:
+  grade-7:
     name: submit tests
     runs-on: ubuntu-latest
     steps:
@@ -86,7 +100,7 @@ jobs:
       - run: npm run test-macro
         env:
           CI: true
-  grade-7:
+  grade-8:
     name: nutrition tests
     runs-on: ubuntu-latest
     steps:

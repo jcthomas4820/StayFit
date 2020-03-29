@@ -26,3 +26,18 @@ Documentation: https://jestjs.io/docs/en/getting-started
 
 #### CORS
 I ran into an issue with the express-session not persisting across axios calls. I believed it to be a CORS issue. This helped solve the problem I was running into: https://glitteringglobofwisdom.com/session-cookies-auth-and-cors-using-axios-and-an-express-server/
+
+#### Get random int 
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+
+#### Get random string
+- https://gist.github.com/6174/6062387#gistcomment-2915959
+
+#### Macros calculation
+- https://www.healthline.com/nutrition/how-to-count-macros#step-by-step
+
+#### Date conversion to string
+- https://www.tutorialrepublic.com/faq/how-to-get-day-month-and-year-from-a-date-object-in-javascript.php
+
+#### FindOneAndUpdate
+- https://mongoosejs.com/docs/tutorials/findoneandupdate.html

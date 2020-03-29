@@ -25,10 +25,10 @@ class MacroCalculator extends React.Component{
             results: "",
             errorMsg: ""
         }
-       
-        this.handleChange = this.handleChange.bind(this)
-        this.handleClick = this.handleClick.bind(this)
-        this.clearForm = this.clearForm.bind(this)
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.clearForm = this.clearForm.bind(this);
     }
 
     //  function handles text changes in textbox on form
@@ -79,47 +79,48 @@ class MacroCalculator extends React.Component{
         })
     }
 
-
     //  function used to handle calculate and submission
     handleClick(e){
-
-        //  ensure state has all proper values (no neg, numbers not alpha, all values are entered, etc.)
-        //  if errors present, update in state
 
         const button = e.target.name
 
         if (button === "calculate"){
+            // grab the user data
+            let gender = this.state.gender;
+            let age = this.state.age;
+            let weight = this.state.weight;
+            let height = this.state.height;
+            let activityLevel = this.state.activityLevel;
 
+            //  ensure state has all proper values (no neg, numbers not alpha, all values are entered, etc.)
+            //  if errors present, update in state
             //  grab user entered values
            const userData = {
-                userAge: this.state.age,
-                userGender: this.state.gender,
-                userWeight: this.state.weight,
-                userHeight: this.state.height,
-                userActivityLevel: this.state.activityLevel
+                userGender: gender,
+                userAge: age,
+                userWeight: weight,
+                userHeight: height,
+                userActivityLevel: activityLevel
             }
-        
-            //  perform macro calculations using Mifflin-St. Jeor equation (https://www.healthline.com/nutrition/how-to-count-macros#step-by-step)
+
            // send user entered data to the server to calculate the required data
-          axios.post('http://localhost:3001/api/calculator', userData).then((res) => {
+          axios.post('http://localhost:3001/api/calculate', userData).then((res) => {
             // grab data returned by server
             let err = res.data.calcError;
-            let dataCalculated = res.data.dataCalculated;
+            let macros = res.data.macros;
 
             if (err) {
-                this.setState({errorMsg: "Error during calculation"})
+                this.setState({errorMsg: err})
             }
             else {
                 // update state to reflect values calculated for macros
-                this.setState({carbs: dataCalculated.carbs})
-                this.setState({prot: dataCalculated.prot})
-                this.setState({fats: dataCalculated.fats})
+                this.setState({carbs: macros.carbs})
+                this.setState({prot: macros.prot})
+                this.setState({fats: macros.fats})
                 this.setState({results: this.state.carbs + "g carbs, " + this.state.prot + "g protein, " + this.state.fats + "g fats"})
             }
         });
-        
-        }
-
+    }
         else if(button === "submit"){
 
             //  error check: ensure values are calculated before submission, see if results contain "carbs"
@@ -128,10 +129,9 @@ class MacroCalculator extends React.Component{
                 this.setState({errorMsg: 'You must calculate macros before submitting'});
             }
             else{
-                //  grab this.state.data, store this data into database
-                 let data = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
-                 console.log(data);
-                 axios.post('http://localhost:3001/api/submit', data).then((res) => {
+                //  grab and store this macros into database
+                let macros = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
+                 axios.post('http://localhost:3001/api/submit', macros).then((res) => {
                     let err = res.data.submitError;
                     if(err){
                         this.setState({errorMsg: err})
@@ -140,13 +140,11 @@ class MacroCalculator extends React.Component{
                         //  clear all values
                         this.clearForm()
                         //  let user know values were saved
-                        this.setState({results: 'Your macro values are saved.'});
+                        this.setState({errorMsg: res.data});
                     }
                  });
             }
         }
-
-
     }
 
 
@@ -184,15 +182,15 @@ class MacroCalculator extends React.Component{
                         Activity Level:<br/>
                         <input name="activityLevel" type="radio" value="sedentary" onChange={this.handleChange} /> Sedentary
                         <input name="activityLevel" type="radio" value="lightly active" onChange={this.handleChange} /> Lightly Active
-                        <input name="activityLevel" type="radio" value="moderatively active" onChange={this.handleChange} /> Moderatively Active
+                        <input name="activityLevel" type="radio" value="moderately active" onChange={this.handleChange} /> Moderately Active
                         <input name="activityLevel" type="radio" value="very active" onChange={this.handleChange} /> Very Active
                         <input name="activityLevel" type="radio" value="extra active" onChange={this.handleChange} /> Extra Active
                     </label>
 
                     <br/>
                     <div onClick={this.handleClick}>
-                        <input type="button" name="calculate" value="calculate" />
-                        <input type="button" name="submit" value="submit" />
+                        <input type="button" name="calculate" value="calculate" onClick={this.handleClick} />
+                        <input type="button" name="submit" value="submit"  onClick={this.handleClick} />
                     </div>
                     
                     <br/>

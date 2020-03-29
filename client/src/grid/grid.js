@@ -1,4 +1,5 @@
 import React from "react"
+import axios from 'axios'
 
 /*
 Grid acts as the parent component, and Row acts as the child.
@@ -20,16 +21,28 @@ class Grid extends React.Component{
             row1List: ["", "", ""],
             row2List: ["", "", ""]
         }
-
     }
 
     componentWillMount(){
-
-        //  load each row data from databse for each row, save in state
+        // load each row data from databse for each row, save in state
             // for example:
                 //  load list from database, assign state as follows:
                 //  let tempList=["bicep curl", "25lb 4s10r", "3/24/20"]   --> this is the values from the database stored as a list
                 //  this.setState({ row0List: tempList })      --> save as the appropriate row's list
+        axios.get('http://localhost:3001/api/get-grid-data').then((res) => {
+            let err = res.data.getGridError;
+            let exercise1 = res.data.exercise1;
+            let exercise2 = res.data.exercise2;
+            let exercise3 = res.data.exercise3;
+            if(err){
+                console.log(err);
+            }
+            else{
+                this.setState({ row0List: exercise1,
+                                row1List: exercise2,
+                                row2List: exercise3 });
+            }
+    });
     }
 
     render(){
@@ -95,11 +108,32 @@ class Row extends React.Component{
     }
 
     handleSave(e){
+        let name = this.state.name;
+        let progress = this.state.progress;
+        let date = this.state.date;
+        let rowNum = this.state.rowNum;
+
         //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
         //  if err, this.setState({errMsg: err})
+       const data = {
+            exerciseNumber: rowNum,
+            exerciseName: name,
+            exerciseProgress: progress,
+            exerciseDate: date
+        }
+        axios.post('http://localhost:3001/api/save-grid-data', data).then((res) => {
+                    let err = res.data.saveGridError;
+                    if(err){
+                          this.setState({errMsg: err});
+                    }
+                    else{
+                        this.setState({errMsg: res.data})
+                    }
+            });
     }
 
     componentWillReceiveProps(props){
+
         this.setState({name: (props.rowList)[0]})
         this.setState({progress: (props.rowList)[1]})
         this.setState({date: (props.rowList)[2]})
@@ -111,26 +145,21 @@ class Row extends React.Component{
             <div className="Row">
                 <p>{this.state.errMsg}</p>
                 <div>
-                    Name <br/> <input name="name" onChange={this.handleChange} value={this.state.name} disabled={this.state.status}/> 
                     <button onClick={this.handleEdit}>edit</button>
                     <button onClick={this.handleSave}>save</button>
                 </div>
                 <div>
-                    Progress <br/> <input name="progress" onChange={this.handleChange} value={this.state.progress} disabled={this.state.status} /> 
-                    <button onClick={this.handleEdit}>edit</button>
-                    <button onClick={this.handleSave}>save</button>
+                    Name <br/> <input name="name" onChange={this.handleChange} value={this.state.name} disabled={this.state.status}/>
                 </div>
                 <div>
-                    Date <br/> <input name="date" onChange={this.handleChange} value={this.state.date} disabled={this.state.status} /> 
-                    <button onClick={this.handleEdit}>edit</button>
-                    <button onClick={this.handleSave}>save</button>
+                    Progress <br/> <input name="progress" onChange={this.handleChange} value={this.state.progress} disabled={this.state.status} />
+                </div>
+                <div>
+                    Date <br/> <input name="date" onChange={this.handleChange} value={this.state.date} disabled={this.state.status} />
                 </div>
             </div>
         )
     }
 }
-
- 
-
 
 export default Grid
