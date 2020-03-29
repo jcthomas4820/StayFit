@@ -93,59 +93,33 @@ class MacroCalculator extends React.Component{
 
             //  ensure state has all proper values (no neg, numbers not alpha, all values are entered, etc.)
             //  if errors present, update in state
-            if(gender === ""){
-                this.setState({errorMsg: "You must select a gender to calculate the macros"});
+            //  grab user entered values
+           const userData = {
+                userGender: gender,
+                userAge: age,
+                userWeight: weight,
+                userHeight: height,
+                userActivityLevel: activityLevel
             }
-            else if(age === ""){
-                this.setState({errorMsg: "You must enter an age to calculate the macros"});
-            }
-            else if(Number.isNaN(Number(age)) || age < 0){
-                this.setState({errorMsg: "Please enter a valid age to calculate the macros"});
-            }
-            else if(weight === ""){
-                this.setState({errorMsg: "You must enter a weight (kg) to calculate the macros"});
-            }
-            else if(Number.isNaN(Number(weight)) || weight <= 0){
-                this.setState({errorMsg: "Please enter a valid weight (kg) to calculate the macros"});
-            }
-            else if(height === ""){
-                this.setState({errorMsg: "You must enter a height (cm) to calculate the macros"});
-            }
-            else if(Number.isNaN(Number(height)) || height <= 0 ){
-                this.setState({errorMsg: "Please enter a valid height (cm) to calculate the macros"});
-            }
-            else if(activityLevel === ""){
-                this.setState({errorMsg: "You must select an activity level to calculate the macros"});
-            }
-            else{
-                    //  grab user entered values
-                   const userData = {
-                        userGender: gender,
-                        userAge: age,
-                        userWeight: weight,
-                        userHeight: height,
-                        userActivityLevel: activityLevel
-                    }
 
-                   // send user entered data to the server to calculate the required data
-                  axios.post('http://localhost:3001/api/calculate', userData).then((res) => {
-                    // grab data returned by server
-                    let err = res.data.calcError;
-                    let macros = res.data.dataCalculated;
+           // send user entered data to the server to calculate the required data
+          axios.post('http://localhost:3001/api/calculate', userData).then((res) => {
+            // grab data returned by server
+            let err = res.data.calcError;
+            let macros = res.data.macros;
 
-                    if (err) {
-                        this.setState({errorMsg: err})
-                    }
-                    else {
-                        // update state to reflect values calculated for macros
-                        this.setState({carbs: macros.carbs})
-                        this.setState({prot: macros.prot})
-                        this.setState({fats: macros.fats})
-                        this.setState({results: this.state.carbs + "g carbs, " + this.state.prot + "g protein, " + this.state.fats + "g fats"})
-                    }
-                });
+            if (err) {
+                this.setState({errorMsg: err})
             }
-        }
+            else {
+                // update state to reflect values calculated for macros
+                this.setState({carbs: macros.carbs})
+                this.setState({prot: macros.prot})
+                this.setState({fats: macros.fats})
+                this.setState({results: this.state.carbs + "g carbs, " + this.state.prot + "g protein, " + this.state.fats + "g fats"})
+            }
+        });
+    }
         else if(button === "submit"){
 
             //  error check: ensure values are calculated before submission, see if results contain "carbs"

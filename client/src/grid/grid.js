@@ -105,7 +105,6 @@ class Row extends React.Component{
 
         //  change all inputs to be enabled
         this.setState({status: ""})
-        this.setState({editPressed: true})
     }
 
     handleSave(e){
@@ -114,42 +113,27 @@ class Row extends React.Component{
         let date = this.state.date;
         let rowNum = this.state.rowNum;
 
-        // check if all inputs have been provided
-        if(name === ""){
-            this.setState({errMsg: 'You must provide a name for the exercise'});
+        //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
+        //  if err, this.setState({errMsg: err})
+       const data = {
+            exerciseNumber: rowNum,
+            exerciseName: name,
+            exerciseProgress: progress,
+            exerciseDate: date
         }
-        else if( progress === ""){
-            this.setState({errMsg: 'You must provide the progress of the exercise'})
-        }
-        else if(date === ""){
-            this.setState({errMsg: 'You must provide a date'})
-        }
-        else if (rowNum === ""){
-            console.log("Row number not updated")
-        }
-        else{
-            //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
-            //  if err, this.setState({errMsg: err})
-           const data = {
-                exerciseNumber: rowNum,
-                exerciseName: name,
-                exerciseProgress: progress,
-                exerciseDate: date
-            }
-            axios.post('http://localhost:3001/api/save-grid-data', data).then((res) => {
-                        let err = res.data.saveGridError;
-                        if(err){
-                              this.setState({errMsg: err});
-                        }
-                        else{
-                            this.setState({errMsg: res.data})
-                        }
-                });
-
-        }
+        axios.post('http://localhost:3001/api/save-grid-data', data).then((res) => {
+                    let err = res.data.saveGridError;
+                    if(err){
+                          this.setState({errMsg: err});
+                    }
+                    else{
+                        this.setState({errMsg: res.data})
+                    }
+            });
     }
 
     componentWillReceiveProps(props){
+
         this.setState({name: (props.rowList)[0]})
         this.setState({progress: (props.rowList)[1]})
         this.setState({date: (props.rowList)[2]})
