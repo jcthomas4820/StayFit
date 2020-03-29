@@ -1,7 +1,6 @@
 import React from "react"
 import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
-import e from "express"
 axios.defaults.withCredentials = true
 
 
@@ -25,6 +24,7 @@ class SelectionPage extends React.Component{
         //  perform backend logout operations
         axios.post('http://localhost:3001/api/logout').then((res) => {
             let err = res.data.logoutErr;
+            console.log(err);
             if (err === 'There is no one logged in' || !err) { this.setState({loggedIn: false}); }
             else { this.setState({loggedIn: true}); }
         });

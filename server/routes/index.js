@@ -7,11 +7,26 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 router.get('/', function(req, res){
-  if (req.session.user === undefined) {
-    return res.json({loggedIn: 'false'});
+  // If the user is already logged it, it will immediately route them
+  // to the selection page instead of the login page
+  if (!req.session.user || req.session.user === undefined) {
+    return res.json({status: 'Not logged in'});
   }
 
-  return res.json({loggedIn: 'true'});
+  return res.json({status: 'Logged in'});
+});
+
+router.post('/logout', function(req, res) {
+  if (!req.session.user || req.session.user === undefined) {
+    return res.json({logoutErr: 'There is no one logged in'});
+  }
+
+  req.session.destroy((err) => {
+    if (err) {
+      return res.json({logoutErr: err});
+    }
+    return res.json('User logged out');
+  });
 });
 
 router.post('/login', function(req, res) {
@@ -25,8 +40,6 @@ router.post('/login', function(req, res) {
         return res.json( {logError: 'Incorrect password entered'});
       }
       req.session.user = user._id;
-      console.log("login: " + req.session.user);
-      console.log(req.session);
       return res.json('User successfully logged in');
     }
     else {
@@ -67,20 +80,6 @@ router.post('/register', function (req, res) {
         .catch( (err) => { console.log(err); })
     }
   })
-});
-
-// Todo: connect this to the front end code 
-router.post('/logout', function(req, res) {
-  if (!req.session.user || req.session.user === undefined) {
-    return res.json({logoutErr: 'There is no one logged in'});
-  }
-
-  req.session.destroy((err) => {
-    if (err) {
-      return res.json({logoutErr: err});
-    }
-    return res.json('User logged out');
-  });
 });
 
 router.post('/calculate', function(req, res){
