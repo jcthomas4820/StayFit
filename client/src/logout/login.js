@@ -8,7 +8,7 @@ class LoginPage extends React.Component{
     constructor(){
         super()
         this.state={
-            nextPage: false,
+            loginError: true,
             errorMessage: null,
             username: "",
             password: ""
@@ -16,13 +16,11 @@ class LoginPage extends React.Component{
         this.handleClick = this.handleClick.bind(this)      //  required for binding handleClick function to use this state
     }
 
-
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
-
 
     handleClick(e){
         let id = e.target.id
@@ -37,11 +35,11 @@ class LoginPage extends React.Component{
 
                 if (err) {
                     this.setState({errorMessage: err});
-                    this.setState({nextPage: false});
+                    this.setState({loginError: true});
                 }
                 else {
                     this.setState({errorMessage: null});
-                    this.setState({nextPage: true});
+                    this.setState({loginError: false});
                 }
             });
         }
@@ -55,11 +53,11 @@ class LoginPage extends React.Component{
                 let err = res.data.regError;
                 if (err) {
                     this.setState({errorMessage: err});
-                    this.setState({nextPage: false});
+                    this.setState({loginError: true});
                 }
                 else {
                     this.setState({errorMessage: null});
-                    this.setState({nextPage: true});
+                    this.setState({loginError: false});
                 }
             });
         }
@@ -68,7 +66,7 @@ class LoginPage extends React.Component{
     render(){
 
         //  when no errors in logging in/registering, direct user to selection page
-        if (this.state.nextPage){
+        if (!this.state.loginError){
             return(
                 <Redirect push to='/selection'/>
             )
@@ -93,5 +91,9 @@ class LoginPage extends React.Component{
         )
 
     }
+
+
+}
+
 
 export default LoginPage
