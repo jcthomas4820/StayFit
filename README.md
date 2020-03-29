@@ -32,18 +32,68 @@ For this checkpoint, we are simply going to send POST/GET requests to the server
 the MongoDB database, and React will handle the UI.
 
 ## Deliverables for checkpoint 4
+- Improve the overall UI in making it more visually pleasing
+- Integrate the Edamam Nutrition Analysis API
+    - Allows the user to input a meal and updates their macro count
+    - Complete unit tests for this addition
+- Add additional Exercise Grid features
+    - Allow for the user to keep track of more than three exercises
+    - Allow for the user to delete an exercise 
+    - Allows the user to change how they organize the grid
+    - Complete unit tests for this addition
+- Begin writing front end tests using JEST
+- Work to make the application more secure 
+    - Mainly working with sanitizing user input (bulk of the application) 
+- **MAYBE: Abstract out the routes into their own files (user, grid, nutrition)**
 
-We plan to improve the overall UI in making it more visually pleasing.
-All database information will be reflected on the UI components including:
-- The grid will update with exercises based on input
-- The macro calculator will display the calculations
-- The nutrition tracker will update based on the macro input
-We plan to have the Edamam Nutrition Analysis API integrated into the application.
-We plan to complete the front-end test suite using JEST.
-We plan to complete the back-end test suite using Mocha.
-We plan to incorporate user input error handling, and displaying these messages to the user. For example, this could include
-- Login errors (incorrect username or password)
-- Registration errors (not entering a valid password or attempting to use an in-use username)
+### Checkpoint 4 tests
+The focus on checkpoint 3 was ensuring our server-side tests were passing. For checkpoint 4, we plan to add more server-side tests as we implement for features. However, we will be shifting some of our focus to starting to write the front-end test suite.
+#### Backend (server/test/integration.js)
+1. exercise-test
+    - it('allows user to remove rows from the grid')
+    - it('allows the user select how to organize the grid')
+2. nutrition-test
+    - it('requires a logged in user to input a meal')
+    - it('allows user to input a meal')
+    - it('calculates the user's current macro count')
+    - it('alerts the user when they are over their daily macro intake')
+#### Frontend (client/src - found within each component)
+*Note: The full test suite is including here, but we will split this work between the final two checkpoints*
+1. calculator.test
+    - it ('renders without crashing')
+    - it('has boxes for user to input information')
+    - it('has a calculate button')
+    - it('displays error messages')
+    - it('displays success messages')
+2. grid.test
+    - it('renders without crashing');
+    - it('has a "+" button for user to add an exercise');
+    - it('correctly updates when user adds an entry');
+    - it('correctly updates when user removes an entry');
+    - it('correctly displays based on organization preference');
+3. selection.test
+    - it('renders without crashing');
+    - it('contains the exercise grid button');
+    - it('contains the macro calculator button');
+    - it('contains the nutrition calculator button');
+    - it('contains the logout button');
+    - it('contains the username on the screen');
+4. logout.test
+    - it('has a location for the user to enter a username');
+    - it('has a location for the user to enter a password');
+    - it('has a login button');
+    - it('has a register button');
+    - it('displays error messages if username is in use');
+    - it('displays error messages if username does not exist');
+    - it('displays error messages if password is invalid');
+5. tracker.test
+    - it('renders without crashing');
+    - it('displays the daily target');
+    - it('displays the users current total');
+    - it('correctly updates after a user enters a meal');
+    - it('has an input meal area');
+    - it('requests ingredients from the user');
+    - it('calculates the macros and subtracts from daily total');
 
 ## Deliverables for final project
 
@@ -59,7 +109,14 @@ For each specialization, you must list specific checkpoints that are relevant to
 For each student/team adding a specialization, name that specialization and describe what
 functionality you will be adding.
 
-# Installation
+## Installation
+### Checkpoint 2 / Running locally
+```
+git clone https://github.com/ckanich-classrooms/final-project-senior-squad-1.git
+cd final-project-senior-squad-1
+npm start
+```
+Application will be visible at: http://localhost:3000
 
-By the time you get to the end of the final project, this section should have a full set of
-instructions for how to spin up your app.
+### Checkpoint 3-Final / Deployment using Docker
+TODO: Add the installation instructions 

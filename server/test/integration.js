@@ -279,7 +279,7 @@ describe('application', async () => {
 
       });
       });
-      describe('submit-test', async () => {
+    describe('submit-test', async () => {
       it('allows user to track the macros calculated', async () => {
 
             // register a user
