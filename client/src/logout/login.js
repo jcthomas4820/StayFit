@@ -8,19 +8,21 @@ class LoginPage extends React.Component{
     constructor(){
         super()
         this.state={
-            loginError: false,
+            nextPage: false,
             errorMessage: null,
             username: "",
             password: ""
         }
         this.handleClick = this.handleClick.bind(this)      //  required for binding handleClick function to use this state
     }
-    
+
+
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
+
 
     handleClick(e){
         let id = e.target.id
@@ -35,11 +37,11 @@ class LoginPage extends React.Component{
 
                 if (err) {
                     this.setState({errorMessage: err});
-                    this.setState({loginError: true});
+                    this.setState({nextPage: false});
                 }
                 else {
                     this.setState({errorMessage: null});
-                    this.setState({loginError: false});
+                    this.setState({nextPage: true});
                 }
             });
         }
@@ -53,11 +55,11 @@ class LoginPage extends React.Component{
                 let err = res.data.regError;
                 if (err) {
                     this.setState({errorMessage: err});
-                    this.setState({loginError: true});
+                    this.setState({nextPage: false});
                 }
                 else {
                     this.setState({errorMessage: null});
-                    this.setState({loginError: false});
+                    this.setState({nextPage: true});
                 }
             });
         }
@@ -66,7 +68,7 @@ class LoginPage extends React.Component{
     render(){
 
         //  when no errors in logging in/registering, direct user to selection page
-        if (this.state.loginError){
+        if (this.state.nextPage){
             return(
                 <Redirect push to='/selection'/>
             )
@@ -79,9 +81,9 @@ class LoginPage extends React.Component{
                 <div className = "login/register section">
                     <p>{this.state.errorMessage}</p>
                     <input id="userName" type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)}></input>
-                    <p>username</p> 
-                    <input id="password" type="text" name="password" value={this.state.password} onChange={e => this.handleChange(e)}></input>  
-                    <p>password</p> 
+                    <p>username</p>
+                    <input id="password" type="text" name="password" value={this.state.password} onChange={e => this.handleChange(e)}></input>
+                    <p>password</p>
                 </div>
                 <div className = "login/register buttons">
                     <button type="button" id="login" onClick={this.handleClick}>login</button>
@@ -93,6 +95,7 @@ class LoginPage extends React.Component{
     }
 
 
-} 
+}
+
 
 export default LoginPage
