@@ -5,6 +5,7 @@ Form written as controlled component:
 
 import React from "react"
 import axios from 'axios'
+axios.defaults.withCredentials = true;
 //import { thisExpression } from "@babel/types"
 
 //  allow user to calculate their recommended daily macros
@@ -128,7 +129,8 @@ class MacroCalculator extends React.Component{
             }
             else{
                 //  grab this.state.data, store this data into database
-                let data = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
+                 let data = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
+                 console.log(data);
                  axios.post('http://localhost:3001/api/submit', data).then((res) => {
                     let err = res.data.submitError;
                     if(err){

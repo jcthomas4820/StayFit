@@ -1,5 +1,8 @@
 import React from "react"
 import { Link, Redirect } from 'react-router-dom'
+import axios from 'axios'
+import e from "express"
+axios.defaults.withCredentials = true
 
 
 //  allow user to select which component they want to access
@@ -20,9 +23,11 @@ class SelectionPage extends React.Component{
     handleLogout(){
 
         //  perform backend logout operations
-        
-        //  update state
-        this.setState({loggedIn: false});
+        axios.post('http://localhost:3001/api/logout').then((res) => {
+            let err = res.data.logoutErr;
+            if (err === 'There is no one logged in' || !err) { this.setState({loggedIn: false}); }
+            else { this.setState({loggedIn: true}); }
+        });
     }
 
     render(){

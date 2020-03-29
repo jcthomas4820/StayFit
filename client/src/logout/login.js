@@ -1,6 +1,7 @@
 import React from "react"
 import axios from "axios";
 import { Redirect } from 'react-router-dom'
+axios.defaults.withCredentials = true
 
 //  allow user to login/register
 class LoginPage extends React.Component{

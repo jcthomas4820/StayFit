@@ -25,6 +25,8 @@ router.post('/login', function(req, res) {
         return res.json( {logError: 'Incorrect password entered'});
       }
       req.session.user = user._id;
+      console.log("login: " + req.session.user);
+      console.log(req.session);
       return res.json('User successfully logged in');
     }
     else {
@@ -69,15 +71,19 @@ router.post('/register', function (req, res) {
 
 // Todo: connect this to the front end code 
 router.post('/logout', function(req, res) {
-  if (req.session.user === undefined) {
-    return res.json('There is no one logged in');
+  if (!req.session.user || req.session.user === undefined) {
+    return res.json({logoutErr: 'There is no one logged in'});
   }
-      req.session.user = null;
-      return res.json('User logged out');
+
+  req.session.destroy((err) => {
+    if (err) {
+      return res.json({logoutErr: err});
+    }
+    return res.json('User logged out');
+  });
 });
 
 router.post('/calculate', function(req, res){
-
     // check if user is logged in
     if (!req.session.user || req.session.user === undefined) {
         return res.json({calcError: 'You must be logged in to do that'});
@@ -87,8 +93,7 @@ router.post('/calculate', function(req, res){
     if(!req.body.userAge || Number.isNaN(Number(req.body.userAge)) || req.body.userAge <= 0){
         return res.json({calcError: 'Please enter a valid age in years'});
     }
-    if(!req.body.userGender || !(req.body.userGender === 'M' || req.body.userGender === 'F' ||
-        req.body.userGender === 'f' || req.body.userGender === 'm')){
+    if(!req.body.userGender || req.body.userGender === ''){
         return res.json({calcError: 'Please enter a valid gender (M/F)'});
     }
     if(!req.body.userHeight || Number.isNaN(Number(req.body.userHeight)) || req.body.userHeight < 0){
@@ -97,7 +102,7 @@ router.post('/calculate', function(req, res){
     if(!req.body.userWeight || Number.isNaN(Number(req.body.userWeight)) || req.body.userWeight < 0){
         return res.json({calcError: 'Please enter a valid Weight in pounds'});
     }
-    if(!req.body.userActivityLevel || Number.isNaN(Number(req.body.userActivityLevel)) || req.body.userActivityLevel < 1 || req.body.userActivityLevel > 5){
+    if(!req.body.userActivityLevel){
         return res.json({calcError: 'Please enter a valid activity level from range(1-5)'});
     }
 
@@ -120,7 +125,7 @@ router.post('/calculate', function(req, res){
     }
 
     // calculate macros for the user
-    let macros = {  prots: caloriesPerDay*0.35,
+    let macros = {  prot: caloriesPerDay*0.35,
                     carbs: caloriesPerDay*0.35,
                     fats: caloriesPerDay*0.30 }
 
@@ -136,10 +141,10 @@ router.post('/submit', function(req, res){
     }
 
     // get user provided data
-    let data = req.body.data;
+    let data = req.body;
 
     // check if data sent is null
-    if(!data || !data.prots || !data.carbs || !data.fats){
+    if(!data || !data.prot || !data.carbs || !data.fats){
       return res.json({submitError: 'Data sent for submission is null. Try again'});
     }
 

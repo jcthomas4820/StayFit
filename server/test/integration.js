@@ -64,7 +64,7 @@ describe('application', async () => {
 
     // remove all of the users added to the database before testing
     await User.deleteMany({}, function(err) { 
-      console.log('All users removed') 
+      console.log('All test users removed') 
     });
   });
 
@@ -127,13 +127,17 @@ describe('application', async () => {
   });
 
   describe('authenticated state', async () => {
-    // **** // 
     describe('logout-test', async () => {
-      it('redirects a client to the loggedout main screen once logged out', async () => {
+      it('logs out a loggedin user', async () => {
         let user = { username: getRandomString(10), password: getRandomString(10) };
         await client.post('/api/register', user);
         let result = await client.post('/api/logout');
         assert.equal(result.data, 'User logged out');
+      });
+
+      it('sends an error for a not loggedin user', async () => {
+        let result = await client.post('/api/logout');
+        assert.equal(result.data.logoutErr, 'There is no one logged in');
       });
     });
 
@@ -245,10 +249,10 @@ describe('application', async () => {
                                                                userActivityLevel: 4});
             // calculate macros
             let caloriesPerDay = (10*(125/2.2046)) + (6.25*171) - (5*25) + 5;
-            let macros = { prots: caloriesPerDay*0.35,
+            let macros = { prot: caloriesPerDay*0.35,
                            carbs: caloriesPerDay*0.35,
                            fats: caloriesPerDay*0.30 }
-            assert.equal(result.data.macros.prots, macros.prots);
+            assert.equal(result.data.macros.prot, macros.prot);
             assert.equal(result.data.macros.carbs, macros.carbs);
             assert.equal(result.data.macros.fats, macros.fats);
       });
@@ -266,10 +270,10 @@ describe('application', async () => {
                                                            userActivityLevel: 3});
             // calculate macros
             caloriesPerDay = (10*(120/2.2046)) + (6.25*160) - (5*22) - 161;
-            macros = { prots: caloriesPerDay*0.35,
+            macros = { prot: caloriesPerDay*0.35,
                        carbs: caloriesPerDay*0.35,
                        fats: caloriesPerDay*0.30 }
-            assert.equal(result.data.macros.prots, macros.prots);
+            assert.equal(result.data.macros.prot, macros.prot);
             assert.equal(result.data.macros.carbs, macros.carbs);
             assert.equal(result.data.macros.fats, macros.fats);
 
@@ -290,7 +294,7 @@ describe('application', async () => {
                                            userActivityLevel: 3});
             // calculate macros
             let caloriesPerDay = (10*120) + (6.25*160) - (5*22) - 161;
-            let macros = { prots: caloriesPerDay*0.35,
+            let macros = { prot: caloriesPerDay*0.35,
                            carbs: caloriesPerDay*0.35,
                            fats: caloriesPerDay*0.30 }
             // submit macros
@@ -305,7 +309,7 @@ describe('application', async () => {
             await client.post('/api/register', user);
 
             // submit macros with null values
-            let macros = { prots: null,
+            let macros = { prot: null,
                            carbs: null,
                            fats: null}
             result = await client.post('/api/submit', {data: macros});
@@ -320,7 +324,7 @@ describe('application', async () => {
             await client.post('/api/logout', user);
 
              // submit macros
-            let macros = { prots: 100,
+            let macros = { prot: 100,
                            carbs: 200,
                            fats: 300}
             result = await client.post('/api/submit', {data: macros});
@@ -329,7 +333,7 @@ describe('application', async () => {
         });
        it('throws error if an unregistered user tries to submit macros', async () => {
             // submit macros
-            let macros = { prots: 100,
+            let macros = { prot: 100,
                            carbs: 200,
                            fats: 300}
             result = await client.post('/api/submit', {data: macros});
