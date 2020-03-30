@@ -35,3 +35,6 @@ Documentation: https://jestjs.io/docs/en/getting-started
 
 #### FindOneAndUpdate
 - https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+
+#### Docker with MERN
+- https://medium.com/statuscode/dockerising-a-node-js-and-mongodb-app-d22047e2806f

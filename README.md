@@ -45,6 +45,77 @@ We plan to incorporate user input error handling, and displaying these messages 
 - Login errors (incorrect username or password)
 - Registration errors (not entering a valid password or attempting to use an in-use username)
 
+### Checkpoint 4 tests
+The focus on checkpoint 3 was ensuring our server-side tests were passing. For checkpoint 4, we plan to add more server-side tests as we implement for features. However, we will be shifting some of our focus to starting to write the front-end test suite.
+#### Backend (server/test/integration.js)
+1. exercise-test
+    - it('allows user to remove rows from the grid')
+    - it('allows the user select how to organize the grid')
+2. nutrition-test
+    - it('requires a logged in user to input a meal')
+    - it('allows user to input a meal')
+    - it('calculates the user's current macro count')
+    - it('alerts the user when they are over their daily macro intake')
+#### Frontend (client/src - found within each component)
+*Note: The full test suite is included here, but we will split this work between the final two checkpoints*
+1. calculator.test
+    - it('provides a component description')
+    - it('has boxes/buttons for user to input information');
+    - it('has a calculate button');
+    - it('has a submit button');
+    - it('has a results display box')
+    - it('displays accurate macro information after calculation');
+    - it("submits the proper calculated results");
+    - it("only submits after results are calculated");
+2. grid.test
+    - it('provides a component description')
+    - it('properly populates blank initial rows for a new user');
+    - it('properly populates initial rows for a returning user');
+    - it('allows a user to edit a row');
+    - it('allows a user to save a row');
+    - it('correctly updates when user removes a row');
+    - it('properly adds a row');
+    - it('has proper textboxes for input for each row')
+    - it('has edit and save buttons for each row')
+3. selection.test
+    - it('provides a component description')
+    - it('contains the exercise grid button');
+    - it('contains the macro calculator button');
+    - it('contains the nutrition tracker button');
+    - it('contains the logout button');
+    - it('contains the username on the screen');
+    - it('properly routes to exercise grid')
+    - it('properly routes to macro calculator')
+    - it('properly routes to nutrition tracker')
+    - it('properly routes to logout')
+4. logout.test
+    - it('has a location for the user to enter a username');
+    - it('has a location for the user to enter a password');
+    - it('displays error messages if username does not exist');
+    - it('displays error messages if password is invalid');
+    - it('has button for login');
+    - it('has a location for the user to enter a username');
+    - it('has a location for the user to enter a password');
+    - it('has button for register');
+    - it('displays error messages if username is taken');
+    - it('displays error messages if password is invalid');
+5. tracker.test
+    - it('provides a component description')
+    - it('displays the daily target protein');
+    - it('displays the daily target carbs');
+    - it('displays the daily target fats');
+    - it('displays the users current total protein');
+    - it('displays the users current total carbs');
+    - it('displays the users current total fats');
+    - it('displays area for user to input meal');
+    - it('displays area for user to see analysis');
+    - it('displays button for user to analyze meal');
+    - it('displays button for user to submit meal');
+    - it('correctly updates after a user enters a meal');
+    - it('requests ingredients from the user');
+    - it('correctly calculates macros')
+    - it('adds calculated macros to daily total');
+
 ## Deliverables for final project
 
 Outline in English what the deliverables will be for the final checkpoint. This will should be
