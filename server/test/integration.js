@@ -64,7 +64,7 @@ describe('application', async () => {
     server = app.listen(PORT);
     // remove all of the users added to the database before testing
     await User.deleteMany({}, function(err) { 
-      console.log('All users removed') 
+      console.log('All test users removed') 
     });
   });
 
@@ -127,13 +127,17 @@ describe('application', async () => {
   });
 
   describe('authenticated state', async () => {
-    // **** // 
     describe('logout-test', async () => {
-      it('redirects a client to the loggedout main screen once logged out', async () => {
+      it('logs out a loggedin user', async () => {
         let user = { username: getRandomString(10), password: getRandomString(10) };
         await client.post('/api/register', user);
         let result = await client.post('/api/logout');
         assert.equal(result.data, 'User logged out');
+      });
+
+      it('sends an error for a not loggedin user', async () => {
+        let result = await client.post('/api/logout');
+        assert.equal(result.data.logoutErr, 'There is no one logged in');
       });
     });
 
@@ -144,34 +148,30 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         //save some exercises
-        await client.post('/api/save-grid-data', {exerciseNumber: 1,
+        await client.post('/api/save-grid-data', {exerciseNumber: 0,
                                                   exerciseName: "bicep curl",
                                                   exerciseProgress: "25lb 4s10r",
                                                   exerciseDate: "3/26/2020"});
-        await client.post('/api/save-grid-data', {exerciseNumber: 2,
+        await client.post('/api/save-grid-data', {exerciseNumber: 1,
                                                   exerciseName: "inner bicep curl",
                                                   exerciseProgress: "25lb 4s10r",
                                                   exerciseDate: "3/27/2020"});
-        await client.post('/api/save-grid-data', {exerciseNumber: 3,
-                                                  exerciseName: "push ups",
-                                                  exerciseProgress: "4s5r",
-                                                  exerciseDate: "3/28/2020"});
 
         // get exercise data from database
         let result = await client.get('/api/get-grid-data');
 
-        let list = ["bicep curl", "25lb 4s10r", "3/26/2020", "inner bicep curl",
-        "25lb 4s10r", "3/27/2020", "push ups", "4s5r", "3/28/2020"];
+        let list = [["bicep curl", "25lb 4s10r", "3/26/2020"],["inner bicep curl",
+        "25lb 4s10r", "3/27/2020"]];
         assert.deepEqual(result.data.exerciseData, list);
 
         // save more exercises
-        await client.post('/api/save-grid-data', {exerciseNumber: 4,
+        await client.post('/api/save-grid-data', {exerciseNumber: 2,
                                                   exerciseName: "sit ups",
                                                   exerciseProgress: "4s5r",
                                                   exerciseDate: "3/30/2020"});
-        list.push("sit ups");
-        list.push("4s5r");
-        list.push("3/30/2020");
+        
+        let subList = ["sit ups", "4s5r", "3/30/2020"];                                                  
+        list.push(subList);
         // get exercise data from database again
         result = await client.get('/api/get-grid-data');
         assert.deepEqual(result.data.exerciseData, list);
@@ -181,35 +181,37 @@ describe('application', async () => {
     describe('save-grid-data-test', async () => {
       it('allows the user select how to organize the grid');
       it('allows user to remove rows from the grid');
-
-      it('allows the user to track their exercise name, progress, and date', async () => {
+      it('does not allow for a user to save an exercise without a name, progress or date', async () => {
         // register a user
         let user = { username: getRandomString(10), password: getRandomString(10) };
         await client.post('/api/register', user);
 
         // save an exercise with no name
         let result = await client.post('/api/save-grid-data', {exerciseNumber: 1,
-                                                              exerciseName: "",
-                                                              exerciseProgress: "25lb 4s10r",
-                                                              exerciseDate: "3/26/2020"})
-
+                                                               exerciseName: "",
+                                                               exerciseProgress: "25lb 4s10r",
+                                                               exerciseDate: "3/26/2020"})
         assert.equal(result.data.saveGridError, 'You must provide a name for the exercise');
 
         // save an exercise with no progress
         result = await client.post('/api/save-grid-data', {exerciseNumber: 1,
-                                                  exerciseName: "bicep curl",
-                                                  exerciseProgress: "",
-                                                  exerciseDate: "3/26/2020"})
-
+                                                           exerciseName: "bicep curl",
+                                                           exerciseProgress: "",
+                                                           exerciseDate: "3/26/2020"})
         assert.equal(result.data.saveGridError, 'You must provide the progress of the exercise');
 
         // save an exercise with no date
         result = await client.post('/api/save-grid-data', {exerciseNumber: 1,
-                                                  exerciseName: "bicep curl",
-                                                  exerciseProgress: "30lb 4s10r",
-                                                  exerciseDate: ""})
-
+                                                           exerciseName: "bicep curl",
+                                                           exerciseProgress: "30lb 4s10r",
+                                                           exerciseDate: ""})
         assert.equal(result.data.saveGridError, 'You must provide a date');
+      });
+
+      it('allows the user to track their exercise name, progress, and date', async () => {
+        // register a user
+        let user = { username: getRandomString(10), password: getRandomString(10) };
+        await client.post('/api/register', user);
 
         // save an exercise with name, progress, and date
         result = await client.post('/api/save-grid-data', {exerciseNumber: 1,
@@ -220,28 +222,13 @@ describe('application', async () => {
 
       });
 
-      it('allows a user to save their exercise progress', async () => {
-        // register a user
-        let user = { username: getRandomString(10), password: getRandomString(10) };
-        await client.post('/api/register', user);
-
-        // save an exercise
-        let result = await client.post('/api/save-grid-data', {exerciseNumber: 1,
-                                                              exerciseName: "bicep curl",
-                                                              exerciseProgress: "25lb 4s10r",
-                                                              exerciseDate: "3/26/2020"})
-
-        assert.equal(result.data, 'Your exercise values are saved');
-
-      });
-
       it('allows a user to update entries', async () => {
         // register a user
         let user = { username: getRandomString(10), password: getRandomString(10) };
         await client.post('/api/register', user);
 
         // save an exercise as exercise number 1
-        await client.post('/api/save-grid-data', {exerciseNumber: 1,
+        await client.post('/api/save-grid-data', {exerciseNumber: 0,
                                                   exerciseName: "bicep curl",
                                                   exerciseProgress: "25lb 4s10r",
                                                   exerciseDate: "3/26/2020"})
@@ -251,24 +238,22 @@ describe('application', async () => {
         await client.post('/api/login', user);
 
         // edit exercise number 1
-        let result = await client.post('/api/save-grid-data', {exerciseNumber: 1,
+        let result = await client.post('/api/save-grid-data', {exerciseNumber: 0,
                                                   exerciseName: "bicep curl",
                                                   exerciseProgress: "30lb 4s10r",
                                                   exerciseDate: "3/26/2020"})
         assert.equal(result.data, 'Your exercise values are saved');
 
         // edit again
-        result = await client.post('/api/save-grid-data', {exerciseNumber: 1,
+        result = await client.post('/api/save-grid-data', {exerciseNumber: 0,
                                                   exerciseName: "inner-bicep curl",
                                                   exerciseProgress: "30lb 4s10r",
                                                   exerciseDate: "3/26/2020"})
-
         assert.equal(result.data, 'Your exercise values are saved');
 
         result = await client.get('/api/get-grid-data');
-        let list = ["inner-bicep curl", "30lb 4s10r", "3/26/2020"];
+        let list = [["inner-bicep curl", "30lb 4s10r", "3/26/2020"]];
         assert.deepEqual(result.data.exerciseData, list);
-
       });
 
        it('throws error if a registered user tries to track or update exercise without logging in', async () => {
@@ -292,9 +277,7 @@ describe('application', async () => {
                                                                   exerciseName: "bicep curl",
                                                                   exerciseProgress: "25lb 4s10r",
                                                                   exerciseDate: "3/26/2020"})
-
             assert.equal(result.data.saveGridError, 'You must be logged in to do that');
-
        });
 
     });
@@ -422,7 +405,7 @@ describe('application', async () => {
 
             // calculate macros
             let caloriesPerDay = (((10*125) + (6.25*171) - (5*25))*activityFactor) + 5;
-            let expectedMacros = { prots: caloriesPerDay*0.35,
+            let expectedMacros = { prot: caloriesPerDay*0.35,
                            carbs: caloriesPerDay*0.35,
                            fats: caloriesPerDay*0.30 }
             assert.deepEqual(result.data.macros, expectedMacros);
@@ -443,14 +426,14 @@ describe('application', async () => {
             let activityFactor = 1.725;
             // calculate macros
             caloriesPerDay = (((10*(50)) + (6.25*160) - (5*22))*activityFactor) - 161;
-            let expectedMacros = { prots: caloriesPerDay*0.35,
+            let expectedMacros = { prot: caloriesPerDay*0.35,
                        carbs: caloriesPerDay*0.35,
                        fats: caloriesPerDay*0.30 }
             assert.deepEqual(result.data.macros, expectedMacros);
 
       });
       });
-      describe('submit-test', async () => {
+    describe('submit-test', async () => {
       it('allows user to track the macros calculated', async () => {
 
             // register a user
@@ -476,7 +459,7 @@ describe('application', async () => {
             await client.post('/api/register', user);
 
             // submit macros with null values
-            let macros = { prots: null,
+            let macros = { prot: null,
                            carbs: null,
                            fats: null}
             result = await client.post('/api/submit', {data: macros});
@@ -494,7 +477,7 @@ describe('application', async () => {
             await client.post('/api/logout', user);
 
              // submit macros
-            let macros = { prots: 100,
+            let macros = { prot: 100,
                            carbs: 200,
                            fats: 300}
             result = await client.post('/api/submit', {data: macros});
@@ -503,7 +486,7 @@ describe('application', async () => {
         });
        it('throws error if an unregistered user tries to submit macros', async () => {
             // submit macros
-            let macros = { prots: 100,
+            let macros = { prot: 100,
                            carbs: 200,
                            fats: 300}
             result = await client.post('/api/submit', {data: macros});
