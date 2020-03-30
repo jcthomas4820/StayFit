@@ -32,18 +32,19 @@ For this checkpoint, we are simply going to send POST/GET requests to the server
 the MongoDB database, and React will handle the UI.
 
 ## Deliverables for checkpoint 4
-
-We plan to improve the overall UI in making it more visually pleasing.
-All database information will be reflected on the UI components including:
-- The grid will update with exercises based on input
-- The macro calculator will display the calculations
-- The nutrition tracker will update based on the macro input
-We plan to have the Edamam Nutrition Analysis API integrated into the application.
-We plan to complete the front-end test suite using JEST.
-We plan to complete the back-end test suite using Mocha.
-We plan to incorporate user input error handling, and displaying these messages to the user. For example, this could include
-- Login errors (incorrect username or password)
-- Registration errors (not entering a valid password or attempting to use an in-use username)
+- Improve the overall UI in making it more visually pleasing
+- Integrate the Edamam Nutrition Analysis API
+    - Allows the user to input a meal and updates their macro count
+    - Complete unit tests for this addition
+- Add additional Exercise Grid features
+    - Allow for the user to keep track of more than three exercises
+    - Allow for the user to delete an exercise 
+    - Allows the user to change how they organize the grid
+    - Complete unit tests for this addition
+- Begin writing front end tests using JEST
+- Work to make the application more secure 
+    - Mainly working with sanitizing user input (bulk of the application) 
+- Abstract out the routes into their own Router files (user, grid, nutrition)
 
 ### Checkpoint 4 tests
 The focus on checkpoint 3 was ensuring our server-side tests were passing. For checkpoint 4, we plan to add more server-side tests as we implement for features. However, we will be shifting some of our focus to starting to write the front-end test suite.
@@ -59,6 +60,7 @@ The focus on checkpoint 3 was ensuring our server-side tests were passing. For c
 #### Frontend (client/src - found within each component)
 *Note: The full test suite is included here, but we will split this work between the final two checkpoints*
 1. calculator.test
+    - it ('renders without crashing')
     - it('provides a component description')
     - it('has boxes/buttons for user to input information');
     - it('has a calculate button');
@@ -67,7 +69,9 @@ The focus on checkpoint 3 was ensuring our server-side tests were passing. For c
     - it('displays accurate macro information after calculation');
     - it("submits the proper calculated results");
     - it("only submits after results are calculated");
+
 2. grid.test
+    - it('renders without crashing');
     - it('provides a component description')
     - it('properly populates blank initial rows for a new user');
     - it('properly populates initial rows for a returning user');
@@ -77,7 +81,9 @@ The focus on checkpoint 3 was ensuring our server-side tests were passing. For c
     - it('properly adds a row');
     - it('has proper textboxes for input for each row')
     - it('has edit and save buttons for each row')
+
 3. selection.test
+    - it('renders without crashing');
     - it('provides a component description')
     - it('contains the exercise grid button');
     - it('contains the macro calculator button');
@@ -88,18 +94,20 @@ The focus on checkpoint 3 was ensuring our server-side tests were passing. For c
     - it('properly routes to macro calculator')
     - it('properly routes to nutrition tracker')
     - it('properly routes to logout')
+
 4. logout.test
+    - it('renders without crashing');
+    - it('provides a StayFit! app description')    
     - it('has a location for the user to enter a username');
     - it('has a location for the user to enter a password');
+    - it('has a login button');
+    - it('has a register button');
+    - it('displays error messages if username is in use');
     - it('displays error messages if username does not exist');
     - it('displays error messages if password is invalid');
-    - it('has button for login');
-    - it('has a location for the user to enter a username');
-    - it('has a location for the user to enter a password');
-    - it('has button for register');
-    - it('displays error messages if username is taken');
-    - it('displays error messages if password is invalid');
+
 5. tracker.test
+    - it('renders without crashing');
     - it('provides a component description')
     - it('displays the daily target protein');
     - it('displays the daily target carbs');
@@ -115,6 +123,7 @@ The focus on checkpoint 3 was ensuring our server-side tests were passing. For c
     - it('requests ingredients from the user');
     - it('correctly calculates macros')
     - it('adds calculated macros to daily total');
+    
 
 ## Deliverables for final project
 
@@ -130,7 +139,14 @@ For each specialization, you must list specific checkpoints that are relevant to
 For each student/team adding a specialization, name that specialization and describe what
 functionality you will be adding.
 
-# Installation
+## Installation
+### Checkpoint 2 / Running locally
+```
+git clone https://github.com/ckanich-classrooms/final-project-senior-squad-1.git
+cd final-project-senior-squad-1
+npm start
+```
+Application will be visible at: http://localhost:3000
 
-By the time you get to the end of the final project, this section should have a full set of
-instructions for how to spin up your app.
+### Checkpoint 3-Final / Deployment using Docker
+TODO: Add the installation instructions 

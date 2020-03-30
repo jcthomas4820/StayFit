@@ -1,5 +1,6 @@
 import React from "react"
 import axios from 'axios'
+axios.defaults.withCredentials = true;
 
 /*
 Grid acts as the parent component, and Row acts as the child.
@@ -17,6 +18,7 @@ class Grid extends React.Component{
     constructor(){
         super()
         this.state={
+            userMsg: "",
             row0List: ["", "", ""],         // [exercise, progress, date] 
             row1List: ["", "", ""],
             row2List: ["", "", ""]
@@ -31,18 +33,17 @@ class Grid extends React.Component{
                 //  this.setState({ row0List: tempList })      --> save as the appropriate row's list
         axios.get('http://localhost:3001/api/get-grid-data').then((res) => {
             let err = res.data.getGridError;
-            let exercise1 = res.data.exercise1;
-            let exercise2 = res.data.exercise2;
-            let exercise3 = res.data.exercise3;
+
             if(err){
-                console.log(err);
+                this.setState({userMsg: err});
             }
             else{
-                this.setState({ row0List: exercise1,
-                                row1List: exercise2,
-                                row2List: exercise3 });
+                let exerciseList = res.data.exerciseData;
+                if (exerciseList[0]) { this.setState({ row0List: exerciseList[0]}); }
+                if (exerciseList[1]) { this.setState({ row1List: exerciseList[1]}); }
+                if (exerciseList[2]) { this.setState({ row2List: exerciseList[2]}); }
             }
-    });
+        });
     }
 
     render(){
@@ -51,6 +52,7 @@ class Grid extends React.Component{
             
             <div className = "ExerciseGrid">
                 <h1>Exercise Grid</h1>
+                <p>{this.state.userMsg}</p>
                 < Row rowList={this.state.row0List} rowNum={0} />
                 < Row rowList={this.state.row1List} rowNum={1} />
                 < Row rowList={this.state.row2List} rowNum={2} />
@@ -121,15 +123,16 @@ class Row extends React.Component{
             exerciseProgress: progress,
             exerciseDate: date
         }
+
         axios.post('http://localhost:3001/api/save-grid-data', data).then((res) => {
-                    let err = res.data.saveGridError;
-                    if(err){
-                          this.setState({errMsg: err});
-                    }
-                    else{
-                        this.setState({errMsg: res.data})
-                    }
-            });
+            let err = res.data.saveGridError;
+            if(err){
+                this.setState({errMsg: err});
+            }
+            else{
+                this.setState({errMsg: res.data})
+            }
+        });
     }
 
     componentWillReceiveProps(props){
@@ -143,11 +146,8 @@ class Row extends React.Component{
     render(){
         return(
             <div className="Row">
+                <h4>Exercise {this.state.rowNum + 1}</h4>
                 <p>{this.state.errMsg}</p>
-                <div>
-                    <button onClick={this.handleEdit}>edit</button>
-                    <button onClick={this.handleSave}>save</button>
-                </div>
                 <div>
                     Name <br/> <input name="name" onChange={this.handleChange} value={this.state.name} disabled={this.state.status}/>
                 </div>
@@ -156,6 +156,10 @@ class Row extends React.Component{
                 </div>
                 <div>
                     Date <br/> <input name="date" onChange={this.handleChange} value={this.state.date} disabled={this.state.status} />
+                </div>
+                <div>
+                    <button onClick={this.handleEdit}>edit</button>
+                    <button onClick={this.handleSave}>save</button>
                 </div>
             </div>
         )

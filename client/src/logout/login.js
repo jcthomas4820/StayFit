@@ -1,6 +1,7 @@
 import React from "react"
 import axios from "axios";
 import { Redirect } from 'react-router-dom'
+axios.defaults.withCredentials = true
 
 //  allow user to login/register
 class LoginPage extends React.Component{
@@ -15,7 +16,21 @@ class LoginPage extends React.Component{
         }
         this.handleClick = this.handleClick.bind(this)      //  required for binding handleClick function to use this state
     }
-   
+    
+    // If a user was already logged in, say there were no login
+    // errors and send them directly to the selection page
+    componentWillMount(){
+        axios.get('http://localhost:3001/api/').then((res) => {
+            let status = res.data.status;
+
+            if(status === 'Not logged in') {
+                this.setState({loginError: true});
+            } else {                
+                this.setState({loginError: false});
+            }
+        });
+    }
+
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const macrosSchema = new Schema({
-  prots: {type: Number, require: true},
+  prot: {type: Number, require: true},
   carbs: {type: Number, require: true},
   fats: {type: Number, require: true}
 });

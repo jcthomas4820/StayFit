@@ -6,7 +6,7 @@ describe('page render', async () => {
     it('renders without crashing');
 });
 
-describe('registration component', async () => {
+describe('selection component', async () => {
     it('provides a component description')
     it('contains the exercise grid button');
     it('contains the macro calculator button');

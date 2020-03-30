@@ -5,6 +5,7 @@ Form written as controlled component:
 
 import React from "react"
 import axios from 'axios'
+axios.defaults.withCredentials = true;
 //import { thisExpression } from "@babel/types"
 
 //  allow user to calculate their recommended daily macros
