@@ -7,6 +7,7 @@ describe('page render', async () => {
 });
 
 describe('login/register component', async () => {
+    it('provides a StayFit! app description')    
     it('has a location for the user to enter a username');
     it('has a location for the user to enter a password');
     it('has a login button');

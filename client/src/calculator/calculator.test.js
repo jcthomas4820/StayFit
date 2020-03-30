@@ -7,8 +7,14 @@ describe('page render', async () => {
 });
 
 describe('app component', async () => {
-    it('has boxes for user to input information');
+    it('provides a component description')
+    it('has boxes/buttons for user to input information');
     it('has a calculate button');
-    it('has a track button');
-    it('displays appropriate macro information after calculation');
+    it('has a submit button');
+    it('has a results display box')
+    it('displays accurate macro information after calculation');
+    it("submits the proper calculated results");
+    it("only submits after results are calculated");
+
+
 });

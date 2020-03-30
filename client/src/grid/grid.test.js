@@ -7,8 +7,13 @@ describe('page render', async () => {
 });
 
 describe('app component', async () => {
-    it('has a "+" button for user to add an exercise');
-    it('correctly updates when user adds an entry');
-    it('correctly updates when user removes an entry');
-    it('correctly displays based on organization preference');
+    it('provides a component description')
+    it('properly populates blank initial rows for a new user');
+    it('properly populates initial rows for a returning user');
+    it('allows a user to edit a row');
+    it('allows a user to save a row');
+    it('correctly updates when user removes a row');
+    it('properly adds a row');
+    it('has proper textboxes for input for each row')
+    it('has edit and save buttons for each row')
 });

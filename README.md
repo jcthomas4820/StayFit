@@ -58,27 +58,46 @@ The focus on checkpoint 3 was ensuring our server-side tests were passing. For c
     - it('calculates the user's current macro count')
     - it('alerts the user when they are over their daily macro intake')
 #### Frontend (client/src - found within each component)
-*Note: The full test suite is including here, but we will split this work between the final two checkpoints*
+*Note: The full test suite is included here, but we will split this work between the final two checkpoints*
 1. calculator.test
     - it ('renders without crashing')
-    - it('has boxes for user to input information')
-    - it('has a calculate button')
-    - it('displays error messages')
-    - it('displays success messages')
+    - it('provides a component description')
+    - it('has boxes/buttons for user to input information');
+    - it('has a calculate button');
+    - it('has a submit button');
+    - it('has a results display box')
+    - it('displays accurate macro information after calculation');
+    - it("submits the proper calculated results");
+    - it("only submits after results are calculated");
+
 2. grid.test
     - it('renders without crashing');
-    - it('has a "+" button for user to add an exercise');
-    - it('correctly updates when user adds an entry');
-    - it('correctly updates when user removes an entry');
-    - it('correctly displays based on organization preference');
+    - it('provides a component description')
+    - it('properly populates blank initial rows for a new user');
+    - it('properly populates initial rows for a returning user');
+    - it('allows a user to edit a row');
+    - it('allows a user to save a row');
+    - it('correctly updates when user removes a row');
+    - it('properly adds a row');
+    - it('has proper textboxes for input for each row')
+    - it('has edit and save buttons for each row')
+
 3. selection.test
     - it('renders without crashing');
+    - it('provides a component description')
     - it('contains the exercise grid button');
     - it('contains the macro calculator button');
-    - it('contains the nutrition calculator button');
+    - it('contains the nutrition tracker button');
     - it('contains the logout button');
     - it('contains the username on the screen');
+    - it('properly routes to exercise grid')
+    - it('properly routes to macro calculator')
+    - it('properly routes to nutrition tracker')
+    - it('properly routes to logout')
+
 4. logout.test
+    - it('renders without crashing');
+    - it('provides a StayFit! app description')    
     - it('has a location for the user to enter a username');
     - it('has a location for the user to enter a password');
     - it('has a login button');
@@ -86,14 +105,25 @@ The focus on checkpoint 3 was ensuring our server-side tests were passing. For c
     - it('displays error messages if username is in use');
     - it('displays error messages if username does not exist');
     - it('displays error messages if password is invalid');
+
 5. tracker.test
     - it('renders without crashing');
-    - it('displays the daily target');
-    - it('displays the users current total');
+    - it('provides a component description')
+    - it('displays the daily target protein');
+    - it('displays the daily target carbs');
+    - it('displays the daily target fats');
+    - it('displays the users current total protein');
+    - it('displays the users current total carbs');
+    - it('displays the users current total fats');
+    - it('displays area for user to input meal');
+    - it('displays area for user to see analysis');
+    - it('displays button for user to analyze meal');
+    - it('displays button for user to submit meal');
     - it('correctly updates after a user enters a meal');
-    - it('has an input meal area');
     - it('requests ingredients from the user');
-    - it('calculates the macros and subtracts from daily total');
+    - it('correctly calculates macros')
+    - it('adds calculated macros to daily total');
+    
 
 ## Deliverables for final project
 

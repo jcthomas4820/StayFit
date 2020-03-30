@@ -41,3 +41,6 @@ I ran into an issue with the express-session not persisting across axios calls. 
 
 #### FindOneAndUpdate
 - https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+
+#### Docker with MERN
+- https://medium.com/statuscode/dockerising-a-node-js-and-mongodb-app-d22047e2806f

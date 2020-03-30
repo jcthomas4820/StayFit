@@ -11,9 +11,8 @@ services:
     links:                          # pull the standard mongo image from Docker Hub
       - mongo
   mongo:
-    container_name: mongo
+    hostname: mongo
     image: mongo
-    volumes:                        # enable persistent storage, /data/db is a mounting point allowing old containers to transfer their data
-      - /data/db
+    restart: always
     ports:
       - "27017:27017"
