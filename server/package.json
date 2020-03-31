@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "mocha test/integration.js",
+    "test": "cross-env NODE_ENV=test mocha test/integration.js",
     "test-register": "npm run test -- -g 'register-test'",
     "test-login": "npm run test -- -g 'login-test'",
     "test-logout": "npm run test -- -g 'logout-test'",

@@ -170,10 +170,8 @@ router.post('/submit', function(req, res){
       return res.json({submitError: 'You must be logged in to do that'});
     }
 
-
     // get user provided data
-    let data = req.body.macros;
-
+    let data = req.body;
 
     // check if data sent is null
     if(!data || !data.prot || !data.carbs || !data.fats){

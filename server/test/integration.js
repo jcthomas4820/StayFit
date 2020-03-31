@@ -448,7 +448,7 @@ describe('application', async () => {
                                                        userActivityLevel: "moderately active"});
 
             // submit macros
-            let result2 = await client.post('/api/submit', {macros: result.data.macros});
+            let result2 = await client.post('/api/submit', result.data.macros);
             assert.equal(result2.data, 'Your macro values are saved');
       });
 
