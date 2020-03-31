@@ -124,20 +124,20 @@ class MacroCalculator extends React.Component{
     }
         else if(button === "submit"){
 
-                //  grab and store this macros into database
-                let macros = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
-                 axios.post('http://localhost:3001/api/submit', macros).then((res) => {
-                    let err = res.data.submitError;
-                    if(err){
-                        this.setState({errorMsg: err})
-                    }
-                    else{
-                        //  clear all values
-                        this.clearForm()
-                        //  let user know values were saved
-                        this.setState({errorMsg: res.data});
-                    }
-                 });
+            //  grab and store this macros into database
+            let macros = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
+                axios.post('http://localhost:3001/api/submit', macros).then((res) => {
+                let err = res.data.submitError;
+                if(err){
+                    this.setState({errorMsg: err})
+                }
+                else{
+                    //  clear all values
+                    this.clearForm()
+                    //  let user know values were saved
+                    this.setState({errorMsg: res.data});
+                }
+            });
             
         }
     }
