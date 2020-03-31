@@ -93,6 +93,7 @@ class MacroCalculator extends React.Component{
             let activityLevel = this.state.activityLevel;
             
 
+
             //  ensure state has all proper values (no neg, numbers not alpha, all values are entered, etc.)
             //  if errors present, update in state
             //  grab user entered values
@@ -118,7 +119,7 @@ class MacroCalculator extends React.Component{
                 this.setState({carbs: macros.carbs})
                 this.setState({prot: macros.prot})
                 this.setState({fats: macros.fats})
-                this.setState({results: this.state.carbs + "g carbs, " + this.state.prot + "g protein, " + this.state.fats + "g fats"})
+                this.setState({results: this.state.carbs + " g carbs, " + this.state.prot + " g protein, " + this.state.fats + " g fats"})
             }
         });
     }
@@ -138,6 +139,7 @@ class MacroCalculator extends React.Component{
                     this.setState({errorMsg: res.data});
                 }
             });
+
             
         }
     }
@@ -151,7 +153,7 @@ class MacroCalculator extends React.Component{
                 <h1>Macro Calculator</h1>
                 <p>{this.state.errorMsg}</p>
                 <form id="macro-calculator" >
-                    
+
                     <label>
                         Gender:<br/>
                         <input name="gender" type="radio" value="male" onChange={this.handleChange} /> Male

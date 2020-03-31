@@ -172,7 +172,8 @@ router.post('/submit', function(req, res){
 
 
     // get user provided data
-    let data = req.body;
+    let data = req.body.macros;
+
 
     // check if data sent is null
     if(!data || !data.prot || !data.carbs || !data.fats){
