@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "NODE_ENV=test mocha test/integration.js",
+    "test": "mocha test/integration.js",
     "test-register": "npm run test -- -g 'register-test'",
     "test-login": "npm run test -- -g 'login-test'",
     "test-logout": "npm run test -- -g 'logout-test'",
@@ -24,7 +24,6 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "mocha": "^7.1.1",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.2",
     "morgan": "^1.9.1"
