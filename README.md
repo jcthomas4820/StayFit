@@ -149,4 +149,13 @@ npm start
 Application will be visible at: http://localhost:3000
 
 ### Checkpoint 3-Final / Deployment using Docker
-TODO: Add the installation instructions 
+From the root of the responsitory, run the following command to build and start containers:
+```
+docker-compose up --build
+```
+Then, visit http://localhost:3000 to view the application
+
+Run the following command to stop and remove all containers:
+```
+docker-compose down
+```

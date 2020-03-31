@@ -42,5 +42,12 @@ I ran into an issue with the express-session not persisting across axios calls. 
 #### FindOneAndUpdate
 - https://mongoosejs.com/docs/tutorials/findoneandupdate.html
 
-#### Docker with MERN
-- https://medium.com/statuscode/dockerising-a-node-js-and-mongodb-app-d22047e2806f
+#### Docker with Node.js, Mongo and REACT
+- Sections 2 and 3: https://dev.to/vguleaev/dockerize-a-node-js-app-connected-to-mongodb-5bp1
+- Sources to solve the following error:
+    ```
+    return process.dlopen(module, path._makeLong(filename));
+    Error: /code/node_modules/bcrypt/lib/binding/bcrypt_lib.node: invalid ELF header
+    ```
+    - https://stackoverflow.com/questions/42817446/docker-with-node-bcrypt-invalid-elf-header
+    - https://stackoverflow.com/questions/30043872/docker-compose-node-modules-not-present-in-a-volume-after-npm-install-succeeds 

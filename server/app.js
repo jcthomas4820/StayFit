@@ -17,6 +17,9 @@ const config = {
 app.use(cors(config));
 
 let dbURI;
+
+console.log(process.env.MONGODB_HOST);
+
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
     /* only log http requests when not testing */

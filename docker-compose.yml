@@ -2,17 +2,26 @@
 
 version: "2"
 services:
-  app:                              # define a service, called app
-    container_name: app             # with container name, app
-    restart: always                 # restart the container automatically if it failes
-    build: .                        # build the app image using the Dockerfile in the current directory
-    ports:                          # map the host port to the container port
-      - "3000:3000"
-    links:                          # pull the standard mongo image from Docker Hub
+  client:
+    build: ./client                     # Build the dockerfile in the client directory
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./client:/usr/src/app           # don't let the outside docker node_modules 
+      - /usr/src/app/node_modules/        # mount over the installed dependencies
+    depends_on:
+      - server
+  server:
+    build: ./server
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./server:/usr/src/app           # don't let the outside docker node_modules 
+      - /usr/src/app/node_modules/        # mount over the installed dependencies
+    depends_on:
       - mongo
   mongo:
-    hostname: mongo
     image: mongo
-    restart: always
     ports:
       - "27017:27017"
+      
