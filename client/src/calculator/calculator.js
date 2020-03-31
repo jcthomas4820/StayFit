@@ -92,6 +92,7 @@ class MacroCalculator extends React.Component{
             let height = this.state.height;
             let activityLevel = this.state.activityLevel;
 
+
             //  ensure state has all proper values (no neg, numbers not alpha, all values are entered, etc.)
             //  if errors present, update in state
             //  grab user entered values
@@ -117,33 +118,27 @@ class MacroCalculator extends React.Component{
                 this.setState({carbs: macros.carbs})
                 this.setState({prot: macros.prot})
                 this.setState({fats: macros.fats})
-                this.setState({results: this.state.carbs + "g carbs, " + this.state.prot + "g protein, " + this.state.fats + "g fats"})
+                this.setState({results: this.state.carbs + " g carbs, " + this.state.prot + " g protein, " + this.state.fats + " g fats"})
             }
         });
     }
         else if(button === "submit"){
 
-            //  error check: ensure values are calculated before submission, see if results contain "carbs"
-            if(!(this.state.results.includes("carbs"))){
-                //  display err message to user, prompt them to enter data and press calculate first
-                this.setState({errorMsg: 'You must calculate macros before submitting'});
-            }
-            else{
-                //  grab and store this macros into database
-                let macros = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
-                 axios.post('http://localhost:3001/api/submit', macros).then((res) => {
-                    let err = res.data.submitError;
-                    if(err){
-                        this.setState({errorMsg: err})
-                    }
-                    else{
-                        //  clear all values
-                        this.clearForm()
-                        //  let user know values were saved
-                        this.setState({errorMsg: res.data});
-                    }
-                 });
-            }
+            //  grab and store this macros into database
+            let macros = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
+                axios.post('http://localhost:3001/api/submit', macros).then((res) => {
+                let err = res.data.submitError;
+                if(err){
+                    this.setState({errorMsg: err})
+                }
+                else{
+                    //  clear all values
+                    this.clearForm()
+                    //  let user know values were saved
+                    this.setState({errorMsg: res.data});
+                }
+            });
+
         }
     }
 
@@ -156,7 +151,7 @@ class MacroCalculator extends React.Component{
                 <h1>Macro Calculator</h1>
                 <p>{this.state.errorMsg}</p>
                 <form id="macro-calculator" >
-                    
+
                     <label>
                         Gender:<br/>
                         <input name="gender" type="radio" value="male" onChange={this.handleChange} /> Male
@@ -188,7 +183,7 @@ class MacroCalculator extends React.Component{
                     </label>
 
                     <br/>
-                    <div onClick={this.handleClick}>
+                    <div>
                         <input type="button" name="calculate" value="calculate" onClick={this.handleClick} />
                         <input type="button" name="submit" value="submit"  onClick={this.handleClick} />
                     </div>
