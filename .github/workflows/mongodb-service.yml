@@ -20,7 +20,7 @@ jobs:
             - 27017:27017
       steps:
         - uses: actions/checkout@v1
-        - run: cd server && npm test
+        - run: cd server && npm install && npm test
           env:
             MONGODB_HOST: mongodb
             MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
