@@ -10,17 +10,17 @@ on:
 
 jobs:
     test_server:
-    runs-on: ubuntu-latest
-    container: 
-      image: node:latest
-    services:
-      mongodb:
-        image: mongo
-        ports:
-          - 27017:27017
-    steps:
-      - uses: actions/checkout@v1
-      - run: cd server && npm test
-        env:
-          MONGODB_HOST: mongodb
-          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+      runs-on: ubuntu-latest
+      container: 
+        image: node:latest
+      services:
+        mongodb:
+          image: mongo
+          ports:
+            - 27017:27017
+      steps:
+        - uses: actions/checkout@v1
+        - run: cd server && npm test
+          env:
+            MONGODB_HOST: mongodb
+            MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
