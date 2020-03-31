@@ -45,6 +45,7 @@ the MongoDB database, and React will handle the UI.
 - Work to make the application more secure 
     - Mainly working with sanitizing user input (bulk of the application) 
 - Abstract out the routes into their own Router files (user, grid, nutrition)
+- Edit .github/workflows/mongodb-service.yml to properly run GitHub Actions using a mongo container
 
 ### Checkpoint 4 tests
 The focus on checkpoint 3 was ensuring our server-side tests were passing. For checkpoint 4, we plan to add more server-side tests as we implement for features. However, we will be shifting some of our focus to starting to write the front-end test suite.
