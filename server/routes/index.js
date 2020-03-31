@@ -131,7 +131,7 @@ router.post('/calculate', function(req, res){
     if(activityLevel === "sedentary"){
       activityFactor = 1.2;
     }
-    else if(activityLevel === "lightly active"){
+    else if(activityLevel === "lightly active"){ 
       activityFactor = 1.375;
     }
     else if(activityLevel === "moderately active"){
@@ -173,6 +173,7 @@ router.post('/submit', function(req, res){
 
     // get user provided data
     let data = req.body.macros;
+
 
     // check if data sent is null
     if(!data || !data.prot || !data.carbs || !data.fats){

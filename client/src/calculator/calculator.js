@@ -91,6 +91,7 @@ class MacroCalculator extends React.Component{
             let weight = this.state.weight;
             let height = this.state.height;
             let activityLevel = this.state.activityLevel;
+            
 
 
             //  ensure state has all proper values (no neg, numbers not alpha, all values are entered, etc.)
@@ -139,6 +140,7 @@ class MacroCalculator extends React.Component{
                 }
             });
 
+            
         }
     }
 
