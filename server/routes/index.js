@@ -128,26 +128,26 @@ router.post('/calculate', function(req, res){
     // calculate the macros: https://www.healthline.com/nutrition/how-to-count-macros#step-by-step
     // get the activity factor based on activity level
     let activityFactor = 0;
-    if(activityLevel === " Sedentary"){
-        activityFactor = 1.2;
+    if(activityLevel === "sedentary"){
+      activityFactor = 1.2;
     }
-    else if(activityLevel === " Lightly Active"){
-        activityFactor = 1.375;
+    else if(activityLevel === "lightly active"){ 
+      activityFactor = 1.375;
     }
-    else if(activityLevel === " Moderately Active"){
+    else if(activityLevel === "moderately active"){
         activityFactor = 1.55;
     }
-    else if(activityLevel === " Very Active"){
-        activityFactor = 1.725;
+    else if(activityLevel === "very active"){
+      activityFactor = 1.725;
     }
-    else if(activityLevel === " Extra Active"){
-        activityFactor = 1.9;
+    else if(activityLevel === "extra active"){
+      activityFactor = 1.9;
     }
 
 
     // calculate caloriesPerDay based on gender
     let caloriesPerDay = ((10*weight) + (6.25*height) - (5*age))*activityFactor;
-    if(gender === 'Male'){
+    if(gender === 'male'){
         caloriesPerDay = caloriesPerDay + 5;
     }
     else{
@@ -155,9 +155,9 @@ router.post('/calculate', function(req, res){
     }
 
 
-    let macros = {  prot: caloriesPerDay*0.35,
-                    carbs: caloriesPerDay*0.35,
-                    fats: caloriesPerDay*0.30 }
+    let macros = {  prot: Math.round(caloriesPerDay*0.35),
+                    carbs: Math.round(caloriesPerDay*0.35),
+                    fats: Math.round(caloriesPerDay*0.30) }
 
     // respond with macros
     return res.json({macros: macros});
@@ -170,8 +170,14 @@ router.post('/submit', function(req, res){
       return res.json({submitError: 'You must be logged in to do that'});
     }
 
+
     // get user provided data
-    let data = req.body.data;
+    let data = req.body;
+    console.log(data)
+    console.log(data.prot)
+    console.log(data.carbs)
+    console.log(data.fats)
+
     // check if data sent is null
     if(!data || !data.prot || !data.carbs || !data.fats){
       return res.json({submitError: 'You must calculate macros before submitting'});

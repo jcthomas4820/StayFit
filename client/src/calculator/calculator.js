@@ -91,6 +91,7 @@ class MacroCalculator extends React.Component{
             let weight = this.state.weight;
             let height = this.state.height;
             let activityLevel = this.state.activityLevel;
+            
 
             //  ensure state has all proper values (no neg, numbers not alpha, all values are entered, etc.)
             //  if errors present, update in state
@@ -123,12 +124,6 @@ class MacroCalculator extends React.Component{
     }
         else if(button === "submit"){
 
-            //  error check: ensure values are calculated before submission, see if results contain "carbs"
-            if(!(this.state.results.includes("carbs"))){
-                //  display err message to user, prompt them to enter data and press calculate first
-                this.setState({errorMsg: 'You must calculate macros before submitting'});
-            }
-            else{
                 //  grab and store this macros into database
                 let macros = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
                  axios.post('http://localhost:3001/api/submit', macros).then((res) => {
@@ -143,7 +138,7 @@ class MacroCalculator extends React.Component{
                         this.setState({errorMsg: res.data});
                     }
                  });
-            }
+            
         }
     }
 
@@ -188,7 +183,7 @@ class MacroCalculator extends React.Component{
                     </label>
 
                     <br/>
-                    <div onClick={this.handleClick}>
+                    <div>
                         <input type="button" name="calculate" value="calculate" onClick={this.handleClick} />
                         <input type="button" name="submit" value="submit"  onClick={this.handleClick} />
                     </div>
