@@ -44,3 +44,6 @@ I ran into an issue with the express-session not persisting across axios calls. 
 
 #### Docker with MERN
 - https://medium.com/statuscode/dockerising-a-node-js-and-mongodb-app-d22047e2806f
+
+#### Kanich MongoDB Service Example (for Github Actions)
+- https://github.com/kaytwo/example-services/blob/master/.github/workflows/mongodb-service.yml
