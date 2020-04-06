@@ -163,7 +163,7 @@ router.post('/calculate-macros', function(req, res){
     return res.json({macros: macros});
 });
 
-router.post('/submit', function(req, res){
+router.post('/submit-macros', function(req, res){
 
      // check of user is logged in
     if (!req.session.user || req.session.user === undefined) {

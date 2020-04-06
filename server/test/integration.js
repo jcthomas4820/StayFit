@@ -448,7 +448,7 @@ describe('application', async () => {
                                                        userActivityLevel: "moderately active"});
 
             // submit macros
-            let result2 = await client.post('/api/submit', result.data.macros);
+            let result2 = await client.post('/api/submit-macros', result.data.macros);
             assert.equal(result2.data, 'Your macro values are saved');
       });
 
@@ -462,10 +462,10 @@ describe('application', async () => {
             let macros = { prot: null,
                            carbs: null,
                            fats: null}
-            result = await client.post('/api/submit', {macros: macros});
+            result = await client.post('/api/submit-macros', {macros: macros});
             assert.equal(result.data.submitError, 'You must calculate macros before submitting');
             // submit without any data
-            result = await client.post('/api/submit', {macros: null});
+            result = await client.post('/api/submit-macros', {macros: null});
             assert.equal(result.data.submitError, 'You must calculate macros before submitting');
 
       });
@@ -480,7 +480,7 @@ describe('application', async () => {
             let macros = { prot: 100,
                            carbs: 200,
                            fats: 300}
-            result = await client.post('/api/submit', {macros: macros});
+            result = await client.post('/api/submit-macros', {macros: macros});
             assert.equal(result.data.submitError, 'You must be logged in to do that');
 
         });
@@ -489,7 +489,7 @@ describe('application', async () => {
             let macros = { prot: 100,
                            carbs: 200,
                            fats: 300}
-            result = await client.post('/api/submit', {macros: macros});
+            result = await client.post('/api/submit-macros', {macros: macros});
             assert.equal(result.data.submitError, 'You must be logged in to do that');
 
         });
@@ -552,7 +552,7 @@ describe('application', async () => {
                                                             userActivityLevel: "moderately active"});
 
         // submit macros
-        await client.post('/api/submit', result.data.macros);
+        await client.post('/api/submit-macros', result.data.macros);
         let macrosSubmitted = [result.data.macros.prot, result.data.macros.carbs, result.data.macros.fats];
 
         // get submitted/saved macros data from database

@@ -128,7 +128,7 @@ class MacroCalculator extends React.Component{
 
             //  grab and store this macros into database
             let macros = {prot: this.state.prot, carbs: this.state.carbs, fats: this.state.fats}
-                axios.post('http://localhost:3001/api/submit', macros).then((res) => {
+                axios.post('http://localhost:3001/api/submit-macros', macros).then((res) => {
                 let err = res.data.submitError;
                 if(err){
                     this.setState({errorMsg: err})
