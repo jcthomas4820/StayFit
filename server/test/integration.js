@@ -142,7 +142,7 @@ describe('application', async () => {
     });
 
     describe('get-grid-data-test', async () => {
-      it('correctly pulls up user exercise data from database', async () => {
+      it('Loads user exercise data from database', async () => {
         // register a user
         let user = { username: getRandomString(10), password: getRandomString(10) };
         await client.post('/api/register', user);
@@ -493,6 +493,73 @@ describe('application', async () => {
             assert.equal(result.data.submitError, 'You must be logged in to do that');
 
         });
+
+    });
+
+    describe('get-macros-test', async () => {
+       it("does not allow an unregistered/registered-but-not-logged-in user to get macros", async () => {
+
+            // try to get macros without registering a user
+            let result = await client.get('/api/get-macros');
+            assert.equal(result.data.err, "The user is not logged in")
+
+            // register a user
+            let user = { username: getRandomString(10), password: getRandomString(10) };
+            await client.post('/api/register', user);
+
+            // logout the user
+            await client.post('api/logout', user);
+
+            // try to get macros
+            result = await client.get('/api/get-macros');
+            assert.equal(result.data.err, "The user is not logged in")
+       });
+
+      it("informs user if they are using the Tracker without calculating and submitting their daily macro goals", async () => {
+
+            // register a user
+            let user = { username: getRandomString(10), password: getRandomString(10) };
+            await client.post('/api/register', user);
+
+            // try to get macros
+            let result = await client.get('/api/get-macros');
+            assert.equal(result.data.err, "You have not calculated/submitted your daily goals yet. "
+                                        +  "You can calculate/submit them using the Macro Calculator.");
+            //calculate macros
+            await client.post('/api/calculate', {userGender: "male",
+                                                          userAge: 25,
+                                                          userWeight: 125,
+                                                          userHeight: 171,
+                                                          userActivityLevel: "moderately active"});
+
+            // try to get macros again
+            result = await client.get('/api/get-macros');
+            assert.equal(result.data.err, "You have not calculated/submitted your daily goals yet. "
+                                        +  "You can calculate/submit them using the Macro Calculator.");
+
+      });
+
+      it('Loads user\'s daily macro goals from the database', async () => {
+
+        // register a user
+        let user = { username: getRandomString(10), password: getRandomString(10) };
+        await client.post('/api/register', user);
+
+        //calculate macros
+        let result = await client.post('/api/calculate', {userGender: "male",
+                                                            userAge: 25,
+                                                            userWeight: 125,
+                                                            userHeight: 171,
+                                                            userActivityLevel: "moderately active"});
+
+        // submit macros
+        await client.post('/api/submit', result.data.macros);
+        let macrosSubmitted = [result.data.macros.prot, result.data.macros.carbs, result.data.macros.fats];
+
+        // get submitted/saved macros data from database
+        result = await client.get('/api/get-macros');
+        assert.deepEqual(result.data.macros, macrosSubmitted);
+      });
 
     });
 

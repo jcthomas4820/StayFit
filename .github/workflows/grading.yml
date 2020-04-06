@@ -101,6 +101,19 @@ jobs:
         env:
           CI: true
   grade-8:
+    name: get-macros tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npm ci
+      - run: npm run test-nutrition
+        env:
+          CI: true
+  grade-9:
     name: nutrition tests
     runs-on: ubuntu-latest
     steps:
