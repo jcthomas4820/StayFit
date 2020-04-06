@@ -9,7 +9,7 @@
     "test-logout": "npm run test -- -g 'logout-test'",
     "test-get-grid-data": "npm run test -- -g 'get-grid-data-test'",
     "test-save-grid-data": "npm run test -- -g 'save-grid-data-test'",
-    "test-calculate": "npm run test -- -g 'calculate-test'",
+    "test-calculate-macros": "npm run test -- -g 'calculate-macros-test'",
     "test-submit": "npm run test -- -g 'submit-test'",
     "test-get-macros": "npm run test -- -g 'get-macros-test'",
     "test-nutrition": "npm run test -- -g 'nutrition-test'",

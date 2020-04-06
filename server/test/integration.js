@@ -290,7 +290,7 @@ describe('application', async () => {
       return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
-    describe('calculate-test', async () => {
+    describe('calculate-macros-test', async () => {
       it('allows user to store their gender', async () => {
 
         // login a user
@@ -298,7 +298,7 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         // gender err
-        let result = await client.post('/api/calculate', {userGender: '',
+        let result = await client.post('/api/calculate-macros', {userGender: '',
                                                            userAge: getRandomInt(1, 101),
                                                            userHeight: getRandomInt(120, 201),
                                                            userWeight: getRandomInt(70, 181),
@@ -314,14 +314,14 @@ describe('application', async () => {
           await client.post('/api/register', user);
 
           // age err
-          let result = await client.post('/api/calculate', { userGender: "female",
+          let result = await client.post('/api/calculate-macros', { userGender: "female",
                                                              userAge: "",
                                                              userHeight: getRandomInt(120, 201),
                                                              userWeight: getRandomInt(70, 120),
                                                              userActivityLevel: "sedentary"});
           assert.equal(result.data.calcError, 'You must enter an age to calculate the macros');
 
-          result= await client.post('/api/calculate', { userGender: 'female',
+          result= await client.post('/api/calculate-macros', { userGender: 'female',
                                                           userAge: -50,
                                                           userHeight: getRandomInt(120, 201),
                                                           userWeight: getRandomInt(50, 130),
@@ -336,14 +336,14 @@ describe('application', async () => {
         let user = { username: getRandomString(10), password: getRandomString(10) };
         await client.post('/api/register', user);
         // height err
-        let result = await client.post('/api/calculate', { userGender: 'male',
+        let result = await client.post('/api/calculate-macros', { userGender: 'male',
                                                        userAge: getRandomInt(10, 101),
                                                        userHeight: "",
                                                        userWeight: getRandomInt(70, 181),
                                                        userActivityLevel: "moderately active"});
         assert.equal(result.data.calcError, 'You must enter a height (cm) to calculate the macros');
 
-        result = await client.post('/api/calculate', { userGender: 'male',
+        result = await client.post('/api/calculate-macros', { userGender: 'male',
                                                        userAge: getRandomInt(10, 101),
                                                        userHeight: -20,
                                                        userWeight: getRandomInt(70, 181),
@@ -359,14 +359,14 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         // weight err
-        let result = await client.post('/api/calculate', {userGender: 'male',
+        let result = await client.post('/api/calculate-macros', {userGender: 'male',
                                                            userAge: getRandomInt(1, 101),
                                                            userHeight: getRandomInt(120, 201),
                                                            userWeight: "",
                                                            userActivityLevel: "lightly active"});
         assert.equal(result.data.calcError, 'You must enter a weight (kg) to calculate the macros');
 
-        result = await client.post('/api/calculate', {userGender: 'female',
+        result = await client.post('/api/calculate-macros', {userGender: 'female',
                                                            userAge: getRandomInt(1, 101),
                                                            userHeight: getRandomInt(120, 201),
                                                            userWeight: -90,
@@ -381,7 +381,7 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         // activity level err
-        let result = await client.post('/api/calculate', {userGender: 'male',
+        let result = await client.post('/api/calculate-macros', {userGender: 'male',
                                                            userAge: getRandomInt(1, 101),
                                                            userHeight: getRandomInt(120, 201),
                                                            userWeight: getRandomInt(70, 181),
@@ -395,7 +395,7 @@ describe('application', async () => {
             await client.post('/api/register', user);
 
             // correct calculation of prot, carbs, and fats for Male
-            let result = await client.post('/api/calculate', { userGender: "male",
+            let result = await client.post('/api/calculate-macros', { userGender: "male",
                                                                userAge: 25,
                                                                userWeight: 125,
                                                                userHeight: 171,
@@ -417,7 +417,7 @@ describe('application', async () => {
 
             await client.post('/api/register', user);
             // correct calculation of prot, carbs, and fats for Female
-            result = await client.post('/api/calculate', { userAge: 22,
+            result = await client.post('/api/calculate-macros', { userAge: 22,
                                                            userGender: "female",
                                                            userWeight: 50,
                                                            userHeight: 160,
@@ -441,7 +441,7 @@ describe('application', async () => {
             await client.post('/api/register', user);
 
             // calculate and submit macros
-            let result = await client.post('/api/calculate', {userGender: 'female',
+            let result = await client.post('/api/calculate-macros', {userGender: 'female',
                                                        userAge: 22,
                                                        userHeight: 160,
                                                        userWeight: 55,
@@ -493,7 +493,6 @@ describe('application', async () => {
             assert.equal(result.data.submitError, 'You must be logged in to do that');
 
         });
-
     });
 
     describe('get-macros-test', async () => {
@@ -526,7 +525,7 @@ describe('application', async () => {
             assert.equal(result.data.err, "You have not calculated/submitted your daily goals yet. "
                                         +  "You can calculate/submit them using the Macro Calculator.");
             //calculate macros
-            await client.post('/api/calculate', {userGender: "male",
+            await client.post('/api/calculate-macros', {userGender: "male",
                                                           userAge: 25,
                                                           userWeight: 125,
                                                           userHeight: 171,
@@ -546,7 +545,7 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         //calculate macros
-        let result = await client.post('/api/calculate', {userGender: "male",
+        let result = await client.post('/api/calculate-macros', {userGender: "male",
                                                             userAge: 25,
                                                             userWeight: 125,
                                                             userHeight: 171,

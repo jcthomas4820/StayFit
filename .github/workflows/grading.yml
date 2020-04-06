@@ -74,7 +74,7 @@ jobs:
           CI: true
 
   grade-6:
-    name: calculate tests
+    name: calculate-macros tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

@@ -86,7 +86,7 @@ router.post('/register', function (req, res) {
   });
 });
 
-router.post('/calculate', function(req, res){
+router.post('/calculate-macros', function(req, res){
     // check if user is logged in
     if (!req.session.user || req.session.user === undefined) {
         return res.json({calcError: 'You must be logged in to do that'});
