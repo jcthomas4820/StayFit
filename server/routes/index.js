@@ -253,4 +253,24 @@ router.post('/save-grid-data', function(req, res){
         return res.json('Your exercise values are saved');
     });
 });
+
+router.get('/get-macros', function(req, res){
+    if (!req.session.user || req.session.user === undefined) {
+      return res.json({err: 'The user is not logged in'});
+    }
+
+    User.findOne( {_id: req.session.user} )
+        .then ( (user) => {
+            if(user){
+                if(user.macros == null){
+                    return res.json({err: "You have not calculated/submitted your daily goals yet. "
+                    + "You can calculate/submit them using the Macro Calculator."});
+                }
+                return res.json({macros: [user.macros.prot, user.macros.carbs, user.macros.fats]});
+            }
+            return res.json({err: "User not found"});
+        })
+        .catch((err) => { console.log(err)});
+
+});
 module.exports = router;
