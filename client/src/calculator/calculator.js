@@ -120,6 +120,7 @@ class MacroCalculator extends React.Component{
                 this.setState({prot: macros.prot})
                 this.setState({fats: macros.fats})
                 this.setState({results: this.state.carbs + " g carbs, " + this.state.prot + " g protein, " + this.state.fats + " g fats"})
+                this.setState({errorMsg: "Press Submit button below to save your daily macro goals"});
             }
         });
     }
