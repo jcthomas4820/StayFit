@@ -1,4 +1,6 @@
 import React from "react"
+import axios from 'axios'
+axios.defaults.withCredentials = true;
 
 class NutritionTracker extends React.Component{
 
@@ -19,6 +21,17 @@ class NutritionTracker extends React.Component{
 
     componentWillMount(){
         //  load relevant data from database
+        axios.get('http://localhost:3001/api/get-macros').then((res) => {
+            let err = res.data.err;
+            if(err){
+                this.setState({errMsg: err});
+            }
+            else{
+                let tempList = res.data.macros;
+                if (tempList) { this.setState({ goalValues: tempList}); }
+            }
+        });
+
         //  load list from database, assign state as follows:
             //  let tempList=[x, x, x]   --> this is the values from the database stored as a list
             //  this.setState({ todayValues: tempList })      --> save as the appropriate lists for todayValues and goalValues
