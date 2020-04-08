@@ -1,4 +1,7 @@
 import React from "react"
+import axios from 'axios'
+axios.defaults.withCredentials = true;
+
 
 class NutritionTracker extends React.Component{
 
@@ -36,6 +39,28 @@ class NutritionTracker extends React.Component{
         
         //  api operations, set apiValues in state
         //  if err, this.setState({errMsg: err})
+
+        let recipeObject = {recipe: this.state.userInput}
+
+        axios.post('http://localhost:3001/api/get-recipe-results', recipeObject).then((res) => {
+                
+                /*
+                let err = res.data.submitError;
+                if(err){
+                    this.setState({errorMsg: err})
+                }
+                else{
+                    //  clear all values
+                    this.clearForm()
+                    //  let user know values were saved
+                    this.setState({errorMsg: res.data});
+                }
+                */
+
+                console.log(res.data.fats)
+                console.log(res.data.carbs)
+                console.log(res.data.protein)
+        });
 
     }
 

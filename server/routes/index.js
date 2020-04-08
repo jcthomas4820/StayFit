@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
 const Exercise = require('../models/exercise')
+const fetch = require('node-fetch')
+
 
 // Password encryption 
 const bcrypt = require('bcrypt');
@@ -253,4 +255,70 @@ router.post('/save-grid-data', function(req, res){
         return res.json('Your exercise values are saved');
     });
 });
+
+
+
+router.post('/get-recipe-results', function(req, res){
+
+  //  error checking
+    //  make sure its not null
+    //  make sure its a list of ingredients
+  
+  //  curl -d @recipe.json -H "Content-Type: application/json" "https://api.edamam.com/api/nutrition-details?app_id=${YOUR_APP_ID}&app_key=${YOUR_APP_KEY}"
+
+
+  let recipe = req.body.recipe        //  recipe user inputted
+  let _ingList = recipe.split(/\r?\n/);              //  split into an ingredient list
+
+  app_key = require('../config/keys.js').api_app_key
+  app_id = require('../config/keys.js').api_app_id
+
+  const url = "https://api.edamam.com/api/nutrition-details?app_id=" + app_id + "&app_key=" + app_key
+  const data = {
+    "title": "example title",
+    "ingr": _ingList
+  }
+    
+  //  https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    //console.log('Success:', data);
+  
+    //  extract data from api call
+    let _fats = data.totalNutrients.FAT.quantity
+    let _carbs = data.totalNutrients.CHOCDF.quantity
+    let _protein = data.totalNutrients.PROCNT.quantity
+ 
+    _fats = Math.round(_fats)
+    _carbs = Math.round(_carbs)
+    _protein = Math.round(_protein)
+
+    return res.json({fats: _fats, carbs: _carbs, protein: _protein});
+
+  })
+  .catch((error) => {
+    //console.error('Error:', error);
+  
+  
+    
+  
+  });
+  
+
+
+
+})
+
+
+
+
+
 module.exports = router;
