@@ -1,7 +1,5 @@
 import React from "react"
-import axios from 'axios'
-axios.defaults.withCredentials = true;
-
+import Navbar from '../layouts/navbar'
 
 class NutritionTracker extends React.Component{
 
@@ -76,6 +74,7 @@ class NutritionTracker extends React.Component{
 
         return(
             <div className="NutritionTracker">
+                <Navbar />
                 <h1>Nutrition Tracker</h1>
                 <p>{this.state.errMsg}</p>
                 <div className="DailyGoals">
