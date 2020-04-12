@@ -44,6 +44,7 @@ class LoginPage extends React.Component{
 
     handleClick(e){
         let id = e.target.id
+        console.log(id);
         if (id === "login"){
             const returningUser = {
                 username: this.state.username,
@@ -80,10 +81,6 @@ class LoginPage extends React.Component{
                     this.setState({loginError: false});
                 }
             });
-        }
-        else if (id === "registerLink"){
-            console.log("here!");
-            this.setState({needsToRegister: true});
         }
     }
 

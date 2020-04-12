@@ -29,10 +29,6 @@ class Grid extends React.Component{
 
     componentWillMount(){
         // load each row data from databse for each row, save in state
-            // for example:
-                //  load list from database, assign state as follows:
-                //  let tempList=["bicep curl", "25lb 4s10r", "3/24/20"]   --> this is the values from the database stored as a list
-                //  this.setState({ row0List: tempList })      --> save as the appropriate row's list
         axios.get('http://localhost:3001/api/get-grid-data').then((res) => {
             let err = res.data.getGridError;
 

@@ -43,8 +43,7 @@ class Navbar extends React.Component{
                 <NavHeader>
                     <Logo><Link to='/home'>StayFit!</Link></Logo>
                     <CustomLink><Link to='/grid'>Exercise Grid</Link></CustomLink>
-                    <CustomLink><Link to='/calculator'>Macro Calculator</Link></CustomLink>
-                    <CustomLink><Link to='/tracker'>Nutrition Tracker</Link></CustomLink>
+                    <CustomLink><Link to='/planner'>Meal Planner</Link></CustomLink>
                     <CustomLink><Link to='/logout' onClick={this.handleLogout}>Logout</Link></CustomLink>
                 </NavHeader>
             </Nav>

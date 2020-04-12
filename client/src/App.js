@@ -3,6 +3,9 @@ import LoginPage from './logout/login'
 import HomePage from './login/selection'
 import MacroCalculator from './calculator/calculator'
 import NutritionTracker from './tracker/tracker'
+import MealPlanner from './mealplanner/mealplanner'
+import MealPlannerGenerate from './mealplanner/mealplannergenerate'
+import MealPlannerView from './mealplanner/mealplannerview'
 import Grid from './grid/grid'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Route from 'react-router-dom/Route'
@@ -18,9 +21,10 @@ class App extends Component {
             <Route path='/' exact component={LoginPage} /> 
             <Route path='/logout' component={LoginPage} />
             <Route path='/home' component={HomePage} />   
-            <Route path='/calculator' component={MacroCalculator} />  
             <Route path='/grid' component={Grid} />  
-            <Route path='/tracker' component={NutritionTracker} />  
+            <Route path='/planner' component={MealPlanner} />
+            <Route path='/planner-generate' component={MealPlannerGenerate} />
+            <Route path='/planner-view' component={MealPlannerView} />
           </div>
         </Router>
 

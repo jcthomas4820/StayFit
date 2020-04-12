@@ -58,3 +58,6 @@ I ran into an issue with the express-session not persisting across axios calls. 
 #### Tables in React
 - Documentation for version 6: https://github.com/tannerlinsley/react-table/tree/v6#example 
 - Quick examples I used to get started with it: https://www.javatpoint.com/react-table
+
+#### Styled-components to revamp the UI
+- Documentation: https://styled-components.com/docs

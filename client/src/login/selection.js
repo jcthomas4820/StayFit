@@ -62,9 +62,10 @@ class HomePage extends React.Component{
                         </Column>
                         <Column flexGrow={1} horizontal='center'>
                             <Header2> Meal Planner </Header2>
-                            <Body> I don't know if we're doing this one or not!! </Body>
-                            <Body> I don't know if we're doing this one or not!! </Body>
-                            <Body> I don't know if we're doing this one or not!! </Body>
+                            <Body> Use the meal planner to generate a meal plan for your day! </Body>
+                            <Body> Start by calculating your required calorie intake for </Body>
+                            <Body> each day. Then, we will generate a custom meal plan for you. </Body>
+                            <Body> You will then be able to view your meal plan and its nutrition info! </Body>
                         </Column>
                     </Row>
                 </Column>
