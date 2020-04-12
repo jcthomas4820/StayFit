@@ -258,65 +258,132 @@ router.post('/save-grid-data', function(req, res){
 
 
 
-router.post('/get-recipe-results', function(req, res){
+router.post('/get-calorie-rec', function(req, res){
 
-  //  error checking
-    //  make sure its not null
-    //  make sure its a list of ingredients
-  
-  //  curl -d @recipe.json -H "Content-Type: application/json" "https://api.edamam.com/api/nutrition-details?app_id=${YOUR_APP_ID}&app_key=${YOUR_APP_KEY}"
-
-
-  let recipe = req.body.recipe        //  recipe user inputted
-  let _ingList = recipe.split(/\r?\n/);              //  split into an ingredient list
-
-  app_key = require('../config/keys.js').api_app_key
-  app_id = require('../config/keys.js').api_app_id
-
-  const url = "https://api.edamam.com/api/nutrition-details?app_id=" + app_id + "&app_key=" + app_key
-  const data = {
-    "title": "example title",
-    "ingr": _ingList
+  //  error check, check if empty req
+  if (req.body == null){
+    return res.json({errorMsg: "Server received an empty request..."})
   }
-    
-  //  https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 
+  //  extract user variables
+  let gender = req.body.gender
+  let weight = req.body.weight
+  let height = req.body.height
+  let age = req.body.age
+  let activity_level = req.body.activity_level
+  let BMR = 0
+
+  //  error check for weight, height, age
+  if (weight == null || weight <= 0){
+    return res.json({errorMsg: "Invalid weight entered"})
+  }
+  else if (height == null || height <= 0){
+    return res.json({errorMsg: "Invalid height entered"})
+  }
+  else if (age == null || age <= 0){
+    return res.json({errorMsg: "Invalid age entered"})
+  }
+
+  //  calculate BMR
+  if (gender === "male"){
+    BMR = 66 + (6.3*weight) + (12.9*height) - (6.8*age)
+  }
+  else if (gender === "female"){
+    BMR = 655 + (4.3*weight) + (4.7*height) - (4.7*age)
+  }
+  else{
+    //  return error message
+    return res.json({errorMsg: "Invalid gender entered"})
+  }
+
+
+  let factor = 0
+
+  switch(activity_level){
+
+    case "sedentary":
+      factor = 1.2
+      break;
+    case "lightly active":
+      factor = 1.375
+      break;
+    case "moderatively active":
+      factor = 1.55
+      break;
+    case "very active":
+      factor = 1.725
+      break;
+    case "extra active":
+      factor = 1.9
+      break;
+    default:
+      //  return error message
+      return res.json({errorMsg: "Invalid activity level entered"})
+  }
+
+  let calorie_rec = BMR*factor
+  
+  //  return the caloric need back to the user
+  return res.json({caloric_need: calorie_rec})
+
+})
+
+
+router.post('/get-meals', function(req, res){
+
+  /*
+  //  error check, make sure calories calculated before
+  if (req.body == null){
+    return res.json({errorMsg: "Calculate your calories to use the meal planner!"})
+  }
+  */
+
+  //  need to send null if diet or exclude?????
+
+
+  //  extract user data
+  let _timeFrame = req.body.timeFrame
+  let _targetCalories = req.body.targetCalories
+  let _diet = req.body.diet
+  let _exclude = req.body.exclude
+
+  //  check validity of user data (e.g. comma sep list for _exclude)
+
+  _timeFrame = "day"
+  _targetCalories = 2000
+  _diet = "vegetarian"
+  _exclude = "shellfish, olives"
+
+
+  //  url of the api
+    //  edit for null values
+  const url = "https://api.spoonacular.com/mealplanner/generate?apiKey="
+  
+
+  //  send request to API
   fetch(url, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
   })
   .then((response) => response.json())
   .then((data) => {
-    //console.log('Success:', data);
+    console.log('Success:', data);
   
-    //  extract data from api call
-    let _fats = data.totalNutrients.FAT.quantity
-    let _carbs = data.totalNutrients.CHOCDF.quantity
-    let _protein = data.totalNutrients.PROCNT.quantity
- 
-    _fats = Math.round(_fats)
-    _carbs = Math.round(_carbs)
-    _protein = Math.round(_protein)
-
-    return res.json({fats: _fats, carbs: _carbs, protein: _protein});
 
   })
   .catch((error) => {
-    //console.error('Error:', error);
+    console.error('Error:', error);
   
   
     
   
   });
-  
 
 
 
 })
-
 
 
 
