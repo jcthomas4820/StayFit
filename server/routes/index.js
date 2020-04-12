@@ -203,13 +203,8 @@ router.get('/get-grid-data', function(req, res){
 
             let data = [];
             for(i = 0; i < exercises.length; i++){
-              let subList = [];
-              subList.push(exercises[i].name);
-              subList.push(exercises[i].progress);
-              subList.push(exercises[i].date);
-
-              let row = exercises[i].exerciseNumber;
-              data[row] = subList;
+              let entry = { name: exercises[i].name, date: exercises[i].date, description: exercises[i].progress };
+              data.push(entry);
             }
             return res.json({exerciseData: data});
         })
@@ -225,32 +220,29 @@ router.post('/save-grid-data', function(req, res){
 
     // get user provided data
     let name = req.body.exerciseName;
-    let progress = req.body.exerciseProgress;
+    let description = req.body.exerciseDescription;
     let date = req.body.exerciseDate;
-    let exerciseNumber = req.body.exerciseNumber;
-
-    // check if exercise number is sent
-    if(exerciseNumber < 0 || exerciseNumber > 2){
-        return res.json({saveGridError: 'Invalid exercise number'});
-    }
-    // check if the data contains all 3 components: name, progress, and date
+ 
+    // check if the data contains all 3 components: name, description, and date
     if(!name || name === ""){
         return res.json({saveGridError: 'You must provide a name for the exercise'})
-    }
-    if(!progress || progress === ""){
-        return res.json({saveGridError: 'You must provide the progress of the exercise'})
     }
     if(!date){
         return res.json({saveGridError: 'You must provide a date'});
     }
+    if(!description || description === ""){
+      return res.json({saveGridError: 'You must provide the description of the exercise'})
+    }
 
     // save data to DB
-    Exercise.findOneAndUpdate({username: (req.session.user).toString(), exerciseNumber: exerciseNumber},
-      {$set : {name: name, progress: progress, date: date}},{useFindAndModify: false, upsert: true}, (error, doc) => {
-        if(error){
-            return res.json(error);
-        }
-        return res.json('Your exercise values are saved');
-    });
+    const newExercise = new Exercise (
+      {username: (req.session.user).toString(), 
+       name: name, progress: description, date: date}
+    );
+    newExercise.save()
+        .then( (exercise) => {
+          return res.json('Your exercise values are saved');
+        })
+        .catch( (err) => { console.log(err); });
 });
 module.exports = router;

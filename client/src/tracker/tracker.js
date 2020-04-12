@@ -1,4 +1,5 @@
 import React from "react"
+import Navbar from '../layouts/navbar'
 
 class NutritionTracker extends React.Component{
 
@@ -51,6 +52,7 @@ class NutritionTracker extends React.Component{
 
         return(
             <div className="NutritionTracker">
+                <Navbar />
                 <h1>Nutrition Tracker</h1>
                 <p>{this.state.errMsg}</p>
                 <div className="DailyGoals">

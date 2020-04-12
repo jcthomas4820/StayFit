@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LoginPage from './logout/login'
-import SelectionPage from './login/selection'
+import HomePage from './login/selection'
 import MacroCalculator from './calculator/calculator'
 import NutritionTracker from './tracker/tracker'
 import Grid from './grid/grid'
@@ -17,7 +17,7 @@ class App extends Component {
           <div className="App">
             <Route path='/' exact component={LoginPage} /> 
             <Route path='/logout' component={LoginPage} />
-            <Route path='/selection' component={SelectionPage} />   
+            <Route path='/home' component={HomePage} />   
             <Route path='/calculator' component={MacroCalculator} />  
             <Route path='/grid' component={Grid} />  
             <Route path='/tracker' component={NutritionTracker} />  
