@@ -72,18 +72,18 @@ class MealPlannerGenerate extends React.Component{
     }
 
     componentWillMount() {
-    /*
+    
         //  perform backend operation to get the user's calories
-        axios.get(URL TO GET CALS).then((res) => {
-            let err = res.data.getErr;
+        axios.get('http://localhost:3001/api/get-cal-rec').then((res) => {
+            
+            let err = res.data.errMsg;
 
-            if (err) { this.setState({genErr: err}); } // possible error msg: you haven't calculated cals yet ?
+            if (err) { this.setState({genErr: err}); }
             else { 
                 // update the calories
                 this.setState({userCals: res.data.userCals});
             } 
         });
-    */
     }
 
 //  note: radio buttons only allow one selection per name attribute

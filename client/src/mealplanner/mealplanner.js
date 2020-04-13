@@ -87,18 +87,24 @@ class MealPlanner extends React.Component{
             }
 
             // send user entered data to the server to calculate the required data
-            /* axios.post('URL HERE', userData).then((res) => {
+            axios.post('http://localhost:3001/api/save-cal-rec', userData).then((res) => {
                 // grab data returned by server
 
+                let err = res.data.errMsg
+                
                 if (err) {
+                    this.setState({cals: ""});
+                    this.setState({calMsg: ""})
                     this.setState({errorMsg: err});
                 }
                 else {
                     // update state to reflect values calculated for calories
-                    this.setState({cals: WHATEVER THE RESULT WAS});
-                    this.setState({calMsg: Your daily calorie intake should be: + this.state.cals})
+                    this.setState({cals: res.data.cals});
+                    this.setState({calMsg: "Your daily calorie intake should be: " + this.state.cals})
+                    this.setState({errorMsg: ""})
                 }
-            }); */
+                
+            }); 
         }
         else if (id === "generate") {
             this.setState({generate: true});

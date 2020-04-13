@@ -1,5 +1,6 @@
 import React from "react"
 import Navbar from '../layouts/navbar'
+import axios from 'axios'
 
 class NutritionTracker extends React.Component{
 
