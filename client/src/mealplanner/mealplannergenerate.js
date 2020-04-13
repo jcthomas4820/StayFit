@@ -55,19 +55,21 @@ class MealPlannerGenerate extends React.Component{
         let id = e.target.id
         
         if (id === "generate") {
-        /*
+        
             let data = {cals: this.state.userCals, timeFrame: this.state.timeFrame, diet: this.state.diet, exclude: this.state.exclude}
             //  perform backend generate operation
-            axios.post(URL TO POST GENERATE, data).then((res) => {
+            axios.post('http://localhost:3001/api/generate-meal-plan', data).then((res) => {
                 let err = res.data.genErr;
 
                 if (err) { this.setState({genErr: err}); }
+                
                 else { 
                     // allow them to redirect to view the meal plan
                     this.setState({canView: true});
                 } 
+                
             });
-       */
+       
         }
     }
 

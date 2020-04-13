@@ -474,10 +474,13 @@ router.get('/get-cal-rec', function(req,res){
 
   Rec.findOne( {username: (req.session.user).toString()} )
     .then((data) => {
+      if (data == null){
+        return res.json({errMsg: "You need to calculate your recommended calories"})
+      }
       let calorie_recommendation = data.cal_rec
       return res.json({userCals: calorie_recommendation})
     })
-    .catch((err) => { return res.json({errMsg: "You need to calculate your recommended calories"}) });
+    .catch((err) => { console.log("error when retrieving calories") });
 
 })
 
@@ -490,12 +493,150 @@ router.post('/generate-meal-plan', function(req, res){
   }
 
   //  use find one to see if they exist in database
+  Rec.findOne( {username: (req.session.user).toString()} )
+    .then((data) => {
+      //  if the user does not exist in db, they need to calculate 
+      if (data == null){
+        return res.json({errMsg: "You need to calculate your recommended calories"})
+      }
+    })
+    .catch((err) => { console.log("error when retrieving calories") });
 
-  //  make sure list is comma separated???
+
+  //  extract user entered data
+  let data = req.body
+  let cals = data.cals
+  let timeFrame = data.timeFrame
+  let diet = data.diet
+  let exclude = data.exclude
+
+  let url = 'https://api.spoonacular.com/mealplanner/generate?apiKey=fe018186f98a4236b46286e507ac061a'
+
+  let calsUrl = '&targetCalories=' + cals
+  let timeFrameUrl = '&timeFrame=' + timeFrame
+  let dietUrl = ''
+  let excludeUrl = ''
+
+  //  if user enters exclude list, make sure it is comma separated
+  //  clean up if necessary
+
+  //  check if user entered optional values
+  if (diet !== ''){
+    dietUrl = '&diet='+diet
+  }
+  if (exclude !== ''){
+    excludeUrl = '&exclude='+exclude
+  }
+
+  //  combine to create url for API call
+  url = url + calsUrl + timeFrameUrl + dietUrl + excludeUrl
+
+
+
+  /*
+  let apiResponse = {
+    "meals": [
+        {
+            "id": 655219,
+            "title": "Peanut Butter And Chocolate Oatmeal",
+            "image": "Peanut-Butter-And-Chocolate-Oatmeal-655219.jpg",
+            "imageUrls": [
+                "Peanut-Butter-And-Chocolate-Oatmeal-655219.jpg"
+            ],
+            "readyInMinutes": 45,
+            "servings": 1
+        },
+        {
+            "id": 649931,
+            "title": "Lentil Salad With Vegetables",
+            "image": "Lentil-Salad-With-Vegetables-649931.jpg",
+            "imageUrls": [
+                "Lentil-Salad-With-Vegetables-649931.jpg"
+            ],
+            "readyInMinutes": 45,
+            "servings": 4
+        },
+        {
+            "id": 632854,
+            "title": "Asian Noodles",
+            "image": "Asian-Noodles-632854.jpg",
+            "imageUrls": [
+                "Asian-Noodles-632854.jpg"
+            ],
+            "readyInMinutes": 45,
+            "servings": 4
+        }
+    ],
+    "nutrients": {
+        "calories": 1735.81,
+        "carbohydrates": 235.17,
+        "fat": 69.22,
+        "protein": 55.43
+    }
+}
+
+
+  //  save nutrients from apiResponse
+  let _nutrients = []
+  _nutrients.push((apiResponse.nutrients).calories)
+  _nutrients.push((apiResponse.nutrients).carbohydrates)
+  _nutrients.push((apiResponse.nutrients).fat)
+  _nutrients.push((apiResponse.nutrients).protein)
+
+  //  save all meals from apiResponse
+  let _meals = apiResponse.meals
+
+  Rec.findOneAndUpdate( {username: (req.session.user).toString()}, 
+    { "$set": { meals: _meals, mealplan_nutrients: _nutrients}}
+  ).then(
+    console.log("Success")
+  )
+  */
+
+  /*
+  //  use find one to see if they exist in database
+  Rec.findOne( {username: (req.session.user).toString()} )
+    .then((data) => {
+      console.log(data)
+    })
+    .catch((err) => { console.log("error when retrieving calories") });
+  */
+
+  
+    //  send request to API
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((response) => response.json())
+  .then((apiResponse) => {
+    
+    //  save nutrients from apiResponse
+  let _nutrients = []
+  _nutrients.push((apiResponse.nutrients).calories)
+  _nutrients.push((apiResponse.nutrients).carbohydrates)
+  _nutrients.push((apiResponse.nutrients).fat)
+  _nutrients.push((apiResponse.nutrients).protein)
+
+  //  save all meals from apiResponse
+  let _meals = apiResponse.meals
+
+  Rec.findOneAndUpdate( {username: (req.session.user).toString()}, 
+    { "$set": { meals: _meals, mealplan_nutrients: _nutrients}}
+  ).then(
+    console.log("Successfully Saved Meal Plan")
+  )
+
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+  
+  
 
 })
-
-
 
 
 module.exports = router;
