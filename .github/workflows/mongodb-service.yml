@@ -14,11 +14,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - run: npm ci
-        working-directory: ./mongodb
       - run: cd server && npm ci
       - run: cd server && npm test
-        working-directory: ./mongodb
         env: 
           MONGODB_HOST: localhost
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }} # get randomly assigned published port
