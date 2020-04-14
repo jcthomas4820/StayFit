@@ -13,7 +13,7 @@ jobs:
       with:
         node-version: 12.x
     - run: npm ci
-    - run: cd server && npm run test-register
+    - run: cd server && npm install cross-env && npm run test-register
       env:
         CI: true
 
