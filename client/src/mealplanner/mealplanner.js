@@ -87,7 +87,7 @@ class MealPlanner extends React.Component{
             }
 
             // send user entered data to the server to calculate the required data
-            axios.post('http://localhost:3001/api/save-cal-rec', userData).then((res) => {
+            axios.post('http://localhost:3001/cal/save-cal-rec', userData).then((res) => {
                 // grab data returned by server
 
                 let err = res.data.errMsg

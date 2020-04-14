@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import LoginPage from './logout/login'
 import HomePage from './login/selection'
-import MacroCalculator from './calculator/calculator'
-import NutritionTracker from './tracker/tracker'
 import MealPlanner from './mealplanner/mealplanner'
 import MealPlannerGenerate from './mealplanner/mealplannergenerate'
 import MealPlannerView from './mealplanner/mealplannerview'

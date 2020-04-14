@@ -39,7 +39,7 @@ class MealPlannerGenerate extends React.Component{
                 //  let nutrition = res.data.nutritionInfo
         // set the states of all of this info 
 
-        axios.get('http://localhost:3001/api/get-meal-plan').then((res) => {
+        axios.get('http://localhost:3001/meal/get-meal-plan').then((res) => {
             let err = res.data.errMsg;
 
             if(err){
