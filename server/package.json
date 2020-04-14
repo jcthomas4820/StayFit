@@ -32,7 +32,7 @@
   "devDependencies": {
     "axios": "^0.19.2",
     "axios-cookiejar-support": "^0.5.1",
-    "cross-env": "^7.0.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.10.0",
