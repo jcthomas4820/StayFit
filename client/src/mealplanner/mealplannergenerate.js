@@ -59,7 +59,7 @@ class MealPlannerGenerate extends React.Component{
             let data = {cals: this.state.userCals, timeFrame: this.state.timeFrame, diet: this.state.diet, exclude: this.state.exclude}
             //  perform backend generate operation
             axios.post('http://localhost:3001/api/generate-meal-plan', data).then((res) => {
-                let err = res.data.genErr;
+                let err = res.data.errMsg;
 
                 if (err) { this.setState({genErr: err}); }
                 
