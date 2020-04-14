@@ -40,7 +40,6 @@ if (process.env.NODE_ENV !== 'test') {
 //  .once('open', _ => { console.log('Database connected!') })
 //  .on('error', err => { console.error('Connection error: ', err) });
 ///
-const promiseRetry = require('promise-retry')
 
 const options = {
   useNewUrlParser: true,
