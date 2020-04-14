@@ -51,94 +51,43 @@ class MealPlannerGenerate extends React.Component {
   handleClick(e) {
     let id = e.target.id;
 
-
     if (id === "generate") {
-        switch(name){
-            case "diet":
-                this.setState({diet: value})
-                break
-            case "exclude":
-                this.setState({exclude: value})
-                break
-            default:
-                return
-        }
+      let data = {
+        cals: this.state.userCals,
+        timeFrame: this.state.timeFrame,
+        diet: this.state.diet,
+        exclude: this.state.exclude,
+      };
+      //  perform backend generate operation
+      axios
+        .post("http://localhost:3001/meal/generate-meal-plan", data)
+        .then((res) => {
+          let err = res.data.errMsg;
 
+          if (err) {
+            this.setState({ genErr: err });
+          } else {
+            // allow them to redirect to view the meal plan
+            this.setState({ canView: true });
+          }
+        });
     }
   }
 
-    //  function used to handle calculate calories
-    handleClick(e){
-        let id = e.target.id
-        
-        if (id === "generate") {
-        
-            let data = {cals: this.state.userCals, timeFrame: this.state.timeFrame, diet: this.state.diet, exclude: this.state.exclude}
-            //  perform backend generate operation
-            axios.post('http://localhost:3001/meal/generate-meal-plan', data).then((res) => {
-                let err = res.data.errMsg;
-
-                if (err) { this.setState({genErr: err}); }
-                
-                else { 
-                    // allow them to redirect to view the meal plan
-                    this.setState({canView: true});
-                } 
-                
-            });
-        }
-    }
-
   componentWillMount() {
-        //  perform backend operation to get the user's calories
-        axios.get('http://localhost:3001/cal/get-cal-rec').then((res) => {
-            
-            let err = res.data.errMsg;
+    //  perform backend operation to get the user's calories
+    axios.get("http://localhost:3001/cal/get-cal-rec").then((res) => {
+      let err = res.data.errMsg;
 
-            if (err) { this.setState({genErr: err}); }
-            else { 
-                // update the calories
-                this.setState({userCals: res.data.userCals});
-            } 
-        });
-    }
+      if (err) {
+        this.setState({ genErr: err });
+      } else {
+        // update the calories
+        this.setState({ userCals: res.data.userCals });
+      }
+    });
+  }
 
-//  note: radio buttons only allow one selection per name attribute
-    render(){
-        if (this.state.canView === true) {
-            return(
-                <Redirect push to='/planner-view'/>
-            )
-        }
-
-        return (
-            <div className = "MealPlannerGenerate" >
-                <Navbar />
-                <Column flexGrow={1}>
-                    <Row horizontal='center'><Header1>Generate Meal Plan</Header1></Row>
-                    <Row horizontal='center'>
-                        <Body>Select a diet: </Body>
-                        <Row flexGrow={0} horizontal='center'>
-                            <input name="diet" type="radio" value="Gluten Free" onChange={this.handleChange}/><Body>Gluten free</Body>
-                        </Row>
-                        <Row flexGrow={0} horizontal='center'>
-                            <input name="diet" type="radio" value="Ketogenic" onChange={this.handleChange} /><Body>Ketogenic</Body>
-                        </Row>  
-                        <Row flexGrow={0} horizontal='center'>
-                            <input name="diet" type="radio" value="Vegatarian" onChange={this.handleChange} /><Body>Vegatarian</Body>
-                        </Row>  
-                        <Row flexGrow={0} horizontal='center'>
-                            <input name="diet" type="radio" value="Vegan" onChange={this.handleChange} /><Body>Vegan</Body>
-                        </Row>  
-                        <Row flexGrow={0} horizontal='center'>
-                            <input name="diet" type="radio" value="Pescetarian" onChange={this.handleChange} /><Body>Pescetarian</Body>
-                        </Row> 
-                    </Row>
-                    <br/>
-                    <Row horizontal='center'><Body>Foods to exclude (comma-separated): </Body></Row>
-                    <Row horizontal='center'>
-                        <Input id="exclude" type="text" name="exclude" placeholder="ex: shellfish, olives" onChange={this.handleChange}></Input>
-                    </Row>
   //  note: radio buttons only allow one selection per name attribute
   render() {
     if (this.state.canView === true) {
