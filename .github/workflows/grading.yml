@@ -65,7 +65,7 @@ jobs:
         CI: true
 
   grade-4:
-    name: get-grid-data tests
+    name: get_grid_data tests
     runs-on: ubuntu-latest
     services:
       mongodb:
@@ -78,14 +78,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: cd server && npm ci && npm run test-get-grid-data
+    - run: cd server && npm ci && npm run test-get_grid_data
       env:
         MONGODB_HOST: mongodb
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
 
   grade-5:
-    name: save-grid-data tests
+    name: save_grid_data tests
     runs-on: ubuntu-latest
     services:
       mongodb:
@@ -98,34 +98,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: cd server && npm ci && npm run test-save-grid-data
+      - run: cd server && npm ci && npm run test-save_grid_data
         env:
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
 
   grade-6:
-    name: calculate-macros tests
-    runs-on: ubuntu-latest
-    services:
-      mongodb:
-        image: mongo
-        ports:
-          - 27017:27017
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    - run: cd server && npm ci && npm run test-calculate-macros
-      env:
-        MONGODB_HOST: mongodb
-        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
-        CI: true
-
-  grade-7:
-    name: submit-macros tests
+    name: delete_grid_row tests
     runs-on: ubuntu-latest
     services:
       mongodb:
@@ -138,14 +118,35 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: cd server && npm ci && npm run test-submit-macros
+      - run: cd server && npm ci
+      - run: cd server && npm run test-delete_grid_row
+        env:
+          MONGODB_HOST: localhost
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+          CI: true
+
+  grade-7:
+    name: calorie_calculation tests
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: cd server && npm ci && npm run test-calorie_calculation
         env:
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
 
   grade-8:
-    name: get-macros tests
+    name: get_calories tests
     runs-on: ubuntu-latest
     services:
       mongodb:
@@ -158,14 +159,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: cd server && npm ci && npm run test-get-macros
+      - run: cd server && npm ci && npm run test-get_calories
         env:
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
 
   grade-9:
-    name: nutrition tests
+    name: meal_generator tests
     runs-on: ubuntu-latest
     services:
       mongodb:
@@ -173,13 +174,53 @@ jobs:
         ports:
           - 27017:27017
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    - run: cd server && npm ci && npm run test-nutrition
-      env:
-        MONGODB_HOST: mongodb
-        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
-        CI: true
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: cd server && npm ci && npm run test-meal_generator
+        env:
+          MONGODB_HOST: mongodb
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+          CI: true
+
+  grade-10:
+    name: get_mealplan tests
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: cd server && npm ci && npm run test-get_mealplan
+        env:
+          MONGODB_HOST: mongodb
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+          CI: true
+
+  grade-11:
+    name: get_recipe tests
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: cd server && npm ci && npm run test-get_recipe
+        env:
+          MONGODB_HOST: mongodb
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+          CI: true
