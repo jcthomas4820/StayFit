@@ -62,6 +62,7 @@ class MealPlanner extends React.Component {
     }
   }
 
+  // send user entered data to the server to calculate the required data
   //  function used to handle calculate calories
   handleClick(e) {
     let id = e.target.id;
@@ -84,59 +85,30 @@ class MealPlanner extends React.Component {
       };
 
       // send user entered data to the server to calculate the required data
-    //  function used to handle calculate calories
-    handleClick(e){
-        let id = e.target.id
-        console.log(id);
+      axios
+        .post("http://localhost:3001/cal/save-cal-rec", userData)
+        .then((res) => {
+          // grab data returned by server
 
-        if (id === "calculate"){
-            // grab the user data
-            let gender = this.state.gender;
-            let age = this.state.age;
-            let weight = this.state.weight;
-            let height = this.state.height;
-            let activityLevel = this.state.activityLevel;
-            
-           const userData = {
-                userGender: gender,
-                userAge: age,
-                userWeight: weight,
-                userHeight: height,
-                userActivityLevel: activityLevel
-            }
+          let err = res.data.errMsg;
 
-            // send user entered data to the server to calculate the required data
-            axios.post('http://localhost:3001/cal/save-cal-rec', userData).then((res) => {
-                // grab data returned by server
-
-                let err = res.data.errMsg
-                
-                if (err) {
-                    this.setState({cals: ""});
-                    this.setState({calMsg: ""})
-                    this.setState({errorMsg: err});
-                }
-                else {
-                    // update state to reflect values calculated for calories
-                    this.setState({cals: res.data.cals});
-                    this.setState({calMsg: "Your daily calorie intake should be: " + this.state.cals})
-                    this.setState({errorMsg: ""})
-                }
-
-            }); 
+          if (err) {
+            this.setState({ cals: "" });
+            this.setState({ calMsg: "" });
+            this.setState({ errorMsg: err });
+          } else {
+            // update state to reflect values calculated for calories
+            this.setState({ cals: res.data.cals });
+            this.setState({
+              calMsg: "Your daily calorie intake should be: " + this.state.cals,
+            });
+            this.setState({ errorMsg: "" });
+          }
+        });
     } else if (id === "generate") {
       this.setState({ generate: true });
     } else if (id === "view") {
       this.setState({ view: true });
-                
-            }); 
-        }
-        else if (id === "generate") {
-            this.setState({generate: true});
-        }
-        else if (id === "view") {
-            this.setState({view: true});
-        }
     }
   }
 
