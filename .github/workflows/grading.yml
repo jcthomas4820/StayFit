@@ -103,9 +103,9 @@ jobs:
       - run: npm ci
       - run: npm run test-exercise
         env:
-        MONGODB_HOST: mongodb
-        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
-        CI: true
+          MONGODB_HOST: mongodb
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+          CI: true
 
   grade-6:
     name: calculate-macros tests
@@ -145,9 +145,9 @@ jobs:
       - run: npm ci
       - run: npm run test-macro
         env:
-        MONGODB_HOST: mongodb
-        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
-        CI: true
+          MONGODB_HOST: mongodb
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+          CI: true
 
   grade-8:
     name: get-macros tests
@@ -166,9 +166,9 @@ jobs:
       - run: npm ci
       - run: npm run test-nutrition
         env:
-        MONGODB_HOST: mongodb
-        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
-        CI: true
+          MONGODB_HOST: mongodb
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+          CI: true
 
   grade-9:
     name: nutrition tests
