@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha",
     "start": "cross-env node ./bin/www",
+    "test": "cross-env NODE_ENV=test mocha",
     "test-server": "npm run test test/integration.js ",
     "test-style": "npm run test test/style.js",
     "test-register": "npm run test -- -g 'register-test'",
