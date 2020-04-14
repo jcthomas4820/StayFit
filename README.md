@@ -128,10 +128,28 @@ The focus on checkpoint 3 was ensuring our server-side tests were passing. For c
 
 ## Deliverables for final project
 
-Outline in English what the deliverables will be for the final checkpoint. This will should be
-similar to the **Description** above, but written out as an explicit checklist rather than a human
-readable description. Reminder that this is not *due* until checkpoint 4, but failing to plan is
-planning to fail.
+Server Tests:
+1.  delete_grid_row-test
+    - it('rejects operation if user is not logged in')
+    - it('does not allow a user to delete a non-existent row')
+    - it('properly deletes an existing row')
+
+2.  get_calories-test
+    - it('returns an error if calories were not calculated')
+    - it('correctly pulls up calculated calories')
+
+3.  meal_generator-test
+    - it('does not allow generation without calorie calculation')
+
+4.  get_mealplan-test
+    - it('does not pull up meal plan if one is not saved')
+    - it('does pull up a meal plan if one is saved')
+
+5.  get_recipe-test
+    - it('returns error if user is not logged in')
+    - it('returns error for an invalid recipe')
+    - it('returns correct recipe for a valid recipe')
+
 
 For each specialization, you must list specific checkpoints that are relevant to that particular specialization.
 

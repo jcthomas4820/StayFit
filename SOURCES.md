@@ -55,6 +55,15 @@ I ran into an issue with the express-session not persisting across axios calls. 
 #### Kanich MongoDB Service Example (for Github Actions)
 - https://github.com/kaytwo/example-services/blob/master/.github/workflows/mongodb-service.yml
 
+#### Calorie Calculation
+- http://www.checkyourhealth.org/eat-healthy/cal_calculator.php
+
+#### Spoonacular Diet Planner
+- https://spoonacular.com/food-api/docs#Generate-Meal-Plan
+
+#### Using Fetch API
+- https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+
 #### Tables in React
 - Documentation for version 6: https://github.com/tannerlinsley/react-table/tree/v6#example 
 - Quick examples I used to get started with it: https://www.javatpoint.com/react-table
