@@ -37,7 +37,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
     - run: cd server && npm ci && npm run test-login
       env:
         MONGODB_HOST: mongodb
@@ -58,7 +57,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
     - run: cd server && npm ci && npm run test-logout
       env:
         MONGODB_HOST: mongodb
@@ -79,7 +77,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
     - run: cd server && npm ci && npm run test-exercise
       env:
         MONGODB_HOST: mongodb
@@ -100,7 +97,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: npm ci
       - run: cd server && npm ci && npm run test-exercise
         env:
           MONGODB_HOST: mongodb
@@ -121,7 +117,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
     - run: cd server && npm ci && npm run test-macro
       env:
         MONGODB_HOST: mongodb
@@ -142,7 +137,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: npm ci
       - run: cd server && npm ci && npm run test-macro
         env:
           MONGODB_HOST: mongodb
@@ -163,7 +157,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: npm ci
       - run: cd server && npm ci && npm run test-nutrition
         env:
           MONGODB_HOST: mongodb
@@ -184,7 +177,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
     - run: cd server && npm ci && npm run test-nutrition
       env:
         MONGODB_HOST: mongodb
