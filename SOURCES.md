@@ -54,3 +54,10 @@ I ran into an issue with the express-session not persisting across axios calls. 
 
 #### Kanich MongoDB Service Example (for Github Actions)
 - https://github.com/kaytwo/example-services/blob/master/.github/workflows/mongodb-service.yml
+
+#### Tables in React
+- Documentation for version 6: https://github.com/tannerlinsley/react-table/tree/v6#example 
+- Quick examples I used to get started with it: https://www.javatpoint.com/react-table
+
+#### Styled-components to revamp the UI
+- Documentation: https://styled-components.com/docs

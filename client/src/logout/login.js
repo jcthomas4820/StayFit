@@ -1,6 +1,10 @@
 import React from "react"
 import axios from "axios";
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
+
+import {Row, Column} from 'simple-flexbox'
+import {Header1, Body, Button, Error, Input, CustomLink} from '../styles/custom'
+
 axios.defaults.withCredentials = true
 
 //  allow user to login/register
@@ -10,6 +14,7 @@ class LoginPage extends React.Component{
         super()
         this.state={
             loginError: true,
+            needsToRegister: false,
             errorMessage: null,
             username: "",
             password: ""
@@ -39,6 +44,7 @@ class LoginPage extends React.Component{
 
     handleClick(e){
         let id = e.target.id
+        console.log(id);
         if (id === "login"){
             const returningUser = {
                 username: this.state.username,
@@ -83,25 +89,27 @@ class LoginPage extends React.Component{
         //  when no errors in logging in/registering, direct user to selection page
         if (!this.state.loginError){
             return(
-                <Redirect push to='/selection'/>
+                <Redirect push to='/home'/>
             )
         }
 
+        
+
         //  login page, displays errors if present
         return(
-            <div className = "LoginPage">
-                <h1>Welcome to StayFit!</h1>
-                <div className = "login/register section">
-                    <p>{this.state.errorMessage}</p>
-                    <input id="userName" type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)}></input>
-                    <p>username</p>
-                    <input id="password" type="text" name="password" value={this.state.password} onChange={e => this.handleChange(e)}></input>
-                    <p>password</p>
-                </div>
-                <div className = "login/register buttons">
-                    <button type="button" id="login" onClick={this.handleClick}>login</button>
-                    <button type="button" id="register" onClick={this.handleClick}>register</button>
-                </div>
+            <div className = "LoginPage" >
+                <Column flexGrow={1}>
+                    <Row horizontal='center'><Header1>Welcome to StayFit!</Header1></Row>
+                    <div className = "login/register section">
+                        <Row horizontal='center'><Error>{this.state.errorMessage}</Error></Row>
+                        <Row horizontal='center'><Input id="userName" type="text" name="username" placeholder="username" value={this.state.username} onChange={e => this.handleChange(e)}></Input></Row>
+                        <Row horizontal='center'><Input id="password" type="text" name="password" placeholder="password" value={this.state.password} onChange={e => this.handleChange(e)}></Input></Row>
+                    </div>
+                    <div className = "login/register buttons">
+                        <Row horizontal='center'><Button id="login" onClick={this.handleClick}>login</Button></Row>
+                        <Row horizontal='center'><Button id="register" onClick={this.handleClick}>register</Button></Row>
+                    </div>
+                </Column>
             </div>
         )
 
@@ -112,3 +120,6 @@ class LoginPage extends React.Component{
 
 
 export default LoginPage
+
+
+// <Row horizontal='center'><Button id="register" onClick={this.handleClick}>register</Button></Row>

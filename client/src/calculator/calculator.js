@@ -5,6 +5,8 @@ Form written as controlled component:
 
 import React from "react"
 import axios from 'axios'
+import Navbar from '../layouts/navbar'
+
 axios.defaults.withCredentials = true;
 //import { thisExpression } from "@babel/types"
 
@@ -151,6 +153,7 @@ class MacroCalculator extends React.Component{
 
         return(
             <div className="MacroCalculator">
+                <Navbar />
                 <h1>Macro Calculator</h1>
                 <p>{this.state.errorMsg}</p>
                 <form id="macro-calculator" >

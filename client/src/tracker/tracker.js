@@ -1,6 +1,5 @@
 import React from "react"
-import axios from 'axios'
-axios.defaults.withCredentials = true;
+import Navbar from '../layouts/navbar'
 
 class NutritionTracker extends React.Component{
 
@@ -8,30 +7,19 @@ class NutritionTracker extends React.Component{
         super()
         this.state={
             apiValues: [0, 0, 0],            //  [protein, carbs, fats]
-            todayValues: [0, 0, 0],     
+            todayValues: [0, 0, 0],
             goalValues: [0, 0, 0],
             userInput: "",
             errMsg: ""
         }
         this.handleAnalysis = this.handleAnalysis.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)    
-        this.handleChange = this.handleChange.bind(this)     
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         //  need to bind componentWillMount????
     }
 
     componentWillMount(){
         //  load relevant data from database
-        axios.get('http://localhost:3001/api/get-macros').then((res) => {
-            let err = res.data.err;
-            if(err){
-                this.setState({errMsg: err});
-            }
-            else{
-                let tempList = res.data.macros;
-                if (tempList) { this.setState({ goalValues: tempList}); }
-            }
-        });
-
         //  load list from database, assign state as follows:
             //  let tempList=[x, x, x]   --> this is the values from the database stored as a list
             //  this.setState({ todayValues: tempList })      --> save as the appropriate lists for todayValues and goalValues
@@ -64,6 +52,7 @@ class NutritionTracker extends React.Component{
 
         return(
             <div className="NutritionTracker">
+                <Navbar />
                 <h1>Nutrition Tracker</h1>
                 <p>{this.state.errMsg}</p>
                 <div className="DailyGoals">

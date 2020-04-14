@@ -1,26 +1,21 @@
 name: Mongodb GitHub Actions
 
-on:
-  push:
-    branches:
-    - master
-  pull_request:
-    branches:
-    - master
+on: [pull_request]
 
 jobs:
-    test_server:
-      runs-on: ubuntu-latest
-      container: 
-        image: node:latest
-      services:
-        mongodb:
-          image: mongo
-          ports:
-            - 27017:27017
-      steps:
-        - uses: actions/checkout@v1
-        - run: cd server && npm install -g mocha && npm test
-          env:
-            MONGODB_HOST: mongodb
-            MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+  test_server:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017/tcp
+
+    steps:
+      - uses: actions/checkout@v1
+      - run: cd server && npm ci
+      - run: cd server && npm test
+        env:
+          MONGODB_HOST: localhost
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }} # get randomly assigned published port
