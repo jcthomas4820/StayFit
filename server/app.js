@@ -39,8 +39,10 @@ if (process.env.NODE_ENV !== 'test') {
 //mongoose.connection
 //  .once('open', _ => { console.log('Database connected!') })
 //  .on('error', err => { console.error('Connection error: ', err) });
-///
 
+// The following code tries to connect to the database. If connection failed,
+// it retries up to 30 times.
+// Source: https://github.com/docker/hub-feedback/issues/1255
 const options = {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -63,7 +65,6 @@ const connectWithRetry = () => {
 }
 
 connectWithRetry()
-///
 
 // Set up sessions 
 // https://medium.com/front-end-weekly/make-sessions-work-with-express-js-using-mongodb-62a8a3423ef5
