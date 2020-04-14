@@ -29,7 +29,7 @@ class Grid extends React.Component{
 
     componentWillMount(){
         // load each row data from databse for each row, save in state
-        axios.get('http://localhost:3001/api/get-grid-data').then((res) => {
+        axios.get('http://localhost:3001/grid/get-grid-data').then((res) => {
             let err = res.data.getGridError;
 
             if(err){
@@ -140,7 +140,7 @@ class ExerciseInput extends React.Component{
             exerciseDate: date,
         }
 
-        axios.post('http://localhost:3001/api/save-grid-data', data).then((res) => {
+        axios.post('http://localhost:3001/grid/save-grid-data', data).then((res) => {
             let err = res.data.saveGridError;
             if(err){
                 this.setState({errMsg: err});
