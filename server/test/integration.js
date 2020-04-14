@@ -280,6 +280,7 @@ describe('application', async () => {
           exerciseDescription: '30lb 4s10r',
           exerciseDate: '3/20/2020',
         });
+
         assert.equal(result.data, 'Your exercise values are saved');
       });
 
