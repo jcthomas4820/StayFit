@@ -280,7 +280,6 @@ describe('application', async () => {
           exerciseDescription: '30lb 4s10r',
           exerciseDate: '3/20/2020',
         });
-
         assert.equal(result.data, 'Your exercise values are saved');
       });
 
@@ -342,7 +341,7 @@ describe('application', async () => {
 
 
     describe('calorie_calculation-test', async () => {
-      
+
       it('rejects input if user is not logged in', async()=>{
         const user = {
           username: getRandomString(10),
@@ -360,7 +359,7 @@ describe('application', async () => {
         );
 
       })
-      
+
       it('rejects blank inputs', async()=>{
 
         const user = {
@@ -519,7 +518,7 @@ describe('application', async () => {
         );
 
       })
-      
+
       it('returns an error if calories were not calculated')
 
       it('correctly pulls up calculated calories')
@@ -545,10 +544,10 @@ describe('application', async () => {
         );
 
       })
-      
+
       it('does not allow generation without calorie calculation')
 
-      
+
       //  test for external api
         //  limit number of times call to external api
 
@@ -572,7 +571,7 @@ describe('application', async () => {
         );
 
       })
-      
+
       it('does not pull up meal plan if one is not saved')
 
       it('does pull up a meal plan if one is saved')
