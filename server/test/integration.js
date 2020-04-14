@@ -286,6 +286,15 @@ describe('application', async () => {
     }
 
 
+    describe('delete_grid_row-test', async () => {
+
+      it('rejects operation if user is not logged in')
+      it('does not allow a user to delete a non-existent row')
+      it('properly deletes an existing row')
+
+    })
+
+
     describe('calorie_calculation-test', async () => {
       
       it('rejects input if user is not logged in', async()=>{
@@ -465,11 +474,11 @@ describe('application', async () => {
 
       })
       
-      it('correctly pulls up calculated calories', async()=>{
+      it('returns an error if calories were not calculated')
+
+      it('correctly pulls up calculated calories')
 
 
-
-      }); 
     });
 
     describe('meal_generator-test', async () => {
@@ -491,9 +500,12 @@ describe('application', async () => {
 
       })
       
-      it('does not allow generation without calorie calculation', async()=>{
+      it('does not allow generation without calorie calculation')
 
-      });
+      
+      //  test for external api
+        //  limit number of times call to external api
+
     });
 
     describe('get_mealplan-test', async () => {
@@ -515,10 +527,20 @@ describe('application', async () => {
 
       })
       
-      it('does not pull up meal plan if one is not saved', async()=>{
+      it('does not pull up meal plan if one is not saved')
 
-      });
+      it('does pull up a meal plan if one is saved')
     });
+
+
+    describe('get_recipe-test', async() => {
+
+      it('returns error if user is not logged in')
+      it('returns error for an invalid recipe')
+      it('returns correct recipe for a valid recipe')
+
+    })
+
 
 
 
