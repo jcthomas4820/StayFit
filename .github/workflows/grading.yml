@@ -38,7 +38,7 @@ jobs:
       with:
         node-version: 12.x
     - run: npm ci
-    - run: npm run test-login
+    - run: cd server && npm ci && npm run test-login
       env:
         MONGODB_HOST: mongodb
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
@@ -59,7 +59,7 @@ jobs:
       with:
         node-version: 12.x
     - run: npm ci
-    - run: npm run test-logout
+    - run: cd server && npm ci && npm run test-logout
       env:
         MONGODB_HOST: mongodb
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
@@ -80,7 +80,7 @@ jobs:
       with:
         node-version: 12.x
     - run: npm ci
-    - run: npm run test-exercise
+    - run: cd server && npm ci && npm run test-exercise
       env:
         MONGODB_HOST: mongodb
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
@@ -101,7 +101,7 @@ jobs:
         with:
           node-version: 12.x
       - run: npm ci
-      - run: npm run test-exercise
+      - run: cd server && npm ci && npm run test-exercise
         env:
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
@@ -122,7 +122,7 @@ jobs:
       with:
         node-version: 12.x
     - run: npm ci
-    - run: npm run test-macro
+    - run: cd server && npm ci && npm run test-macro
       env:
         MONGODB_HOST: mongodb
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
@@ -143,7 +143,7 @@ jobs:
         with:
           node-version: 12.x
       - run: npm ci
-      - run: npm run test-macro
+      - run: cd server && npm ci && npm run test-macro
         env:
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
@@ -164,7 +164,7 @@ jobs:
         with:
           node-version: 12.x
       - run: npm ci
-      - run: npm run test-nutrition
+      - run: cd server && npm ci && npm run test-nutrition
         env:
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
@@ -185,7 +185,7 @@ jobs:
       with:
         node-version: 12.x
     - run: npm ci
-    - run: npm run test-nutrition
+    - run: cd server && npm ci && npm run test-nutrition
       env:
         MONGODB_HOST: mongodb
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
