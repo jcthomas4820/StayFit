@@ -12,8 +12,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
-    - run: cd server && npm install && npm run test-register
+    - run: cd server && npm ci && npm run test-register
       env:
         CI: true
 
