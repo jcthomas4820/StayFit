@@ -1,20 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from "react";
+import Home from "./selection";
+import { shallow } from "enzyme";
 
-describe('page render', async () => {
-    it('renders without crashing');
+describe("page render", () => {
+  it("renders without crashing", () => {
+    shallow(<Home />);
+  });
 });
 
-describe('selection component', async () => {
-    it('provides a component description')
-    it('contains the exercise grid button');
-    it('contains the macro calculator button');
-    it('contains the nutrition tracker button');
-    it('contains the logout button');
-    it('contains the username on the screen');
-    it('properly routes to exercise grid')
-    it('properly routes to macro calculator')
-    it('properly routes to nutrition tracker')
-    it('properly routes to logout')
+describe("selection component", () => {
+  it("contains the navigation bar", () => {
+    const wrapper = shallow(<Home />);
+    expect(wrapper.find("#navigationBar").exists()).toBeTruthy();
+  });
+
+  it("provides exercise grid description", () => {
+    const wrapper = shallow(<Home />);
+    expect(wrapper.find("#exerciseGridDesc").exists()).toBeTruthy();
+  });
+
+  it("provides meal planner description", () => {
+    const wrapper = shallow(<Home />);
+    expect(wrapper.find("#mealPlannerDesc").exists()).toBeTruthy();
+  });
 });
