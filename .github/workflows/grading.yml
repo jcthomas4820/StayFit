@@ -20,6 +20,8 @@ jobs:
         node-version: 12.x
     - run: cd server && npm ci && npm run test-register
       env:
+        MONGODB_HOST: mongodb
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }} # get randomly assigned published port
         CI: true
 
   grade-2:
