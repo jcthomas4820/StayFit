@@ -14,7 +14,7 @@
     "test-calculate": "npm run test -- -g 'calculate-test'",
     "test-submit": "npm run test -- -g 'submit-test'",
     "test-nutrition": "npm run test -- -g 'nutrition-test'",
-    "start": "node ./bin/www",
+    "start": "node index.js",
     "test-for-coverage": "npm test -- -R min || exit 0",
     "coverage": "cross-env NODE_ENV=test nyc --check-coverage=true --reporter=lcov --reporter=text npm run test-for-coverage"
   },
