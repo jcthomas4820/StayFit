@@ -10,7 +10,7 @@ jobs:
       mongodb:
         image: mongo
         ports:
-          - 27017/tcp
+          - 27017:27017
 
     steps:
       - uses: actions/checkout@v1
@@ -18,5 +18,5 @@ jobs:
       - run: cd server && npm install
       - run: cd server && npm test
         env:
-          MONGODB_HOST: localhost
+          MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }} # get randomly assigned published port
