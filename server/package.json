@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha test/integration.js",
+    "test": "cross-env NODE_ENV=test mocha",
+    "test-server": "npm run test test/integration.js ",
+    "test-style": "npm run test test/style.js",
     "test-register": "npm run test -- -g 'register-test'",
     "test-login": "npm run test -- -g 'login-test'",
     "test-logout": "npm run test -- -g 'logout-test'",
@@ -14,7 +16,6 @@
     "test-nutrition": "npm run test -- -g 'nutrition-test'",
     "start": "node ./bin/www",
     "test-for-coverage": "npm test -- -R min || exit 0",
-    "style": "npm run test -- test/style.js",
     "coverage": "cross-env NODE_ENV=test nyc --check-coverage=true --reporter=lcov --reporter=text npm run test-for-coverage"
   },
   "dependencies": {

@@ -4,14 +4,12 @@ const axios = require('axios').default;
 const mongoose = require('mongoose');
 const axiosCookieJarSupport = require('axios-cookiejar-support').default;
 const tough = require('tough-cookie');
+
 axiosCookieJarSupport(axios);
 
 const app = require('../app');
 
 const User = require('../models/user');
-const Exercise = require('../models/exercise')
-let db;
-let collection;
 
 const PORT = 3001;
 
@@ -63,8 +61,8 @@ describe('application', async () => {
     client.defaults.jar = new tough.CookieJar();
     server = app.listen(PORT);
     // remove all of the users added to the database before testing
-    await User.deleteMany({}, function(err) { 
-      console.log('All test users removed') 
+    await User.deleteMany({}, () => {
+      console.log('All test users removed');
     });
   });
 
@@ -79,48 +77,72 @@ describe('application', async () => {
   describe('unauthenticated state', async () => {
     describe('register-test', async () => {
       it('allows a user to register', async () => {
-        let result = await client.post('/api/register', {username: getRandomString(10), password: getRandomString(10)});        
+        const result = await client.post('/api/register', {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        });
         assert.equal(result.data, 'New user created');
       });
 
       it('does not allow duplicate usernames', async () => {
-        let sampleUser = getRandomString(15);
-        await client.post('/api/register', {username: sampleUser, password: getRandomString(10)});
-        let result = await client.post('/api/register', {username: sampleUser, password: getRandomString(10)});
+        const sampleUser = getRandomString(15);
+        await client.post('/api/register', {
+          username: sampleUser,
+          password: getRandomString(10),
+        });
+        const result = await client.post('/api/register', {
+          username: sampleUser,
+          password: getRandomString(10),
+        });
         assert.equal(result.data.regError, 'Username already exists');
       });
 
       it('requires a password to register', async () => {
-        let result = await client.post('/api/register', {username: getRandomString(10), password: ''});
+        const result = await client.post('/api/register', {
+          username: getRandomString(10),
+          password: '',
+        });
         assert.equal(result.data.regError, 'Please enter a valid password');
       });
 
       it('requires a username to register', async () => {
-        let result = await client.post('/api/register', {username: '', password: getRandomString(10)});
+        const result = await client.post('/api/register', {
+          username: '',
+          password: getRandomString(10),
+        });
         assert.equal(result.data.regError, 'Please enter a valid username');
       });
     });
 
     describe('login-test', async () => {
       it('allows a registered user to login', async () => {
-        let user = { username: getRandomString(10), password: getRandomString(10) };
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
         await client.post('/api/register', user);
-        let result = await client.post('/api/login', user);
+        const result = await client.post('/api/login', user);
 
         assert.equal(result.data, 'User successfully logged in');
       });
 
       it('requires an account with username to exist', async () => {
-        let user = { username: getRandomString(10), password: getRandomString(10) };
-        let result = await client.post('/api/login', user);
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        const result = await client.post('/api/login', user);
         assert.equal(result.data.logError, 'Username does not exist');
       });
 
       it('requires the correct password given a username', async () => {
-        let name = getRandomString(10);
-        let user = { username: name, password: getRandomString(10) };
+        const name = getRandomString(10);
+        const user = { username: name, password: getRandomString(10) };
         await client.post('/api/register', user);
-        let result = await client.post('/api/login', {username: name, password: getRandomString(10)});
+        const result = await client.post('/api/login', {
+          username: name,
+          password: getRandomString(10),
+        });
         assert.equal(result.data.logError, 'Incorrect password entered');
       });
     });
@@ -129,14 +151,17 @@ describe('application', async () => {
   describe('authenticated state', async () => {
     describe('logout-test', async () => {
       it('logs out a loggedin user', async () => {
-        let user = { username: getRandomString(10), password: getRandomString(10) };
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
         await client.post('/api/register', user);
-        let result = await client.post('/api/logout');
+        const result = await client.post('/api/logout');
         assert.equal(result.data, 'User logged out');
       });
 
       it('sends an error for a not loggedin user', async () => {
-        let result = await client.post('/api/logout');
+        const result = await client.post('/api/logout');
         assert.equal(result.data.logoutErr, 'There is no one logged in');
       });
     });
@@ -144,32 +169,50 @@ describe('application', async () => {
     describe('get-grid-data-test', async () => {
       it('correctly pulls up user exercise data from database', async () => {
         // register a user
-        let user = { username: getRandomString(10), password: getRandomString(10) };
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
         await client.post('/api/register', user);
 
-        //save some exercises
-        await client.post('/api/save-grid-data', {exerciseName: "bicep curl",
-                                                  exerciseDescription: "25lb 4s10r",
-                                                  exerciseDate: "3/26/2020"});
-        await client.post('/api/save-grid-data', {exerciseName: "inner bicep curl",
-                                                  exerciseDescription: "25lb 4s10r",
-                                                  exerciseDate: "3/27/2020"});
+        // save some exercises
+        await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+        await client.post('/api/save-grid-data', {
+          exerciseName: 'inner bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/27/2020',
+        });
 
         // get exercise data from database
         let result = await client.get('/api/get-grid-data');
 
-        let list = [{name: "bicep curl", date: "3/26/2020", description: "25lb 4s10r"}, 
-                    {name: "inner bicep curl", date: "3/27/2020", description: "25lb 4s10r"}];
+        const list = [
+          { name: 'bicep curl', date: '3/26/2020', description: '25lb 4s10r' },
+          {
+            name: 'inner bicep curl',
+            date: '3/27/2020',
+            description: '25lb 4s10r',
+          },
+        ];
 
-      
         assert.deepEqual(result.data.exerciseData, list);
 
         // save more exercises
-        await client.post('/api/save-grid-data', {exerciseName: "sit ups",
-                                                  exerciseDescription: "4s5r",
-                                                  exerciseDate: "3/30/2020"});
-        
-        let subList = {name: "sit ups", date: "3/30/2020", description: "4s5r"};                                                  
+        await client.post('/api/save-grid-data', {
+          exerciseName: 'sit ups',
+          exerciseDescription: '4s5r',
+          exerciseDate: '3/30/2020',
+        });
+
+        const subList = {
+          name: 'sit ups',
+          date: '3/30/2020',
+          description: '4s5r',
+        };
         list.push(subList);
 
         // get exercise data from database again
@@ -183,106 +226,108 @@ describe('application', async () => {
       it('allows user to remove rows from the grid');
       it('does not allow for a user to save an exercise without a name, progress or date', async () => {
         // register a user
-        let user = { username: getRandomString(10), password: getRandomString(10) };
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
         await client.post('/api/register', user);
 
         // save an exercise with no name
-        let result = await client.post('/api/save-grid-data', {exerciseName: "",
-                                                               exerciseDescription: "25lb 4s10r",
-                                                               exerciseDate: "3/26/2020"})
-        assert.equal(result.data.saveGridError, 'You must provide a name for the exercise');
+        const resultNoName = await client.post('/api/save-grid-data', {
+          exerciseName: '',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+        assert.equal(
+          resultNoName.data.saveGridError,
+          'You must provide a name for the exercise',
+        );
 
         // save an exercise with no progress
-        result = await client.post('/api/save-grid-data', {exerciseName: "bicep curl",
-                                                           exerciseDescription: "",
-                                                           exerciseDate: "3/26/2020"})
-        assert.equal(result.data.saveGridError, 'You must provide the description of the exercise');
+        const resultNoDesc = await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '',
+          exerciseDate: '3/26/2020',
+        });
+        assert.equal(
+          resultNoDesc.data.saveGridError,
+          'You must provide the description of the exercise',
+        );
 
         // save an exercise with no date
-        result = await client.post('/api/save-grid-data', {exerciseName: "bicep curl",
-                                                           exerciseDescription: "30lb 4s10r",
-                                                           exerciseDate: ""})
-        assert.equal(result.data.saveGridError, 'You must provide a date');
+        const resultNoDate = await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '30lb 4s10r',
+          exerciseDate: '',
+        });
+        assert.equal(
+          resultNoDate.data.saveGridError,
+          'You must provide a date',
+        );
       });
 
       it('allows the user to track their exercise name, progress, and date', async () => {
         // register a user
-        let user = { username: getRandomString(10), password: getRandomString(10) };
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
         await client.post('/api/register', user);
 
         // save an exercise with name, progress, and date
-        result = await client.post('/api/save-grid-data', {exerciseName: "bicep curl",
-                                                           exerciseDescription: "30lb 4s10r",
-                                                           exerciseDate: "3/20/2020"})
+        const result = await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '30lb 4s10r',
+          exerciseDate: '3/20/2020',
+        });
         assert.equal(result.data, 'Your exercise values are saved');
-
       });
-      
-      // *** TODO: allow for this again *** //
-      // it('allows a user to update entries', async () => {
-      //   // register a user
-      //   let user = { username: getRandomString(10), password: getRandomString(10) };
-      //   await client.post('/api/register', user);
 
-      //   // save an exercise as exercise number 1
-      //   await client.post('/api/save-grid-data', {exerciseNumber: 0,
-      //                                             exerciseName: "bicep curl",
-      //                                             exerciseProgress: "25lb 4s10r",
-      //                                             exerciseDate: "3/26/2020"})
+      // todo: allow users to edit and delete exercises
 
-      //   // logout then login again
-      //   await client.post('/api/logout', user);
-      //   await client.post('/api/login', user);
+      it('throws error if a registered user tries to track or update exercise without logging in', async () => {
+        // register a user
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+        await client.post('/api/logout', user);
 
-      //   // edit exercise number 1
-      //   let result = await client.post('/api/save-grid-data', {exerciseNumber: 0,
-      //                                             exerciseName: "bicep curl",
-      //                                             exerciseProgress: "30lb 4s10r",
-      //                                             exerciseDate: "3/26/2020"})
-      //   assert.equal(result.data, 'Your exercise values are saved');
+        const result = await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
 
-      //   // edit again
-      //   result = await client.post('/api/save-grid-data', {exerciseNumber: 0,
-      //                                             exerciseName: "inner-bicep curl",
-      //                                             exerciseProgress: "30lb 4s10r",
-      //                                             exerciseDate: "3/26/2020"})
-      //   assert.equal(result.data, 'Your exercise values are saved');
+        assert.equal(
+          result.data.saveGridError,
+          'You must be logged in to do that',
+        );
+      });
 
-      //   result = await client.get('/api/get-grid-data');
-      //   let list = [["inner-bicep curl", "30lb 4s10r", "3/26/2020"]];
-      //   assert.deepEqual(result.data.exerciseData, list);
-      // });
-
-       it('throws error if a registered user tries to track or update exercise without logging in', async () => {
-           // register a user
-           let user = { username: getRandomString(10), password: getRandomString(10) };
-           await client.post('/api/register', user);
-           await client.post('/api/logout', user);
-
-           let result = await client.post('/api/save-grid-data', {exerciseName: "bicep curl",
-                                                                  exerciseDescription: "25lb 4s10r",
-                                                                  exerciseDate: "3/26/2020"})
-
-           assert.equal(result.data.saveGridError, 'You must be logged in to do that');
-
-       });
-
-       it('throws error if an unregistered user tries to track or update exercise', async () => {
-           // save exercise without logging in
-           let result = await client.post('/api/save-grid-data', {exerciseName: "bicep curl",
-                                                                  exerciseDescription: "25lb 4s10r",
-                                                                  exerciseDate: "3/26/2020"})
-            assert.equal(result.data.saveGridError, 'You must be logged in to do that');
-       });
-
+      it('throws error if an unregistered user tries to track or update exercise', async () => {
+        // save exercise without logging in
+        const result = await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+        assert.equal(
+          result.data.saveGridError,
+          'You must be logged in to do that',
+        );
+      });
     });
 
     // ***** //
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
     function getRandomInt(min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+      const minC = Math.ceil(min);
+      const maxF = Math.floor(max);
+
+      // The maximum is exclusive and the minimum is inclusive
+      return Math.floor(Math.random() * (maxF - minC)) + minC;
     }
 
 
