@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test mocha --timeout 10000",
     "test-server": "npm run test test/integration.js ",
     "test-style": "npm run test test/style.js",
-    "test-register": "npm run test -- -g 'register-test' --timeout 10000",
+    "test-register": "npm run test -- -g 'register-test'",
     "test-login": "npm run test -- -g 'login-test'",
     "test-logout": "npm run test -- -g 'logout-test'",
     "test-get-grid-data": "npm run test -- -g 'get-grid-data-test'",
