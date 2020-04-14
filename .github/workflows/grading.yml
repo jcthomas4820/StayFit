@@ -20,7 +20,7 @@ jobs:
     - run: cd server && npm ci
     - run: cd server && npm run test-register
       env:
-        MONGODB_HOST: mongodb
+        MONGODB_HOST: localhost
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
 
