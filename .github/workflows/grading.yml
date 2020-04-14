@@ -6,7 +6,6 @@ jobs:
   grade-1:
     name: registration tests
     runs-on: ubuntu-latest
-
     services:
       mongodb:
         image: mongo
@@ -21,12 +20,17 @@ jobs:
     - run: cd server && npm ci && npm run test-register
       env:
         MONGODB_HOST: mongodb
-        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }} # get randomly assigned published port
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
 
   grade-2:
     name: login tests
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 12.x
@@ -36,11 +40,18 @@ jobs:
     - run: npm ci
     - run: npm run test-login
       env:
+        MONGODB_HOST: mongodb
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
 
   grade-3:
     name: logout tests
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 12.x
@@ -50,11 +61,18 @@ jobs:
     - run: npm ci
     - run: npm run test-logout
       env:
+        MONGODB_HOST: mongodb
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
 
   grade-4:
     name: get-grid-data tests
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 12.x
@@ -64,11 +82,18 @@ jobs:
     - run: npm ci
     - run: npm run test-exercise
       env:
+        MONGODB_HOST: mongodb
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
 
   grade-5:
     name: save-grid-data tests
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 12.x
@@ -78,11 +103,18 @@ jobs:
       - run: npm ci
       - run: npm run test-exercise
         env:
-          CI: true
+        MONGODB_HOST: mongodb
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+        CI: true
 
   grade-6:
     name: calculate-macros tests
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 12.x
@@ -92,11 +124,18 @@ jobs:
     - run: npm ci
     - run: npm run test-macro
       env:
+        MONGODB_HOST: mongodb
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
 
   grade-7:
     name: submit-macros tests
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 12.x
@@ -106,10 +145,18 @@ jobs:
       - run: npm ci
       - run: npm run test-macro
         env:
-          CI: true
+        MONGODB_HOST: mongodb
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+        CI: true
+
   grade-8:
     name: get-macros tests
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 12.x
@@ -119,10 +166,18 @@ jobs:
       - run: npm ci
       - run: npm run test-nutrition
         env:
-          CI: true
+        MONGODB_HOST: mongodb
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+        CI: true
+
   grade-9:
     name: nutrition tests
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 12.x
@@ -132,4 +187,6 @@ jobs:
     - run: npm ci
     - run: npm run test-nutrition
       env:
+        MONGODB_HOST: mongodb
+        MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true

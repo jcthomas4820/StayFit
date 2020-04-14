@@ -40,32 +40,6 @@ mongoose.connection
   .once('open', _ => { console.log('Database connected!') })
   .on('error', err => { console.error('Connection error: ', err) });
 
-// The following code tries to connect to the database. If connection failed,
-// it retries up to 30 times.
-// Source: https://github.com/docker/hub-feedback/issues/1255
-//const options = {
-//  useNewUrlParser: true,
-//  useCreateIndex: true,
-//  autoIndex: false, // Don't build indexes
-//  reconnectTries: 30, // Retry up to 30 times
-//  reconnectInterval: 500, // Reconnect every 500ms
-//  poolSize: 10, // Maintain up to 10 socket connections
-//  // If not connected, return errors immediately rather than waiting for reconnect
-//  bufferMaxEntries: 0
-//}
-//
-//const connectWithRetry = () => {
-//  console.log('MongoDB connection with retry')
-//  mongoose.connect(dbURI, options).then(()=>{
-//    console.log('MongoDB is connected')
-//  }).catch(err=>{
-//    console.log('MongoDB connection unsuccessful, retry after 5 seconds.')
-//    setTimeout(connectWithRetry, 5000)
-//  })
-//}
-//
-//connectWithRetry()
-
 // Set up sessions 
 // https://medium.com/front-end-weekly/make-sessions-work-with-express-js-using-mongodb-62a8a3423ef5
 var sess = {
