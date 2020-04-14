@@ -248,8 +248,29 @@ We initially were planning on using the Edamam Nutrition Analysis API. With this
 
 - Work to make the app more secure (#1 priority)
 
-### Frontend Tests
+### Server Tests
+1.  delete_grid_row-test
+    - it('rejects operation if user is not logged in')
+    - it('does not allow a user to delete a non-existent row')
+    - it('properly deletes an existing row')
 
+2.  get_calories-test
+    - it('returns an error if calories were not calculated')
+    - it('correctly pulls up calculated calories')
+
+3.  meal_generator-test
+    - it('does not allow generation without calorie calculation')
+
+4.  get_mealplan-test
+    - it('does not pull up meal plan if one is not saved')
+    - it('does pull up a meal plan if one is saved')
+
+5.  get_recipe-test
+    - it('returns error if user is not logged in')
+    - it('returns error for an invalid recipe')
+    - it('returns correct recipe for a valid recipe')
+
+### Frontend Tests
 Based on some changes we made, a lot of the tests were removed. These are the remaining tests that will be implemented for the final deliverable. The files can be viewed in client/src/. Each file is found within its relavent component.
 
 1. logout.test.js

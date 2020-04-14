@@ -6,6 +6,9 @@ const logger = require('morgan');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
+const gridRouter = require('./routes/grid_routes')
+const calRouter = require('./routes/cal_routes')
+const mealRouter = require('./routes/meal_routes')
 
 app.set('trust proxy', 1);
 
@@ -56,5 +59,9 @@ app.use(express.urlencoded({ extended: false }));
 
 // Setup the router 
 app.use('/api', router);
+
+app.use('/grid', gridRouter);
+app.use('/cal', calRouter)
+app.use('/meal', mealRouter)
 
 module.exports=app;

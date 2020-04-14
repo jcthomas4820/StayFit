@@ -39,24 +39,20 @@ class MealPlannerGenerate extends React.Component{
                 //  let nutrition = res.data.nutritionInfo
         // set the states of all of this info 
 
-        /*axios.get(URL TO GET THE MEAL INFORMATION).then((res) => {
-            let err = res.data.getMealError;
+        axios.get('http://localhost:3001/meal/get-meal-plan').then((res) => {
+            let err = res.data.errMsg;
 
             if(err){
-                // Something like: "You haven't generated your meal plan yet!"
                 this.setState({mealErr: err});
             }
             else{
                 let data = res.data;
-                // Breakfast
-                const bfast = {name: res.data.breakfast.name, readyIn: res.data.breakfast.readyIn, servings: res.data.breakfast.servings};
-                this.setState({breakfast: bfast});
-                
-                // Lunch 
-                // Dinner
-                // Nutrients 
+                this.setState({breakfast: res.data.bfast})
+                this.setState({lunch: res.data.lunch})
+                this.setState({dinner: res.data.dinner})
+                this.setState({nutrition: res.data.nutrients}) 
             }
-        });*/
+        });
     }
 
 //  note: radio buttons only allow one selection per name attribute
@@ -84,9 +80,9 @@ class MealPlannerGenerate extends React.Component{
 
                         <Column flexGrow={1} horizontal='center'>
                             <Header2>Dinner</Header2>
-                            <Body>Name: {this.state.breakfast.dinner}</Body>
-                            <Body>Ready in: {this.state.breakfast.dinner}</Body>
-                            <Body>Servings: {this.state.breakfast.dinner}</Body>
+                            <Body>Name: {this.state.dinner.name}</Body>
+                            <Body>Ready in: {this.state.dinner.readyIn}</Body>
+                            <Body>Servings: {this.state.dinner.servings}</Body>
                         </Column>
                     </Row>
                     <br/>
