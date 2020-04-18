@@ -330,19 +330,14 @@ describe('application', async () => {
       return Math.floor(Math.random() * (maxF - minC)) + minC;
     }
 
-
     describe('delete_grid_row-test', async () => {
-
-      it('rejects operation if user is not logged in')
-      it('does not allow a user to delete a non-existent row')
-      it('properly deletes an existing row')
-
-    })
-
+      it('rejects operation if user is not logged in');
+      it('does not allow a user to delete a non-existent row');
+      it('properly deletes an existing row');
+    });
 
     describe('calorie_calculation-test', async () => {
-      
-      it('rejects input if user is not logged in', async()=>{
+      it('rejects input if user is not logged in', async () => {
         const user = {
           username: getRandomString(10),
           password: getRandomString(10),
@@ -350,18 +345,13 @@ describe('application', async () => {
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
 
-        const userData = {}
+        const userData = {};
 
         const result = await client.post('/api/save-cal-rec', userData);
-        assert.equal(
-          result.data.errMsg,
-          'You must be logged in to do that',
-        );
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+      });
 
-      })
-      
-      it('rejects blank inputs', async()=>{
-
+      it('rejects blank inputs', async () => {
         const user = {
           username: getRandomString(10),
           password: getRandomString(10),
@@ -373,47 +363,35 @@ describe('application', async () => {
           userAge: '',
           userWeight: 100,
           userHeight: 68,
-          userActivityLevel: ''
-        }
+          userActivityLevel: '',
+        };
 
         const userData2 = {
           userGender: 'male',
           userAge: 56,
           userWeight: '',
           userHeight: 68,
-          userActivityLevel: 'Extra Active'
-        }
+          userActivityLevel: 'Extra Active',
+        };
 
         const userData3 = {
           userGender: '',
           userAge: '',
           userWeight: 100,
           userHeight: '',
-          userActivityLevel: ''
-        }
+          userActivityLevel: '',
+        };
 
         const result = await client.post('/api/save-cal-rec', userData1);
-        assert.equal(
-          result.data.errMsg,
-          'Please enter all fields',
-        );
+        assert.equal(result.data.errMsg, 'Please enter all fields');
 
         const result2 = await client.post('/api/save-cal-rec', userData2);
-        assert.equal(
-          result2.data.errMsg,
-          'Please enter all fields',
-        );
+        assert.equal(result2.data.errMsg, 'Please enter all fields');
 
         const result3 = await client.post('/api/save-cal-rec', userData3);
-        assert.equal(
-          result3.data.errMsg,
-          'Please enter all fields',
-        );
-
-
+        assert.equal(result3.data.errMsg, 'Please enter all fields');
       });
-      it('rejects invalid number inputs', async() =>{
-
+      it('rejects invalid number inputs', async () => {
         const user = {
           username: getRandomString(10),
           password: getRandomString(10),
@@ -425,46 +403,34 @@ describe('application', async () => {
           userAge: -13,
           userWeight: 100,
           userHeight: 0,
-          userActivityLevel: 'extra active'
-        }
+          userActivityLevel: 'extra active',
+        };
 
         const userData2 = {
           userGender: 'male',
           userAge: 11,
           userWeight: -100,
           userHeight: 0,
-          userActivityLevel: 'extra active'
-        }
+          userActivityLevel: 'extra active',
+        };
 
         const userData3 = {
           userGender: 'female',
           userAge: 90,
           userWeight: 100,
           userHeight: -40,
-          userActivityLevel: 'extra active'
-        }
+          userActivityLevel: 'extra active',
+        };
 
         const result1 = await client.post('/api/save-cal-rec', userData1);
-        assert.equal(
-          result1.data.errMsg,
-          'Please enter a valid age',
-        );
+        assert.equal(result1.data.errMsg, 'Please enter a valid age');
         const result2 = await client.post('/api/save-cal-rec', userData2);
-        assert.equal(
-          result2.data.errMsg,
-          'Please enter a valid weight',
-        );
+        assert.equal(result2.data.errMsg, 'Please enter a valid weight');
         const result3 = await client.post('/api/save-cal-rec', userData3);
-        assert.equal(
-          result3.data.errMsg,
-          'Please enter a valid height',
-        );
-
+        assert.equal(result3.data.errMsg, 'Please enter a valid height');
       });
 
-
-      it('returns the proper calorie recommendation', async()=>{
-
+      it('returns the proper calorie recommendation', async () => {
         const user = {
           username: getRandomString(10),
           password: getRandomString(10),
@@ -476,34 +442,27 @@ describe('application', async () => {
           userAge: 23,
           userWeight: 150,
           userHeight: 70,
-          userActivityLevel: 'extra active'
-        }
-        let ans1 = 1.9*( 66+(6.3*150)+(12.9*70)-(6.8*23))
+          userActivityLevel: 'extra active',
+        };
+        const ans1 = 1.9 * (66 + 6.3 * 150 + 12.9 * 70 - 6.8 * 23);
         const userData2 = {
           userGender: 'female',
           userAge: 10,
           userWeight: 130,
           userHeight: 60,
-          userActivityLevel: 'lightly active'
-        }
-        ans2 = 1.375*(655 + (4.3*130) + (4.7*60) - (4.7*10))
+          userActivityLevel: 'lightly active',
+        };
+        ans2 = 1.375 * (655 + 4.3 * 130 + 4.7 * 60 - 4.7 * 10);
 
         const result1 = await client.post('/api/save-cal-rec', userData);
-        assert.equal(
-          result1.data.cals,
-          Math.round(ans1)
-        );
+        assert.equal(result1.data.cals, Math.round(ans1));
         const result2 = await client.post('/api/save-cal-rec', userData2);
-        assert.equal(
-          result2.data.cals,
-          Math.round(ans2)
-        );
-
-      })
+        assert.equal(result2.data.cals, Math.round(ans2));
+      });
     });
 
     describe('get_calories-test', async () => {
-      it('rejects if user is not logged in', async()=>{
+      it('rejects if user is not logged in', async () => {
         const user = {
           username: getRandomString(10),
           password: getRandomString(10),
@@ -512,22 +471,16 @@ describe('application', async () => {
         await client.post('/api/logout', user);
 
         const result = await client.get('/api/get-cal-rec');
-        assert.equal(
-          result.data.errMsg,
-          'You must be logged in to do that',
-        );
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+      });
 
-      })
-      
-      it('returns an error if calories were not calculated')
+      it('returns an error if calories were not calculated');
 
-      it('correctly pulls up calculated calories')
-
-
+      it('correctly pulls up calculated calories');
     });
 
     describe('meal_generator-test', async () => {
-      it('rejects input if user is not logged in', async()=>{
+      it('rejects input if user is not logged in', async () => {
         const user = {
           username: getRandomString(10),
           password: getRandomString(10),
@@ -535,26 +488,20 @@ describe('application', async () => {
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
 
-        const userData = {}
+        const userData = {};
 
         const result = await client.post('/api/generate-meal-plan', userData);
-        assert.equal(
-          result.data.errMsg,
-          'You must be logged in to do that',
-        );
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+      });
 
-      })
-      
-      it('does not allow generation without calorie calculation')
+      it('does not allow generation without calorie calculation');
 
-      
       //  test for external api
-        //  limit number of times call to external api
-
+      //  limit number of times call to external api
     });
 
     describe('get_mealplan-test', async () => {
-      it('rejects input if user is not logged in', async()=>{
+      it('rejects input if user is not logged in', async () => {
         const user = {
           username: getRandomString(10),
           password: getRandomString(10),
@@ -562,32 +509,21 @@ describe('application', async () => {
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
 
-        const userData = {}
+        const userData = {};
 
         const result = await client.get('/api/get-meal-plan');
-        assert.equal(
-          result.data.errMsg,
-          'You must be logged in to do that',
-        );
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+      });
 
-      })
-      
-      it('does not pull up meal plan if one is not saved')
+      it('does not pull up meal plan if one is not saved');
 
-      it('does pull up a meal plan if one is saved')
+      it('does pull up a meal plan if one is saved');
     });
 
-
-    describe('get_recipe-test', async() => {
-
-      it('returns error if user is not logged in')
-      it('returns error for an invalid recipe')
-      it('returns correct recipe for a valid recipe')
-
-    })
-
-
-
-
+    describe('get_recipe-test', async () => {
+      it('returns error if user is not logged in');
+      it('returns error for an invalid recipe');
+      it('returns correct recipe for a valid recipe');
+    });
   });
 });
