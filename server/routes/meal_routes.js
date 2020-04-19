@@ -6,11 +6,14 @@ Hold routes for meal plan operations
 
 const express = require('express');
 
-const router = express.Router();
 const fetch = require('node-fetch');
+
+const key = require('../config/keys.js').app_key;
+
+const router = express.Router();
 const Rec = require('../models/rec');
 
-router.post('/generate-meal-plan', function(req, res) {
+router.post('/generate-meal-plan', (req, res) => {
   if (!req.session.user || req.session.user === undefined) {
     return res.json({ errMsg: 'You must be logged in to do that' });
   }
@@ -26,7 +29,7 @@ router.post('/generate-meal-plan', function(req, res) {
       }
     })
     .catch((err) => {
-      console.log('error during check of calories in generate-meal-plan');
+      console.log(err);
     });
 
   //  extract user entered data
@@ -36,10 +39,7 @@ router.post('/generate-meal-plan', function(req, res) {
   const { diet } = data;
   const { exclude } = data;
 
-  let url = `https://api.spoonacular.com/mealplanner/generate?apiKey=${
-    require('../config/keys.js').app_key
-  }`;
-
+  let url = `https://api.spoonacular.com/mealplanner/generate?apiKey=${key}`;
   const calsUrl = `&targetCalories=${cals}`;
   const timeFrameUrl = `&timeFrame=${timeFrame}`;
   let dietUrl = '';
@@ -114,30 +114,30 @@ router.post('/generate-meal-plan', function(req, res) {
     .then((response) => response.json())
     .then((apiResponse) => {
       //  save nutrients from apiResponse
-      const _nutrients = [];
-      _nutrients.push(apiResponse.nutrients.calories);
-      _nutrients.push(apiResponse.nutrients.carbohydrates);
-      _nutrients.push(apiResponse.nutrients.fat);
-      _nutrients.push(apiResponse.nutrients.protein);
+      const myNutrients = [];
+      myNutrients.push(apiResponse.nutrients.calories);
+      myNutrients.push(apiResponse.nutrients.carbohydrates);
+      myNutrients.push(apiResponse.nutrients.fat);
+      myNutrients.push(apiResponse.nutrients.protein);
 
       //  save all meals from apiResponse
-      const _meals = apiResponse.meals;
+      const myMeals = apiResponse.meals;
 
       Rec.findOneAndUpdate(
         { username: req.session.user.toString() },
-        { $set: { meals: _meals, mealplan_nutrients: _nutrients } },
-      ).then((returnData) => {
+        { $set: { meals: myMeals, mealplan_nutrients: myNutrients } },
+      ).then(() => {
         console.log('Successfully Saved Meal Plan');
         return res.json({ successMsg: 'Successfully saved meal plan' });
       });
     })
     .catch((error) => {
-      console.log('Error when saving meal plan. Try again.');
+      console.log(error);
       return res.json({ errorMsg: 'Error when saving meal plan. Try again.' });
     });
 });
 
-router.get('/get-meal-plan', function(req, res) {
+router.get('/get-meal-plan', (req, res) => {
   if (!req.session.user || req.session.user === undefined) {
     return res.json({ errMsg: 'You must be logged in to do that' });
   }
@@ -150,36 +150,36 @@ router.get('/get-meal-plan', function(req, res) {
         });
       }
 
-      const _bfast = {
+      const bf = {
         name: data.meals[0].title,
         readyIn: data.meals[0].readyInMinutes,
         servings: data.meals[0].servings,
       };
-      const _lunch = {
+      const lu = {
         name: data.meals[1].title,
         readyIn: data.meals[1].readyInMinutes,
         servings: data.meals[1].servings,
       };
-      const _dinner = {
+      const din = {
         name: data.meals[2].title,
         readyIn: data.meals[2].readyInMinutes,
         servings: data.meals[2].servings,
       };
-      const _nutrients = {
+      const nutr = {
         calories: data.mealplan_nutrients[0],
         carbs: data.mealplan_nutrients[1],
         fat: data.mealplan_nutrients[2],
         protein: data.mealplan_nutrients[3],
       };
       return res.json({
-        bfast: _bfast,
-        lunch: _lunch,
-        dinner: _dinner,
-        nutrients: _nutrients,
+        bfast: bf,
+        lunch: lu,
+        dinner: din,
+        nutrients: nutr,
       });
     })
     .catch((err) => {
-      console.log('error when getting meal plan');
+      console.log(err);
     });
 });
 

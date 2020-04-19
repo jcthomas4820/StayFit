@@ -9,7 +9,7 @@ const express = require('express');
 const router = express.Router();
 const Exercise = require('../models/exercise');
 
-router.get('/get-grid-data', function(req, res) {
+router.get('/get-grid-data', (req, res) => {
   if (!req.session.user || req.session.user === undefined) {
     return res.json({ getGridError: 'The user is not logged in' });
   }
@@ -21,7 +21,7 @@ router.get('/get-grid-data', function(req, res) {
       }
 
       const data = [];
-      for (i = 0; i < exercises.length; i++) {
+      for (let i = 0; i < exercises.length; i += 1) {
         const entry = {
           name: exercises[i].name,
           date: exercises[i].date,
@@ -36,7 +36,7 @@ router.get('/get-grid-data', function(req, res) {
     });
 });
 
-router.post('/save-grid-data', function(req, res) {
+router.post('/save-grid-data', (req, res) => {
   // check of user is logged in
   if (!req.session.user || req.session.user === undefined) {
     return res.json({ saveGridError: 'You must be logged in to do that' });
@@ -71,7 +71,7 @@ router.post('/save-grid-data', function(req, res) {
   });
   newExercise
     .save()
-    .then((exercise) => {
+    .then(() => {
       return res.json('Your exercise values are saved');
     })
     .catch((err) => {

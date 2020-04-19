@@ -320,6 +320,7 @@ describe('application', async () => {
       });
     });
 
+    /*
     // ***** //
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
     function getRandomInt(min, max) {
@@ -329,6 +330,7 @@ describe('application', async () => {
       // The maximum is exclusive and the minimum is inclusive
       return Math.floor(Math.random() * (maxF - minC)) + minC;
     }
+    */
 
     describe('delete_grid_row-test', async () => {
       it('rejects operation if user is not logged in');
@@ -452,7 +454,7 @@ describe('application', async () => {
           userHeight: 60,
           userActivityLevel: 'lightly active',
         };
-        ans2 = 1.375 * (655 + 4.3 * 130 + 4.7 * 60 - 4.7 * 10);
+        const ans2 = 1.375 * (655 + 4.3 * 130 + 4.7 * 60 - 4.7 * 10);
 
         const result1 = await client.post('/api/save-cal-rec', userData);
         assert.equal(result1.data.cals, Math.round(ans1));
@@ -508,8 +510,6 @@ describe('application', async () => {
         };
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
-
-        const userData = {};
 
         const result = await client.get('/api/get-meal-plan');
         assert.equal(result.data.errMsg, 'You must be logged in to do that');
