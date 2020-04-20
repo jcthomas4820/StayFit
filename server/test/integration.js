@@ -166,7 +166,7 @@ describe('application', async () => {
       });
     });
 
-    describe('get-grid-data-test', async () => {
+    describe('get_grid_data-test', async () => {
       it('correctly pulls up user exercise data from database', async () => {
         // register a user
         const user = {
@@ -221,7 +221,7 @@ describe('application', async () => {
       });
     });
 
-    describe('save-grid-data-test', async () => {
+    describe('save_grid_data-test', async () => {
       it('allows the user select how to organize the grid');
       it('allows user to remove rows from the grid');
       it('does not allow for a user to save an exercise without a name, progress or date', async () => {
@@ -280,6 +280,7 @@ describe('application', async () => {
           exerciseDescription: '30lb 4s10r',
           exerciseDate: '3/20/2020',
         });
+
         assert.equal(result.data, 'Your exercise values are saved');
       });
 
@@ -341,7 +342,7 @@ describe('application', async () => {
 
 
     describe('calorie_calculation-test', async () => {
-      
+
       it('rejects input if user is not logged in', async()=>{
         const user = {
           username: getRandomString(10),
@@ -359,7 +360,7 @@ describe('application', async () => {
         );
 
       })
-      
+
       it('rejects blank inputs', async()=>{
 
         const user = {
@@ -518,7 +519,7 @@ describe('application', async () => {
         );
 
       })
-      
+
       it('returns an error if calories were not calculated')
 
       it('correctly pulls up calculated calories')
@@ -544,10 +545,10 @@ describe('application', async () => {
         );
 
       })
-      
+
       it('does not allow generation without calorie calculation')
 
-      
+
       //  test for external api
         //  limit number of times call to external api
 
@@ -571,7 +572,7 @@ describe('application', async () => {
         );
 
       })
-      
+
       it('does not pull up meal plan if one is not saved')
 
       it('does pull up a meal plan if one is saved')
@@ -585,9 +586,6 @@ describe('application', async () => {
       it('returns correct recipe for a valid recipe')
 
     })
-
-
-
 
   });
 });
