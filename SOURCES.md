@@ -89,3 +89,6 @@ I ran into an issue with the express-session not persisting across axios calls. 
 #### Styled-components to revamp the UI
 
 - Documentation: https://styled-components.com/docs
+
+#### Route Separation
+- https://github.com/expressjs/express/tree/master/examples/route-separation

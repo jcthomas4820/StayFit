@@ -5,6 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.github/workflows/grading.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/grading.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/grid_routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/grid_routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/test/integration.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/test/integration.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

@@ -239,7 +239,7 @@ describe('application', async () => {
           exerciseDate: '3/26/2020',
         });
         assert.equal(
-          resultNoName.data.saveGridError,
+          resultNoName.data.errMsg,
           'You must provide a name for the exercise',
         );
 
@@ -250,7 +250,7 @@ describe('application', async () => {
           exerciseDate: '3/26/2020',
         });
         assert.equal(
-          resultNoDesc.data.saveGridError,
+          resultNoDesc.data.errMsg,
           'You must provide the description of the exercise',
         );
 
@@ -261,7 +261,7 @@ describe('application', async () => {
           exerciseDate: '',
         });
         assert.equal(
-          resultNoDate.data.saveGridError,
+          resultNoDate.data.errMsg,
           'You must provide a date',
         );
       });
@@ -302,7 +302,7 @@ describe('application', async () => {
         });
 
         assert.equal(
-          result.data.saveGridError,
+          result.data.errMsg,
           'You must be logged in to do that',
         );
       });
@@ -315,7 +315,7 @@ describe('application', async () => {
           exerciseDate: '3/26/2020',
         });
         assert.equal(
-          result.data.saveGridError,
+          result.data.errMsg,
           'You must be logged in to do that',
         );
       });
@@ -331,14 +331,175 @@ describe('application', async () => {
       return Math.floor(Math.random() * (maxF - minC)) + minC;
     }
 
+    describe('edit_grid_row-test', async () => {
+
+      it('rejects operation if user is not logged in', async()=>{
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        await client.post('/api/logout', user);
+
+        let result = await client.post('/api/edit-grid-row',{
+          exerciseName: 'bicep curl',
+          exerciseDescription: '35lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        assert.equal(
+          result.data.errMsg,
+         'You must be logged in to do that',
+        );
+
+      });
+
+      it('does not allow a user to edit a non-existent row', async()=>{
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        await client.post('/api/delete-grid-row',{
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        let result = await client.post('/api/edit-grid-row',{
+          exerciseName: 'bicep curl',
+          exerciseDescription: '35lb 4s10r',
+          exerciseDate: '3/29/2020',
+        });
+
+        assert.equal(
+          result.data.errMsg,
+         'The exercise does not exist',
+        );
+      });
+
+      it('properly edits an existing row', async()=>{
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        let result = await client.post('/api/edit-grid-row',{
+          exerciseName: 'bicep curl',
+          exerciseDescription: '35lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        assert.equal(
+          result.data,
+          'The exercise is updated',
+        );
+      });
+
+    });
 
     describe('delete_grid_row-test', async () => {
 
-      it('rejects operation if user is not logged in')
-      it('does not allow a user to delete a non-existent row')
-      it('properly deletes an existing row')
+      it('rejects operation if user is not logged in', async()=>{
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
 
-    })
+        await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        await client.post('/api/logout', user);
+
+        let result = await client.post('/api/delete-grid-row',{
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        assert.equal(
+          result.data.errMsg,
+         'You must be logged in to do that',
+        );
+
+      });
+
+      it('does not allow a user to delete a non-existent row', async()=>{
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        let result = await client.post('/api/delete-grid-row',{
+          exerciseName: 'sit ups',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        assert.equal(
+          result.data.errMsg,
+         'The exercise does not exist',
+        );
+      });
+
+      it('properly deletes an existing row', async()=>{
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        await client.post('/api/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        let result = await client.post('/api/delete-grid-row',{
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        assert.equal(
+          result.data,
+          'The exercise is deleted',
+        );
+      });
+
+    });
 
 
     describe('calorie_calculation-test', async () => {
