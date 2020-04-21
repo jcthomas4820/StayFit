@@ -10,7 +10,7 @@ const router = express.Router();
 
 const saltRounds = 10;
 
-var grid = require('./grid_routes');
+const grid = require('./grid_routes');
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
 router.get('/', (req, res) => {

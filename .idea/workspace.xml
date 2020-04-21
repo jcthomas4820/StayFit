@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="016d6e0c-8346-4d6b-94a0-705474a5bd72" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/grid_routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/grid_routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/test/integration.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/test/integration.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
