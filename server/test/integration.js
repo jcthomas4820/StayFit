@@ -176,19 +176,19 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         // save some exercises
-        await client.post('/api/save-grid-data', {
+        await client.post('/grid/save-grid-data', {
           exerciseName: 'bicep curl',
           exerciseDescription: '25lb 4s10r',
           exerciseDate: '3/26/2020',
         });
-        await client.post('/api/save-grid-data', {
+        await client.post('/grid/save-grid-data', {
           exerciseName: 'inner bicep curl',
           exerciseDescription: '25lb 4s10r',
           exerciseDate: '3/27/2020',
         });
 
         // get exercise data from database
-        let result = await client.get('/api/get-grid-data');
+        let result = await client.get('/grid/get-grid-data');
 
         const list = [
           { name: 'bicep curl', date: '3/26/2020', description: '25lb 4s10r' },
@@ -202,7 +202,7 @@ describe('application', async () => {
         assert.deepEqual(result.data.exerciseData, list);
 
         // save more exercises
-        await client.post('/api/save-grid-data', {
+        await client.post('/grid/save-grid-data', {
           exerciseName: 'sit ups',
           exerciseDescription: '4s5r',
           exerciseDate: '3/30/2020',
@@ -216,7 +216,7 @@ describe('application', async () => {
         list.push(subList);
 
         // get exercise data from database again
-        result = await client.get('/api/get-grid-data');
+        result = await client.get('/grid/get-grid-data');
         assert.deepEqual(result.data.exerciseData, list);
       });
     });
@@ -233,7 +233,7 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         // save an exercise with no name
-        const resultNoName = await client.post('/api/save-grid-data', {
+        const resultNoName = await client.post('/grid/save-grid-data', {
           exerciseName: '',
           exerciseDescription: '25lb 4s10r',
           exerciseDate: '3/26/2020',
@@ -244,7 +244,7 @@ describe('application', async () => {
         );
 
         // save an exercise with no progress
-        const resultNoDesc = await client.post('/api/save-grid-data', {
+        const resultNoDesc = await client.post('/grid/save-grid-data', {
           exerciseName: 'bicep curl',
           exerciseDescription: '',
           exerciseDate: '3/26/2020',
@@ -255,7 +255,7 @@ describe('application', async () => {
         );
 
         // save an exercise with no date
-        const resultNoDate = await client.post('/api/save-grid-data', {
+        const resultNoDate = await client.post('/grid/save-grid-data', {
           exerciseName: 'bicep curl',
           exerciseDescription: '30lb 4s10r',
           exerciseDate: '',
@@ -275,7 +275,7 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         // save an exercise with name, progress, and date
-        const result = await client.post('/api/save-grid-data', {
+        const result = await client.post('/grid/save-grid-data', {
           exerciseName: 'bicep curl',
           exerciseDescription: '30lb 4s10r',
           exerciseDate: '3/20/2020',
@@ -294,7 +294,7 @@ describe('application', async () => {
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
 
-        const result = await client.post('/api/save-grid-data', {
+        const result = await client.post('/grid/save-grid-data', {
           exerciseName: 'bicep curl',
           exerciseDescription: '25lb 4s10r',
           exerciseDate: '3/26/2020',
@@ -308,7 +308,7 @@ describe('application', async () => {
 
       it('throws error if an unregistered user tries to track or update exercise', async () => {
         // save exercise without logging in
-        const result = await client.post('/api/save-grid-data', {
+        const result = await client.post('/grid/save-grid-data', {
           exerciseName: 'bicep curl',
           exerciseDescription: '25lb 4s10r',
           exerciseDate: '3/26/2020',
@@ -349,7 +349,7 @@ describe('application', async () => {
 
         const userData = {};
 
-        const result = await client.post('/api/save-cal-rec', userData);
+        const result = await client.post('/cal/save-cal-rec', userData);
         assert.equal(result.data.errMsg, 'You must be logged in to do that');
       });
 
@@ -384,13 +384,13 @@ describe('application', async () => {
           userActivityLevel: '',
         };
 
-        const result = await client.post('/api/save-cal-rec', userData1);
+        const result = await client.post('/cal/save-cal-rec', userData1);
         assert.equal(result.data.errMsg, 'Please enter all fields');
 
-        const result2 = await client.post('/api/save-cal-rec', userData2);
+        const result2 = await client.post('/cal/save-cal-rec', userData2);
         assert.equal(result2.data.errMsg, 'Please enter all fields');
 
-        const result3 = await client.post('/api/save-cal-rec', userData3);
+        const result3 = await client.post('/cal/save-cal-rec', userData3);
         assert.equal(result3.data.errMsg, 'Please enter all fields');
       });
       it('rejects invalid number inputs', async () => {
@@ -424,11 +424,11 @@ describe('application', async () => {
           userActivityLevel: 'extra active',
         };
 
-        const result1 = await client.post('/api/save-cal-rec', userData1);
+        const result1 = await client.post('/cal/save-cal-rec', userData1);
         assert.equal(result1.data.errMsg, 'Please enter a valid age');
-        const result2 = await client.post('/api/save-cal-rec', userData2);
+        const result2 = await client.post('/cal/save-cal-rec', userData2);
         assert.equal(result2.data.errMsg, 'Please enter a valid weight');
-        const result3 = await client.post('/api/save-cal-rec', userData3);
+        const result3 = await client.post('/cal/save-cal-rec', userData3);
         assert.equal(result3.data.errMsg, 'Please enter a valid height');
       });
 
@@ -456,9 +456,9 @@ describe('application', async () => {
         };
         const ans2 = 1.375 * (655 + 4.3 * 130 + 4.7 * 60 - 4.7 * 10);
 
-        const result1 = await client.post('/api/save-cal-rec', userData);
+        const result1 = await client.post('/cal/save-cal-rec', userData);
         assert.equal(result1.data.cals, Math.round(ans1));
-        const result2 = await client.post('/api/save-cal-rec', userData2);
+        const result2 = await client.post('/cal/save-cal-rec', userData2);
         assert.equal(result2.data.cals, Math.round(ans2));
       });
     });
@@ -472,7 +472,7 @@ describe('application', async () => {
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
 
-        const result = await client.get('/api/get-cal-rec');
+        const result = await client.get('/cal/get-cal-rec');
         assert.equal(result.data.errMsg, 'You must be logged in to do that');
       });
 
@@ -492,7 +492,7 @@ describe('application', async () => {
 
         const userData = {};
 
-        const result = await client.post('/api/generate-meal-plan', userData);
+        const result = await client.post('/meal/generate-meal-plan', userData);
         assert.equal(result.data.errMsg, 'You must be logged in to do that');
       });
 
@@ -511,7 +511,7 @@ describe('application', async () => {
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
 
-        const result = await client.get('/api/get-meal-plan');
+        const result = await client.get('/meal/get-meal-plan');
         assert.equal(result.data.errMsg, 'You must be logged in to do that');
       });
 
