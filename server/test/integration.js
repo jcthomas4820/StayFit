@@ -166,7 +166,7 @@ describe('application', async () => {
       });
     });
 
-    describe('get-grid-data-test', async () => {
+    describe('get_grid_data-test', async () => {
       it('correctly pulls up user exercise data from database', async () => {
         // register a user
         const user = {
@@ -221,7 +221,7 @@ describe('application', async () => {
       });
     });
 
-    describe('save-grid-data-test', async () => {
+    describe('save_grid_data-test', async () => {
       it('allows the user select how to organize the grid');
       it('allows user to remove rows from the grid');
       it('does not allow for a user to save an exercise without a name, progress or date', async () => {
@@ -280,6 +280,7 @@ describe('application', async () => {
           exerciseDescription: '30lb 4s10r',
           exerciseDate: '3/20/2020',
         });
+
         assert.equal(result.data, 'Your exercise values are saved');
       });
 
