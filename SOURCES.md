@@ -73,19 +73,28 @@ I ran into an issue with the express-session not persisting across axios calls. 
 - https://github.com/kaytwo/example-services/blob/master/.github/workflows/mongodb-service.yml
 
 #### Calorie Calculation
+
 - http://www.checkyourhealth.org/eat-healthy/cal_calculator.php
 
 #### Spoonacular Diet Planner
+
 - https://spoonacular.com/food-api/docs#Generate-Meal-Plan
 
 #### Using Fetch API
+
 - https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 
 #### Tables in React
 
 - Documentation for version 6: https://github.com/tannerlinsley/react-table/tree/v6#example
 - Quick examples I used to get started with it: https://www.javatpoint.com/react-table
+- Setting up an onclick listener: https://stackoverflow.com/questions/56086420/how-to-get-react-table-row-data-onclick
 
 #### Styled-components to revamp the UI
 
 - Documentation: https://styled-components.com/docs
+
+#### Using the react-modal for the popup screens
+
+- Documentation: https://www.npmjs.com/package/react-modal
+- How to use styled components with it: https://github.com/reactjs/react-modal/issues/627
