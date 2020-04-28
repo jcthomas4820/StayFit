@@ -1,15 +1,11 @@
-/*
-Form written as controlled component:
-    MacroCalculator component randers the form and controls what happens in that form
-*/
-
 import React from "react";
 import axios from "axios";
-import Navbar from "../layouts/navbar";
-import { Redirect } from "react-router-dom";
-
-import { Header1, Header2, Button, Input, Body, Error } from "../styles/custom";
+import Navbar from "../portions/navbar";
+import { Header1, Header2, Button } from "../styles/custom";
 import { Row } from "simple-flexbox";
+import CalculateModal from "../portions/calculate-popup";
+import GenerateModal from "../portions/generate-popup";
+import ViewModal from "../portions/view-popup";
 
 axios.defaults.withCredentials = true;
 
@@ -26,9 +22,9 @@ class MealPlanner extends React.Component {
       cals: null,
       errorMsg: "",
       calMsg: "", // "Your daily calorie intake should be: <cals here>"
-      generate: false, // generate the meal plan
       planWasGenerated: false,
       view: false, // view the meal plan
+      calculateLaunch: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -69,193 +65,55 @@ class MealPlanner extends React.Component {
     console.log(id);
 
     if (id === "calculate") {
-      // grab the user data
-      let gender = this.state.gender;
-      let age = this.state.age;
-      let weight = this.state.weight;
-      let height = this.state.height;
-      let activityLevel = this.state.activityLevel;
-
-      const userData = {
-        userGender: gender,
-        userAge: age,
-        userWeight: weight,
-        userHeight: height,
-        userActivityLevel: activityLevel,
-      };
-
-      // send user entered data to the server to calculate the required data
-      axios
-        .post("http://localhost:3001/cal/save-cal-rec", userData)
-        .then((res) => {
-          // grab data returned by server
-
-          let err = res.data.errMsg;
-
-          if (err) {
-            this.setState({ cals: "" });
-            this.setState({ calMsg: "" });
-            this.setState({ errorMsg: err });
-          } else {
-            // update state to reflect values calculated for calories
-            this.setState({ cals: res.data.cals });
-            this.setState({
-              calMsg: "Your daily calorie intake should be: " + this.state.cals,
-            });
-            this.setState({ errorMsg: "" });
-          }
-        });
+      this.refs.calculateModal.showModal();
     } else if (id === "generate") {
-      this.setState({ generate: true });
+      this.refs.generateModal.showModal();
     } else if (id === "view") {
-      this.setState({ view: true });
+      this.refs.viewModal.showModal();
     }
+  }
+
+  componentWillMount() {
+    // load each row data from databse for each row, save in state
+    axios.get("http://localhost:3001/cal/get-cal-rec").then((res) => {
+      let err = res.data.errMsg;
+
+      if (err) {
+        this.setState({
+          calMsg: "Calculate your calories to use the Meal Planner!",
+        });
+      } else {
+        let userCals = res.data.userCals;
+        this.setState({ cals: userCals });
+        this.setState({
+          calMsg:
+            "Your daily calorie intake should be: " +
+            this.state.cals +
+            " calories",
+        });
+      }
+    });
   }
 
   //  note: radio buttons only allow one selection per name attribute
   render() {
-    if (this.state.generate === true) {
-      return <Redirect push to="/planner-generate" />;
-    }
-
-    if (this.state.view === true) {
-      return <Redirect push to="/planner-view" />;
-    }
-
     return (
       <div className="MealPlanner">
         <Navbar />
         <Row horizontal="center">
           <Header1>Meal Planner</Header1>
         </Row>
-        {this.state.calMsg === "" ? (
-          <Row horizontal="center">
-            <Header2>Calculate your calories to use the Meal Planner!</Header2>
-          </Row>
-        ) : (
-          <Row horizontal="center">
-            <Header2>{this.state.calMsg}</Header2>
-          </Row>
-        )}
         <Row horizontal="center">
-          <Error>{this.state.errorMsg}</Error>
+          <Header2>{this.state.calMsg}</Header2>
         </Row>
         <br />
-        <Row horizontal="center">
-          <Row flexGrow={0} horizontal="center">
-            <Body>Gender:</Body>
-          </Row>
-          <Row flexGrow={0} horizontal="center">
-            <input
-              id="genderM"
-              name="gender"
-              type="radio"
-              value="male"
-              onChange={this.handleChange}
-            />
-            <Body>Male</Body>
-          </Row>
-          <Row flexGrow={0} horizontal="center">
-            <input
-              id="genderF"
-              name="gender"
-              type="radio"
-              value="female"
-              onChange={this.handleChange}
-            />
-            <Body>Female</Body>
-          </Row>
-        </Row>
-        <br />
-        <Row horizontal="center">
-          <Input
-            id="age"
-            type="text"
-            name="age"
-            placeholder="age"
-            onChange={this.handleChange}
-          ></Input>
-          <Input
-            id="weight"
-            type="text"
-            name="weight"
-            placeholder="weight (lb)"
-            onChange={this.handleChange}
-          ></Input>
-          <Input
-            id="height"
-            type="text"
-            name="height"
-            placeholder="height (in)"
-            onChange={this.handleChange}
-          ></Input>
-        </Row>
-        <br />
-        <Row horizontal="center">
-          <Body>Activity Level:</Body>
-        </Row>
-        <Row horizontal="center">
-          <input
-            id="s"
-            name="activityLevel"
-            type="radio"
-            value="sedentary"
-            onChange={this.handleChange}
-          />{" "}
-          <Body>Sedentary: Little to no exercise</Body>
-        </Row>
-        <Row horizontal="center">
-          <input
-            id="la"
-            name="activityLevel"
-            type="radio"
-            value="lightly active"
-            onChange={this.handleChange}
-          />{" "}
-          <Body>
-            Lightly Active: Exercise for at least 20 minutes 1 to 3 times per
-            week
-          </Body>
-        </Row>
-        <Row horizontal="center">
-          <input
-            id="ma"
-            name="activityLevel"
-            type="radio"
-            value="moderately active"
-            onChange={this.handleChange}
-          />{" "}
-          <Body>
-            Moderately Active: Intensive exercise for at least 30 to 60 minutes
-            3 to 4 times per week
-          </Body>
-        </Row>
-        <Row horizontal="center">
-          <input
-            id="va"
-            name="activityLevel"
-            type="radio"
-            value="very active"
-            onChange={this.handleChange}
-          />{" "}
-          <Body>
-            Very Active: Intensive exercise for 60 minutes or greater 5 to 7
-            days per week
-          </Body>
-        </Row>
-        <Row horizontal="center">
-          <input
-            id="ea"
-            name="activityLevel"
-            type="radio"
-            value="extra active"
-            onChange={this.handleChange}
-          />{" "}
-          <Body>
-            Extra Active: Exceedingly active and/or very demanding activities
-          </Body>
-        </Row>
-        <br />
+        <CalculateModal container={this} ref="calculateModal" />
+        <GenerateModal
+          container={this}
+          ref="generateModal"
+          userCals={this.state.cals}
+        />
+        <ViewModal container={this} ref="viewModal" />
         <Row horizontal="center">
           <Button id="calculate" onClick={this.handleClick}>
             calculate calories

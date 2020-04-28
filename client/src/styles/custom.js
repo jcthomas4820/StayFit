@@ -100,18 +100,19 @@ export const Input = styled.input`
 `;
 
 // center the modal on the middle of the screen
-export const StyledModal = styled(Modal)`
-  position: relative;
+// the top,left,right,bottom,transport will allow it to resize depending
+// on the contents (relative to what is in it)
+export const CustomModal = styled(Modal)`
+  position: fixed;
   top: 50%;
   left: 50%;
   right: auto;
   bottom: auto;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 150px;
   padding: 20px;
   background: white;
   border: 2px solid black;
   border-radius: 3px;
   outline: none;
+  width: 800px;
 `;

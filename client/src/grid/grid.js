@@ -1,8 +1,7 @@
 import React from "react";
 import axios from "axios";
-import Navbar from "../layouts/navbar";
+import Navbar from "../portions/navbar";
 import ReactTable from "react-table";
-import Modal from "react-modal";
 import { Row, Column } from "simple-flexbox";
 import "react-table/react-table.css";
 import {
@@ -12,7 +11,7 @@ import {
   Input,
   Button,
   Error,
-  StyledModal,
+  CustomModal,
 } from "../styles/custom";
 
 axios.defaults.withCredentials = true;
@@ -41,7 +40,7 @@ class Grid extends React.Component {
       newDesc: null,
       newDate: null,
     };
-    this.close = this.close.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.handleEditDelete = this.handleEditDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -66,7 +65,7 @@ class Grid extends React.Component {
   }
 
   componentDidMount() {
-    Modal.setAppElement("body");
+    CustomModal.setAppElement("body");
   }
 
   // on click listener for each row in the table
@@ -80,7 +79,7 @@ class Grid extends React.Component {
     };
   };
 
-  close() {
+  closeModal() {
     this.setState({ modalVisible: false });
     this.setState({ willEdit: false });
   }
@@ -234,30 +233,26 @@ class Grid extends React.Component {
           )}
 
           {this.state.willEdit === false ? (
-            <StyledModal
-              isOpen={this.state.modalVisible}
-              contentLabel="Example Modal"
-            >
-              <div div style={{ display: "flex", justifyContent: "center" }}>
+            <CustomModal isOpen={this.state.modalVisible}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
                 <Header2>
                   Would you like to edit or delete this exercise?
                 </Header2>
               </div>
-              <Button id="edit" onClick={this.handleEditDelete}>
-                edit
-              </Button>
-              <Button id="delete" onClick={this.handleEditDelete}>
-                delete
-              </Button>
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Button onClick={this.close}>cancel</Button>
+                <Button id="edit" onClick={this.handleEditDelete}>
+                  edit
+                </Button>
+                <Button id="delete" onClick={this.handleEditDelete}>
+                  delete
+                </Button>
               </div>
-            </StyledModal>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Button onClick={this.closeModal}>cancel</Button>
+              </div>
+            </CustomModal>
           ) : (
-            <StyledModal
-              isOpen={this.state.modalVisible}
-              contentLabel="Example Modal"
-            >
+            <CustomModal isOpen={this.state.modalVisible}>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Header2>Edit Exercise</Header2>
               </div>
@@ -288,9 +283,9 @@ class Grid extends React.Component {
                 <Button id="editSave" onClick={this.handleEditDelete}>
                   save
                 </Button>
-                <Button onClick={this.close}>cancel</Button>
+                <Button onClick={this.closeModal}>cancel</Button>
               </div>
-            </StyledModal>
+            </CustomModal>
           )}
         </Column>
       </div>
