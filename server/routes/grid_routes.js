@@ -9,6 +9,8 @@ const express = require('express');
 const router = express.Router();
 const Exercise = require('../models/exercise');
 
+/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+
 router.get('/get-grid-data', (req, res) => {
   if (!req.session.user || req.session.user === undefined) {
     return res.json({ getGridError: 'The user is not logged in' });
@@ -21,6 +23,7 @@ router.get('/get-grid-data', (req, res) => {
       }
 
       const data = [];
+      const ids = [];
       for (let i = 0; i < exercises.length; i += 1) {
         const entry = {
           name: exercises[i].name,
@@ -28,8 +31,9 @@ router.get('/get-grid-data', (req, res) => {
           description: exercises[i].progress,
         };
         data.push(entry);
+        ids.push(exercises[i]._id);
       }
-      return res.json({ exerciseData: data });
+      return res.json({ exerciseData: data, exerciseIds: ids });
     })
     .catch((err) => {
       console.log(err);

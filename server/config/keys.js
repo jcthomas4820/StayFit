@@ -4,4 +4,3 @@ module.exports = {
   SESSION_SECRET: 'ThisIsMySecret',
   app_key: 'fe018186f98a4236b46286e507ac061a',
 };
-

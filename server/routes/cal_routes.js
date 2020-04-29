@@ -115,7 +115,7 @@ router.get('/get-cal-rec', (req, res) => {
         });
       }
       const calorieRecommendation = data.cal_rec;
-      return res.json({ userCals: calorieRecommendation });
+      return res.json({ userCals: Math.round(calorieRecommendation) });
     })
     .catch((err) => {
       console.log(err);
