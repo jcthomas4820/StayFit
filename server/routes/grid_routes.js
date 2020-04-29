@@ -2,8 +2,6 @@
 Holds routes to Grid actions
     -   get grid data
     -   save grid data
-    -   edit grid data
-    -   delete grid data
 */
 
 const express = require('express');
@@ -11,38 +9,41 @@ const express = require('express');
 const router = express.Router();
 const Exercise = require('../models/exercise');
 
-router.getGridData = function getGridData(req, res) {
+/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+
+router.get('/get-grid-data', (req, res) => {
   if (!req.session.user || req.session.user === undefined) {
-    return res.json({ errMsg: 'The user is not logged in' });
+    return res.json({ getGridError: 'The user is not logged in' });
   }
 
   Exercise.find({ username: req.session.user.toString() })
     .then((exercises) => {
       if (exercises.length === 0) {
-        return res.json({ errMsg: 'You have no exercises saved yet!' });
+        return res.json({ getGridError: 'You have no exercises saved yet!' });
       }
 
       const data = [];
-      let i = 0;
-      for (i = 0; i < exercises.length; i += 1) {
+      const ids = [];
+      for (let i = 0; i < exercises.length; i += 1) {
         const entry = {
           name: exercises[i].name,
           date: exercises[i].date,
           description: exercises[i].progress,
         };
         data.push(entry);
+        ids.push(exercises[i]._id);
       }
-      return res.json({ exerciseData: data });
+      return res.json({ exerciseData: data, exerciseIds: ids });
     })
     .catch((err) => {
       console.log(err);
     });
-};
+});
 
-router.saveGridData = function saveGridData(req, res) {
+router.post('/save-grid-data', (req, res) => {
   // check of user is logged in
   if (!req.session.user || req.session.user === undefined) {
-    return res.json({ errMsg: 'You must be logged in to do that' });
+    return res.json({ saveGridError: 'You must be logged in to do that' });
   }
 
   // get user provided data
@@ -52,14 +53,16 @@ router.saveGridData = function saveGridData(req, res) {
 
   // check if the data contains all 3 components: name, description, and date
   if (!name || name === '') {
-    return res.json({ errMsg: 'You must provide a name for the exercise' });
+    return res.json({
+      saveGridError: 'You must provide a name for the exercise',
+    });
   }
   if (!date) {
-    return res.json({ errMsg: 'You must provide a date' });
+    return res.json({ saveGridError: 'You must provide a date' });
   }
   if (!description || description === '') {
     return res.json({
-      errMsg: 'You must provide the description of the exercise',
+      saveGridError: 'You must provide the description of the exercise',
     });
   }
 
@@ -72,97 +75,12 @@ router.saveGridData = function saveGridData(req, res) {
   });
   newExercise
     .save()
-    .then((exercise) => {
-      if (exercise) {
-        return res.json('Your exercise values are saved');
-      }
+    .then(() => {
+      return res.json('Your exercise values are saved');
     })
     .catch((err) => {
       console.log(err);
     });
-};
-
-router.editGridRow = function editGridRow(req, res) {
-  // check of user is logged in
-  if (!req.session.user || req.session.user === undefined) {
-    return res.json({ errMsg: 'You must be logged in to do that' });
-  }
-
-  // get user provided data
-  const name = req.body.exerciseName;
-  const description = req.body.exerciseDescription;
-  const date = req.body.exerciseDate;
-
-  // check if the data contains all 3 components: name, description, and date
-  if (!name || name === '') {
-    return res.json({ errMsg: 'You must provide a name for the exercise' });
-  }
-  if (!date) {
-    return res.json({ errMsg: 'You must provide a date' });
-  }
-  if (!description || description === '') {
-    return res.json({
-      errMsg: 'You must provide the description of the exercise',
-    });
-  }
-
-  // Edit data in DB
-  Exercise.findOneAndUpdate(
-    { username: req.session.user.toString(), name },
-    { progress: description, date },
-    { new: true },
-  )
-    .then((exercise) => {
-      if (exercise) {
-        return res.json('The exercise is updated');
-      }
-      return res.json({ errMsg: 'The exercise does not exist' });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-router.deleteGridRow = function deleteGridRow(req, res) {
-  // check of user is logged in
-  if (!req.session.user || req.session.user === undefined) {
-    return res.json({ errMsg: 'You must be logged in to do that' });
-  }
-
-  // get user provided data
-  const name = req.body.exerciseName;
-  const description = req.body.exerciseDescription;
-  const date = req.body.exerciseDate;
-
-  // check if the data contains all 3 components: name, description, and date
-  if (!name || name === '') {
-    return res.json({ errMsg: 'You must provide a name for the exercise' });
-  }
-  if (!date) {
-    return res.json({ errMsg: 'You must provide a date' });
-  }
-  if (!description || description === '') {
-    return res.json({
-      errMsg: 'You must provide the description of the exercise',
-    });
-  }
-
-  // delete data from DB
-  Exercise.findOneAndDelete({
-    username: req.session.user.toString(),
-    name,
-    progress: description,
-    date,
-  })
-    .then((exercise) => {
-      if (exercise) {
-        return res.json('The exercise is deleted');
-      }
-      return res.json({ errMsg: 'The exercise does not exist' });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+});
 
 module.exports = router;

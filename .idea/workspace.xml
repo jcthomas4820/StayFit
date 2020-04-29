@@ -2,9 +2,35 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="016d6e0c-8346-4d6b-94a0-705474a5bd72" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/portions/calculate-popup.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/portions/generate-popup.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/portions/recipe-desc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/portions/view-popup.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/recipeviewer/breakfastviewer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/recipeviewer/dinnerviewer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/recipeviewer/lunchviewer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SOURCES.md" beforeDir="false" afterPath="$PROJECT_DIR$/SOURCES.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/grid/grid.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/grid/grid.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/layouts/navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/portions/navbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/login/selection.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/login/selection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mealplanner/mealplanner.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mealplanner/mealplanner.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mealplanner/mealplannergenerate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mealplanner/mealplannergenerate.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mealplanner/mealplannerview.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mealplanner/mealplannerview.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/styles/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles/custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/config/keys.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/keys.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/exercise.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/exercise.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/rec.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/rec.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/cal_routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/cal_routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/routes/grid_routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/grid_routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/meal_routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/meal_routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/test/integration.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/test/integration.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
