@@ -127,7 +127,7 @@ class Grid extends React.Component {
         }
         });
 
-    } else if (buttonId === "save") {
+    } else if (buttonId === "editSave") {
       // If nothing was entered in the boxes, just use the previously stored information
       let nameEdit =
         this.state.newName === null
