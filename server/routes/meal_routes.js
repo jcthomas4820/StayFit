@@ -12,6 +12,7 @@ const key = require('../config/keys.js').app_key;
 
 const router = express.Router();
 const Rec = require('../models/rec');
+const Recipe = require('../models/recipe');
 
 router.post('/generate-meal-plan', (req, res) => {
   if (!req.session.user || req.session.user === undefined) {
@@ -184,3 +185,17 @@ router.get('/get-meal-plan', (req, res) => {
 });
 
 module.exports = router;
+
+
+router.get('/save-recipes', (req, res) => {
+  if (!req.session.user || req.session.user === undefined) {
+    return res.json({ errMsg: 'You must be logged in to do that' });
+  }
+
+  //  find all ids for breakfast, lunch, and dinner
+
+  //  loop through ids
+    //  if a recipe does not already exists for id
+      //  call api and save it as a Recipe schema
+
+})
