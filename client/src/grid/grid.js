@@ -113,9 +113,8 @@ class Grid extends React.Component {
     } else if (buttonId === "delete") {
       // Get the _id of the exercise that we are going to delete from the database
       let exercise = { entryToDelete: this.state.ids[i] };
-      /*
-        axios.post("http://localhost:3001/grid/DELETEROUTE", exercise).then((res) => {
-        let err = res.data.deleteError;
+        axios.post("http://localhost:3001/grid/delete-grid-row", exercise).then((res) => {
+        let err = res.data.errMsg;
 
         if (err) {
             // display an error and close the popup
@@ -127,8 +126,8 @@ class Grid extends React.Component {
             window.location.reload(false);
         }
         });
-      */
-    } else if (buttonId === "editSave") {
+
+    } else if (buttonId === "save") {
       // If nothing was entered in the boxes, just use the previously stored information
       let nameEdit =
         this.state.newName === null
@@ -150,8 +149,7 @@ class Grid extends React.Component {
         desc: descEdit,
       };
 
-      /*
-        axios.post("http://localhost:3001/grid/EDITROUTE", updateData).then((res) => {
+        axios.post("http://localhost:3001/grid/edit-grid-row", updateData).then((res) => {
         let err = res.data.deleteError;
 
         if (err) {
@@ -165,7 +163,6 @@ class Grid extends React.Component {
             window.location.reload(false);
         }
         });
-      */
 
       // make all of the update entries be null again
       this.setState({ newName: null });
