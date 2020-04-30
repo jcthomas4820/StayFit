@@ -330,9 +330,9 @@ class ExerciseInput extends React.Component {
     //  store this row's (defined by this.state.rowNum) state data: name, progress, and date
     //  if err, this.setState({errMsg: err})
     const data = {
-      exerciseName: name,
-      exerciseDescription: description,
-      exerciseDate: date,
+      name: name,
+      desc: description,
+      date: date,
     };
 
     axios

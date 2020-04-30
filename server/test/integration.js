@@ -177,14 +177,14 @@ describe('application', async () => {
 
         // save some exercises
         await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '25lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/26/2020',
         });
         await client.post('/grid/save-grid-data', {
-          exerciseName: 'inner bicep curl',
-          exerciseDescription: '25lb 4s10r',
-          exerciseDate: '3/27/2020',
+          name: 'inner bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/27/2020',
         });
 
         // get exercise data from database
@@ -203,9 +203,9 @@ describe('application', async () => {
 
         // save more exercises
         await client.post('/grid/save-grid-data', {
-          exerciseName: 'sit ups',
-          exerciseDescription: '4s5r',
-          exerciseDate: '3/30/2020',
+          name: 'sit ups',
+          desc: '4s5r',
+          date: '3/30/2020',
         });
 
         const subList = {
@@ -232,9 +232,9 @@ describe('application', async () => {
 
         // save an exercise with no name
         const resultNoName = await client.post('/grid/save-grid-data', {
-          exerciseName: '',
-          exerciseDescription: '25lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: '',
+          desc: '25lb 4s10r',
+          date: '3/26/2020',
         });
         assert.equal(
           resultNoName.data.saveGridError,
@@ -243,9 +243,9 @@ describe('application', async () => {
 
         // save an exercise with no progress
         const resultNoDesc = await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '',
+          date: '3/26/2020',
         });
         assert.equal(
           resultNoDesc.data.saveGridError,
@@ -254,9 +254,9 @@ describe('application', async () => {
 
         // save an exercise with no date
         const resultNoDate = await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '30lb 4s10r',
-          exerciseDate: '',
+          name: 'bicep curl',
+          desc: '30lb 4s10r',
+          date: '',
         });
         assert.equal(
           resultNoDate.data.saveGridError,
@@ -274,9 +274,9 @@ describe('application', async () => {
 
         // save an exercise with name, progress, and date
         const result = await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '30lb 4s10r',
-          exerciseDate: '3/20/2020',
+          name: 'bicep curl',
+          desc: '30lb 4s10r',
+          date: '3/20/2020',
         });
 
         assert.equal(result.data, 'Your exercise values are saved');
@@ -294,9 +294,9 @@ describe('application', async () => {
         await client.post('/api/logout', user);
 
         const result = await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '25lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/26/2020',
         });
 
         assert.equal(
@@ -308,9 +308,9 @@ describe('application', async () => {
       it('throws error if an unregistered user tries to track or update exercise', async () => {
         // save exercise without logging in
         const result = await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '25lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/26/2020',
         });
         assert.equal(
           result.data.saveGridError,
@@ -338,9 +338,9 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '25lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
@@ -348,9 +348,9 @@ describe('application', async () => {
         await client.post('/api/logout', user);
 
         const result = await client.post('/grid/edit-grid-row', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '35lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '35lb 4s10r',
+          date: '3/26/2020',
           entryToDelete: id,
         });
 
@@ -365,18 +365,18 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '25lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
         const id = resultForID.data.exerciseIds[0];
 
         const result = await client.post('/grid/edit-grid-row', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '35lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '35lb 4s10r',
+          date: '3/26/2020',
           entryToDelete: id,
         });
 
@@ -399,9 +399,9 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '25lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
@@ -423,9 +423,9 @@ describe('application', async () => {
         await client.post('/api/register', user);
 
         await client.post('/grid/save-grid-data', {
-          exerciseName: 'bicep curl',
-          exerciseDescription: '25lb 4s10r',
-          exerciseDate: '3/26/2020',
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
