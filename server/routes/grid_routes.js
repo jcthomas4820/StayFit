@@ -47,9 +47,9 @@ router.post('/save-grid-data', (req, res) => {
   }
 
   // get user provided data
-  const name = req.body.exerciseName;
-  const description = req.body.exerciseDescription;
-  const date = req.body.exerciseDate;
+  const { name } = req.body;
+  const description = req.body.desc;
+  const { date } = req.body;
 
   // check if the data contains all 3 components: name, description, and date
   if (!name || name === '') {
@@ -77,6 +77,80 @@ router.post('/save-grid-data', (req, res) => {
     .save()
     .then(() => {
       return res.json('Your exercise values are saved');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+router.post('/edit-grid-row', (req, res) => {
+  // check of user is logged in
+  if (!req.session.user || req.session.user === undefined) {
+    return res.json({ errMsg: 'You must be logged in to do that' });
+  }
+
+  // get user provided data
+  const { name } = req.body;
+  const description = req.body.desc;
+  const { date } = req.body;
+  const id = req.body.entryToDelete;
+
+  // check if the data contains all 3 components: name, description, and date
+  if (!name || name === '') {
+    return res.json({ errMsg: 'You must provide a name for the exercise' });
+  }
+  if (!id || id === '') {
+    return res.json({ errMsg: 'The exercise ID to delete was not provided' });
+  }
+  if (!date) {
+    return res.json({ errMsg: 'You must provide a date' });
+  }
+  if (!description || description === '') {
+    return res.json({
+      errMsg: 'You must provide the description of the exercise',
+    });
+  }
+
+  // Edit data in DB
+  Exercise.findOneAndUpdate(
+    { username: req.session.user.toString(), _id: id },
+    { name, date, progress: description },
+    { new: true, useFindAndModify: false },
+  )
+    .then((exercise) => {
+      if (exercise) {
+        return res.json('The exercise is updated');
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+router.post('/delete-grid-row', (req, res) => {
+  // check of user is logged in
+  if (!req.session.user || req.session.user === undefined) {
+    return res.json({ errMsg: 'You must be logged in to do that' });
+  }
+
+  const id = req.body.entryToDelete;
+
+  // check if the data contains all 3 components: name, description, and date
+  if (!id || id === '') {
+    return res.json({ errMsg: 'The exercise ID to delete was not provided' });
+  }
+
+  // delete data from DB
+  Exercise.findOneAndDelete(
+    {
+      _id: id,
+    },
+    { useFindAndModify: false },
+  )
+    .then((exercise) => {
+      if (exercise) {
+        return res.json('The exercise is deleted');
+      }
     })
     .catch((err) => {
       console.log(err);
