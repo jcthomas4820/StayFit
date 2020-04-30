@@ -222,8 +222,6 @@ describe('application', async () => {
     });
 
     describe('save_grid_data-test', async () => {
-      it('allows the user select how to organize the grid');
-      it('allows user to remove rows from the grid');
       it('does not allow for a user to save an exercise without a name, progress or date', async () => {
         // register a user
         const user = {
@@ -331,11 +329,118 @@ describe('application', async () => {
       return Math.floor(Math.random() * (maxF - minC)) + minC;
     }
     */
+    describe('edit_grid_row-test', async () => {
+      it('rejects operation if user is not logged in', async () => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        await client.post('/grid/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        const resultForID = await client.get('/grid/get-grid-data');
+        const id = resultForID.data.exerciseIds[0];
+        await client.post('/api/logout', user);
+
+        const result = await client.post('/grid/edit-grid-row', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '35lb 4s10r',
+          exerciseDate: '3/26/2020',
+          entryToDelete: id,
+        });
+
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+      });
+
+      it('properly edits an existing row', async () => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        await client.post('/grid/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        const resultForID = await client.get('/grid/get-grid-data');
+        const id = resultForID.data.exerciseIds[0];
+
+        const result = await client.post('/grid/edit-grid-row', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '35lb 4s10r',
+          exerciseDate: '3/26/2020',
+          entryToDelete: id,
+        });
+
+        assert.equal(result.data, 'The exercise is updated');
+
+        const result2 = await client.get('/grid/get-grid-data');
+        const list = [
+          { date: '3/26/2020', description: '35lb 4s10r', name: 'bicep curl' },
+        ];
+        assert.deepEqual(result2.data.exerciseData, list);
+      });
+    });
 
     describe('delete_grid_row-test', async () => {
-      it('rejects operation if user is not logged in');
-      it('does not allow a user to delete a non-existent row');
-      it('properly deletes an existing row');
+      it('rejects operation if user is not logged in', async () => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        await client.post('/grid/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        const resultForID = await client.get('/grid/get-grid-data');
+        const id = resultForID.data.exerciseIds[0];
+        await client.post('/api/logout', user);
+
+        const result = await client.post('/grid/delete-grid-row', {
+          entryToDelete: id,
+        });
+
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+      });
+
+      it('properly deletes an existing row', async () => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        await client.post('/grid/save-grid-data', {
+          exerciseName: 'bicep curl',
+          exerciseDescription: '25lb 4s10r',
+          exerciseDate: '3/26/2020',
+        });
+
+        const resultForID = await client.get('/grid/get-grid-data');
+        const id = resultForID.data.exerciseIds[0];
+
+        const result = await client.post('/grid/delete-grid-row', {
+          entryToDelete: id,
+        });
+
+        assert.equal(result.data, 'The exercise is deleted');
+
+        const result2 = await client.get('/grid/get-grid-data');
+        const list = null;
+        assert.deepEqual(result2.data.exerciseData, list);
+      });
     });
 
     describe('calorie_calculation-test', async () => {

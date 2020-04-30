@@ -10,7 +10,6 @@ const router = express.Router();
 
 const saltRounds = 10;
 
-const grid = require('./grid_routes');
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
 router.get('/', (req, res) => {
@@ -93,8 +92,4 @@ router.post('/register', (req, res) => {
   });
 });
 
-router.get('/get-grid-data', grid.getGridData);
-router.post('/save-grid-data', grid.saveGridData);
-router.post('/edit-grid-row', grid.editGridRow);
-router.post('/delete-grid-row', grid.deleteGridRow);
 module.exports = router;
