@@ -90,9 +90,9 @@ router.post('/edit-grid-row', (req, res) => {
   }
 
   // get user provided data
-  const name = req.body.exerciseName;
-  const description = req.body.exerciseDescription;
-  const date = req.body.exerciseDate;
+  const name = req.body.name;
+  const description = req.body.desc;
+  const date = req.body.date;
   const id = req.body.entryToDelete;
 
   // check if the data contains all 3 components: name, description, and date
