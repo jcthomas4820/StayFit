@@ -62,7 +62,7 @@ router.post('/generate-meal-plan', (req, res) => {
   /*
     THIS IS A MOCK API RESPONSE
       - use if testing API functionality, without needing to call API
-  
+
     let apiResponse = {
       "meals": [
           {

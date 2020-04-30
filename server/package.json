@@ -12,6 +12,7 @@
     "test-logout": "npm run test -- -g 'logout-test'",
     "test-get_grid_data": "npm run test -- -g 'get_grid_data-test'",
     "test-save_grid_data": "npm run test -- -g 'save_grid_data-test'",
+    "test-edit_grid_row": "npm run test -- -g 'edit_grid_row-test'",
     "test-delete_grid_row": "npm run test -- -g 'delete_grid_row-test'",
     "test-calorie_calculation": "npm run test -- -g 'calorie_calculation-test'",
     "test-get_calories": "npm run test -- -g 'get_calories-test'",

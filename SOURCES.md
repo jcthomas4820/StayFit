@@ -53,9 +53,10 @@ I ran into an issue with the express-session not persisting across axios calls. 
 
 - https://www.tutorialrepublic.com/faq/how-to-get-day-month-and-year-from-a-date-object-in-javascript.php
 
-#### FindOneAndUpdate
+#### FindOneAndUpdate / FindOneAndDelte
 
 - https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+- https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndDelete/
 
 #### Docker with Node.js, Mongo and REACT
 
