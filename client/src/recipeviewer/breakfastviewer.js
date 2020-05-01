@@ -20,8 +20,8 @@ class BreakfastViewer extends React.Component {
     // Load the recipe information for the user
     // It will expect an array with the ingredients, and an array with the instructions
     // LET ME KNOW IF U NEED HELP PARSING OUT THE DATA ON THE BACKEND/FRONTEND
-    /*
-    axios.get("http://localhost:3001/meal/GET-BREAKFAST-ROUTE").then((res) => {
+    
+    axios.get("http://localhost:3001/meal/get-breakfast-recipe").then((res) => {
       let err = res.data.errMsg;
 
       if (err) {
@@ -31,7 +31,7 @@ class BreakfastViewer extends React.Component {
         this.setState({ instructions: res.data.instructions });
       }
     });
-    */
+    
   }
 
   //  note: radio buttons only allow one selection per name attribute
