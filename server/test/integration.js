@@ -93,7 +93,7 @@ describe('application', async () => {
           username: 'sampleuser',
           password: 'RandomPassword01234!',
         });
-        assert.equal(result.data.regError[0], 'Username already exists');
+        assert.equal(result.data.regError, 'Username already exists');
       });
 
       it('requires a password to register', async () => {
@@ -101,7 +101,7 @@ describe('application', async () => {
           username: 'sampleuser',
           password: '',
         });
-        assert.equal(result.data.regError[0], 'Please enter a valid password');
+        assert.equal(result.data.regError, 'Please enter a valid password');
       });
 
       it('requires a secure password to register', async () => {
@@ -120,7 +120,7 @@ describe('application', async () => {
           username: '',
           password: 'RandomPassword01234!',
         });
-        assert.equal(result.data.regError[0], 'Please enter a valid username');
+        assert.equal(result.data.regError, 'Please enter a valid username');
       });
     });
 
@@ -142,7 +142,7 @@ describe('application', async () => {
           password: getRandomString(10),
         };
         const result = await client.post('/api/login', user);
-        assert.equal(result.data.logError[0], 'Username does not exist');
+        assert.equal(result.data.logError, 'Username does not exist');
       });
 
       it('requires the correct password given a username', async () => {
@@ -155,7 +155,7 @@ describe('application', async () => {
           username: 'sampleuser',
           password: 'ThisPasswordIsIncorrect',
         });
-        assert.equal(result.data.logError[0], 'Incorrect password entered');
+        assert.equal(result.data.logError, 'Incorrect password entered');
       });
     });
   });

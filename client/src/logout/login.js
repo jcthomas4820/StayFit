@@ -14,7 +14,7 @@ class LoginPage extends React.Component {
     this.state = {
       loginError: true,
       needsToRegister: false,
-      errorMessage: [],
+      errorMessage: "",
       username: "",
       password: "",
     };
@@ -97,19 +97,7 @@ class LoginPage extends React.Component {
           </Row>
           <div className="login/register section">
             <Row horizontal="center">
-              {this.state.errorMessage.length !== 0 && (
-                <ul>
-                  {this.state.errorMessage.map(function (item, index) {
-                    return (
-                      <Row>
-                        <Error>
-                          <li key={index}>{item}</li>
-                        </Error>
-                      </Row>
-                    );
-                  })}
-                </ul>
-              )}
+              <Error>{this.state.errorMessage}</Error>
             </Row>
             <Row horizontal="center">
               <Input

@@ -63,8 +63,9 @@ router.post(
     const errMsg = [];
     errors.forEach((err) => errMsg.push(err.msg));
 
-    if (errors.length > 0) {
-      return res.json({ logError: errMsg });
+    // Display the first error
+    if (errMsg.length > 0) {
+      return res.json({ logError: errMsg[0] });
     }
 
     // if the user exists, compare the password and determine if it matches
@@ -74,7 +75,7 @@ router.post(
     User.findOne({ username }).then((user) => {
       if (user) {
         if (!bcrypt.compareSync(password, user.password)) {
-          return res.json({ logError: ['Incorrect password entered'] });
+          return res.json({ logError: 'Incorrect password entered' });
         }
 
         console.log(user.username);
@@ -125,8 +126,9 @@ router.post(
     const errMsg = [];
     errors.forEach((err) => errMsg.push(err.msg));
 
-    if (errors.length > 0) {
-      return res.json({ regError: errMsg });
+    // Display the first error
+    if (errMsg.length > 0) {
+      return res.json({ regError: errMsg[0] });
     }
     // Entries are valid - save them
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
@@ -136,7 +138,7 @@ router.post(
     // If no -> register the user and send a successful response
     User.findOne({ username }).then((user) => {
       if (user) {
-        return res.json({ regError: ['Username already exists'] });
+        return res.json({ regError: 'Username already exists' });
       }
       const newUser = new User({
         username,
