@@ -20,6 +20,10 @@ jobs:
     - run: cd server && npm ci
     - run: cd server && npm run test-register
       env:
+        API_KEY: ${{ secrets.API_KEY }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+        SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
         MONGODB_HOST: localhost
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
@@ -40,6 +44,10 @@ jobs:
         node-version: 12.x
     - run: cd server && npm ci && npm run test-login
       env:
+        API_KEY: ${{ secrets.API_KEY }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+        SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
         MONGODB_HOST: mongodb
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
@@ -60,6 +68,10 @@ jobs:
         node-version: 12.x
     - run: cd server && npm ci && npm run test-logout
       env:
+        API_KEY: ${{ secrets.API_KEY }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+        SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
         MONGODB_HOST: mongodb
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
@@ -80,6 +92,10 @@ jobs:
         node-version: 12.x
     - run: cd server && npm ci && npm run test-get_grid_data
       env:
+        API_KEY: ${{ secrets.API_KEY }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+        SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
         MONGODB_HOST: mongodb
         MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
         CI: true
@@ -100,6 +116,10 @@ jobs:
           node-version: 12.x
       - run: cd server && npm ci && npm run test-save_grid_data
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
@@ -121,6 +141,10 @@ jobs:
       - run: cd server && npm ci
       - run: cd server && npm run test-edit_grid_row
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: localhost
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
@@ -142,6 +166,10 @@ jobs:
       - run: cd server && npm ci
       - run: cd server && npm run test-delete_grid_row
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: localhost
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
@@ -162,6 +190,10 @@ jobs:
           node-version: 12.x
       - run: cd server && npm ci && npm run test-calorie_calculation
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
@@ -182,6 +214,10 @@ jobs:
           node-version: 12.x
       - run: cd server && npm ci && npm run test-get_calories
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
@@ -202,6 +238,10 @@ jobs:
           node-version: 12.x
       - run: cd server && npm ci && npm run test-meal_generator
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
@@ -222,6 +262,10 @@ jobs:
           node-version: 12.x
       - run: cd server && npm ci && npm run test-get_mealplan
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
@@ -242,6 +286,10 @@ jobs:
           node-version: 12.x
       - run: cd server && npm ci && npm run test-get_recipe
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_TEST_URI: ${{ secrets.MONGO_TEST_URI}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
