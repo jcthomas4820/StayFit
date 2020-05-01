@@ -97,7 +97,7 @@ class LoginPage extends React.Component {
           </Row>
           <div className="login/register section">
             <Row horizontal="center">
-              {this.state.errorMessage !== null && (
+              {this.state.errorMessage.length !== 0 && (
                 <ul>
                   {this.state.errorMessage.map(function (item, index) {
                     return (

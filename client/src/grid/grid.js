@@ -30,6 +30,7 @@ class Grid extends React.Component {
     super();
     this.state = {
       userMsg: "",
+      editErr: "",
       exercises: [],
       ids: [],
       modalVisible: false,
@@ -113,20 +114,21 @@ class Grid extends React.Component {
     } else if (buttonId === "delete") {
       // Get the _id of the exercise that we are going to delete from the database
       let exercise = { entryToDelete: this.state.ids[i] };
-        axios.post("http://localhost:3001/grid/delete-grid-row", exercise).then((res) => {
-        let err = res.data.errMsg;
+      axios
+        .post("http://localhost:3001/grid/delete-grid-row", exercise)
+        .then((res) => {
+          let err = res.data.errMsg;
 
-        if (err) {
+          if (err) {
             // display an error and close the popup
             this.setState({ userMsg: err });
-            this.setState({ modalVisible: false });
-        } else {
+            this.setState({ modalVisible: true });
+          } else {
             // close modal and refresh the page
             this.setState({ modalVisible: false });
             window.location.reload(false);
-        }
+          }
         });
-
     } else if (buttonId === "editSave") {
       // If nothing was entered in the boxes, just use the previously stored information
       let nameEdit =
@@ -149,25 +151,27 @@ class Grid extends React.Component {
         desc: descEdit,
       };
 
-        axios.post("http://localhost:3001/grid/edit-grid-row", updateData).then((res) => {
-        let err = res.data.deleteError;
+      axios
+        .post("http://localhost:3001/grid/edit-grid-row", updateData)
+        .then((res) => {
+          let err = res.data.editErr;
 
-        if (err) {
+          if (err) {
             // display an error and close the popup
-            this.setState({ userMsg: err });
-            this.setState({ modalVisible: false });
-        } else {
+            this.setState({ editErr: err });
+            this.setState({ modalVisible: true });
+          } else {
             // close modal and refresh the page
             this.setState({ modalVisible: false });
             this.setState({ willEdit: false });
             window.location.reload(false);
-        }
-        });
 
-      // make all of the update entries be null again
-      this.setState({ newName: null });
-      this.setState({ newDesc: null });
-      this.setState({ newDate: null });
+            // make all of the update entries be null again
+            this.setState({ newName: null });
+            this.setState({ newDesc: null });
+            this.setState({ newDate: null });
+          }
+        });
     }
   }
 
@@ -252,6 +256,9 @@ class Grid extends React.Component {
             <CustomModal isOpen={this.state.modalVisible}>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Header2>Edit Exercise</Header2>
+              </div>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Error>{this.state.editErr}</Error>
               </div>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Input

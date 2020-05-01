@@ -191,22 +191,22 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
         await client.post('/grid/save-grid-data', {
           name: 'inner bicep curl',
           desc: '25lb 4s10r',
-          date: '3/27/2020',
+          date: '03/27/2020',
         });
 
         // get exercise data from database
         let result = await client.get('/grid/get-grid-data');
 
         const list = [
-          { name: 'bicep curl', date: '3/26/2020', description: '25lb 4s10r' },
+          { name: 'bicep curl', date: '03/26/2020', description: '25lb 4s10r' },
           {
             name: 'inner bicep curl',
-            date: '3/27/2020',
+            date: '03/27/2020',
             description: '25lb 4s10r',
           },
         ];
@@ -217,12 +217,12 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'sit ups',
           desc: '4s5r',
-          date: '3/30/2020',
+          date: '03/30/2020',
         });
 
         const subList = {
           name: 'sit ups',
-          date: '3/30/2020',
+          date: '03/30/2020',
           description: '4s5r',
         };
         list.push(subList);
@@ -246,7 +246,7 @@ describe('application', async () => {
         const resultNoName = await client.post('/grid/save-grid-data', {
           name: '',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
         assert.equal(
           resultNoName.data.saveGridError,
@@ -257,7 +257,7 @@ describe('application', async () => {
         const resultNoDesc = await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
         assert.equal(
           resultNoDesc.data.saveGridError,
@@ -288,7 +288,7 @@ describe('application', async () => {
         const result = await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '30lb 4s10r',
-          date: '3/20/2020',
+          date: '03/20/2020',
         });
 
         assert.equal(result.data, 'Your exercise values are saved');
@@ -308,7 +308,7 @@ describe('application', async () => {
         const result = await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         assert.equal(
@@ -322,7 +322,7 @@ describe('application', async () => {
         const result = await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
         assert.equal(
           result.data.saveGridError,
@@ -352,7 +352,7 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
@@ -362,7 +362,7 @@ describe('application', async () => {
         const result = await client.post('/grid/edit-grid-row', {
           name: 'bicep curl',
           desc: '35lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
           entryToDelete: id,
         });
 
@@ -379,7 +379,7 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
@@ -388,7 +388,7 @@ describe('application', async () => {
         const result = await client.post('/grid/edit-grid-row', {
           name: 'bicep curl',
           desc: '35lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
           entryToDelete: id,
         });
 
@@ -396,7 +396,7 @@ describe('application', async () => {
 
         const result2 = await client.get('/grid/get-grid-data');
         const list = [
-          { date: '3/26/2020', description: '35lb 4s10r', name: 'bicep curl' },
+          { date: '03/26/2020', description: '35lb 4s10r', name: 'bicep curl' },
         ];
         assert.deepEqual(result2.data.exerciseData, list);
       });
@@ -413,7 +413,7 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
@@ -437,7 +437,7 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
