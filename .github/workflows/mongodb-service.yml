@@ -18,5 +18,9 @@ jobs:
       - run: cd server && npm install
       - run: cd server && npm test
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }} # get randomly assigned published port
