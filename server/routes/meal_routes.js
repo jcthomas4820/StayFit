@@ -26,119 +26,83 @@ router.post('/generate-meal-plan', (req, res) => {
       if (data == null) {
         return res.json({
           errMsg: 'You need to calculate your recommended calories',
-        });
+        });     
+      }
+      else{
+        callAPI();
       }
     })
     .catch((err) => {
       console.log(err);
     });
 
-  //  extract user entered data
-  const data = req.body;
-  const { cals } = data;
-  const { timeFrame } = data;
-  const { diet } = data;
-  const { exclude } = data;
+  function callAPI(){  
 
-  let url = `https://api.spoonacular.com/mealplanner/generate?apiKey=${key}`;
-  const calsUrl = `&targetCalories=${cals}`;
-  const timeFrameUrl = `&timeFrame=${timeFrame}`;
-  let dietUrl = '';
-  let excludeUrl = '';
+    console.log("calling api to generate mealplan")
 
-  //  if user enters exclude list, make sure it is comma separated
-  //  clean up if necessary
+    //  extract user entered data
+    const data = req.body;
+    const { cals } = data;
+    const { timeFrame } = data;
+    const { diet } = data;
+    const { exclude } = data;
 
-  //  check if user entered optional values
-  if (diet !== '') {
-    dietUrl = `&diet=${diet}`;
-  }
-  if (exclude !== '') {
-    excludeUrl = `&exclude=${exclude}`;
-  }
+    let url = `https://api.spoonacular.com/mealplanner/generate?apiKey=${key}`;
+    const calsUrl = `&targetCalories=${cals}`;
+    const timeFrameUrl = `&timeFrame=${timeFrame}`;
+    let dietUrl = '';
+    let excludeUrl = '';
 
-  //  combine to create url for API call
-  url = url + calsUrl + timeFrameUrl + dietUrl + excludeUrl;
+    //  if user enters exclude list, make sure it is comma separated
+    //  clean up if necessary
 
-  /*
-    THIS IS A MOCK API RESPONSE
-      - use if testing API functionality, without needing to call API
+    //  check if user entered optional values
+    if (diet !== '') {
+      dietUrl = `&diet=${diet}`;
+    }
+    if (exclude !== '') {
+      excludeUrl = `&exclude=${exclude}`;
+    }
 
-    let apiResponse = {
-      "meals": [
-          {
-              "id": 655219,
-              "title": "Peanut Butter And Chocolate Oatmeal",
-              "image": "Peanut-Butter-And-Chocolate-Oatmeal-655219.jpg",
-              "imageUrls": [
-                  "Peanut-Butter-And-Chocolate-Oatmeal-655219.jpg"
-              ],
-              "readyInMinutes": 45,
-              "servings": 1
-          },
-          {
-              "id": 649931,
-              "title": "Lentil Salad With Vegetables",
-              "image": "Lentil-Salad-With-Vegetables-649931.jpg",
-              "imageUrls": [
-                  "Lentil-Salad-With-Vegetables-649931.jpg"
-              ],
-              "readyInMinutes": 45,
-              "servings": 4
-          },
-          {
-              "id": 632854,
-              "title": "Asian Noodles",
-              "image": "Asian-Noodles-632854.jpg",
-              "imageUrls": [
-                  "Asian-Noodles-632854.jpg"
-              ],
-              "readyInMinutes": 45,
-              "servings": 4
-          }
-      ],
-      "nutrients": {
-          "calories": 1735.81,
-          "carbohydrates": 235.17,
-          "fat": 69.22,
-          "protein": 55.43
-      }
-  }
-  */
-  //  send request to API
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => response.json())
-    .then((apiResponse) => {
-      //  save nutrients from apiResponse
-      const myNutrients = [];
-      myNutrients.push(apiResponse.nutrients.calories);
-      myNutrients.push(apiResponse.nutrients.carbohydrates);
-      myNutrients.push(apiResponse.nutrients.fat);
-      myNutrients.push(apiResponse.nutrients.protein);
+    //  combine to create url for API call
+    url = url + calsUrl + timeFrameUrl + dietUrl + excludeUrl;
 
-      //  save all meals from apiResponse
-      const myMeals = apiResponse.meals;
-
-      async function saveMealPlan(myMeals, myUsername, myNutrients){
-        await Rec.findOneAndUpdate(
-          { username: myUsername},
-          { $set: { meals: myMeals, mealplan_nutrients: myNutrients } },
-        )
-      }
-
-      saveMealPlan(myMeals, req.session.user.toString(), myNutrients)
-      console.log('Successfully Saved Meal Plan');
-      return res.json({ successMsg: 'Successfully saved meal plan' });
+    //  send request to API
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
-    .catch((error) => {
-      console.log(error);
-      return res.json({ errorMsg: 'Error when saving meal plan. Try again.' });
-    });
+      .then((response) => response.json())
+      .then((apiResponse) => {
+        //  save nutrients from apiResponse
+        const myNutrients = [];
+        myNutrients.push(apiResponse.nutrients.calories);
+        myNutrients.push(apiResponse.nutrients.carbohydrates);
+        myNutrients.push(apiResponse.nutrients.fat);
+        myNutrients.push(apiResponse.nutrients.protein);
+
+        //  save all meals from apiResponse
+        const myMeals = apiResponse.meals;
+
+        async function saveMealPlan(myMeals, myUsername, myNutrients){
+          await Rec.findOneAndUpdate(
+            { username: myUsername},
+            { $set: { meals: myMeals, mealplan_nutrients: myNutrients } },
+          )
+        }
+
+        saveMealPlan(myMeals, req.session.user.toString(), myNutrients)
+        console.log('Successfully Saved Meal Plan');
+        return res.json({ successMsg: 'Successfully saved meal plan' });
+      })
+      .catch((error) => {
+        console.log(error);
+        return res.json({ errorMsg: 'Error when saving meal plan. Try again.' });
+      });
+    }
+
 });
 
 router.get('/get-meal-plan', (req, res) => {
@@ -148,11 +112,13 @@ router.get('/get-meal-plan', (req, res) => {
 
   Rec.findOne({ username: req.session.user.toString() })
     .then((data) => {
-      if (data.meals == null) {
+      if (data == null || data.meals == null) {
         return res.json({
           errMsg: "You haven't generated your meal plan yet!",
         });
       }
+
+      console.log(data)
 
       const bf = {
         name: data.meals[0].title,
@@ -196,7 +162,7 @@ router.post('/save-recipes', (req, res) => {
   //  find user's recommended meals
   Rec.findOne({ username: req.session.user.toString() })
   .then((data) => {
-    if (data.meals == null) {
+    if (data == null || data.meals == null) {
       return res.json({
         errMsg: "You haven't generated your meal plan yet!",
       });
@@ -210,7 +176,7 @@ router.post('/save-recipes', (req, res) => {
     async function recipeExists(myID){
       await Recipe.find({id: myID}, function(err, data) {
         if (data.length > 0){
-          console.log("recipe does exist")
+          console.log("recipe does exist. save route must have failed")
           //return true;
         }
         else{
@@ -291,7 +257,7 @@ async function getRecipe(mealID, res){
 
   await Recipe.findOne({ id: mealID }, function(err, data) {
     if (data == null){
-      return res.json({errMsg: "Cannot find recipe"});
+      return res.json({errMsg: "Recipe has not been saved"});
     }
 
     return res.json({ingredients: data.ingredients, instructions: data.instructions});
@@ -306,12 +272,14 @@ router.get('/get-breakfast-recipe', (req, res) => {
 
   Rec.findOne({ username: req.session.user.toString() })
   .then(async (data) => {
+    if (data == null || data.meals == null){
+      return res.json({errMsg: "You have not generated your meal plan!"});
+    }
     let mealID = data.meals[0].id
     await getRecipe(mealID, res)
   })
   .catch((err) => {
     console.log(err);
-    return res.json({errMsg: "cannot find user"})
   });
  
 });
@@ -324,12 +292,14 @@ router.get('/get-lunch-recipe', (req, res) => {
 
   Rec.findOne({ username: req.session.user.toString() })
   .then(async (data) => {
+    if (data == null || data.meals == null){
+      return res.json({errMsg: "You have not generated your meal plan!"});
+    }
     let mealID = data.meals[1].id
     await getRecipe(mealID, res)
   })
   .catch((err) => {
     console.log(err);
-    return res.json({errMsg: "cannot find user"})
   });
  
 });
@@ -342,12 +312,14 @@ router.get('/get-dinner-recipe', (req, res) => {
 
   Rec.findOne({ username: req.session.user.toString() })
   .then(async (data) => {
+    if (data == null || data.meals == null){
+      return res.json({errMsg: "You have not generated your meal plan!"});
+    }
     let mealID = data.meals[2].id
     await getRecipe(mealID, res)
   })
   .catch((err) => {
     console.log(err);
-    return res.json({errMsg: "cannot find user"})
   });
  
 });

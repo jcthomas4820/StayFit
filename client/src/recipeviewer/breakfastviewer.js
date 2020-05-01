@@ -26,6 +26,7 @@ class BreakfastViewer extends React.Component {
       let err = res.data.errMsg;
 
       if (err) {
+        console.log(err)
         this.setState({ recipeErr: err });
       } else {
         this.setState({ ingredients: res.data.ingredients });

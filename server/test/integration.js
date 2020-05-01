@@ -581,9 +581,40 @@ describe('application', async () => {
         assert.equal(result.data.errMsg, 'You must be logged in to do that');
       });
 
-      it('returns an error if calories were not calculated');
+      it('returns an error if calories were not calculated', async() => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
 
-      it('correctly pulls up calculated calories');
+        const result = await client.get('/cal/get-cal-rec');
+        assert.equal(result.data.errMsg, 'You need to calculate your recommended calories');
+      });
+
+      it('correctly pulls up calculated calories', async() => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        const userData = {
+          userGender: 'male',
+          userAge: 23,
+          userWeight: 150,
+          userHeight: 70,
+          userActivityLevel: 'extra active',
+        };
+        const ans = 1.9 * (66 + 6.3 * 150 + 12.9 * 70 - 6.8 * 23);
+
+        await client.post('/cal/save-cal-rec', userData);
+        const result = await client.get('/cal/get-cal-rec');
+
+        assert.equal(result.data.userCals, Math.round(ans));
+
+
+      });
     });
 
     describe('meal_generator-test', async () => {
@@ -601,10 +632,19 @@ describe('application', async () => {
         assert.equal(result.data.errMsg, 'You must be logged in to do that');
       });
 
-      it('does not allow generation without calorie calculation');
+      it('does not allow generation without calorie calculation', async () => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
 
-      //  test for external api
-      //  limit number of times call to external api
+        const userData = {};
+
+        const result = await client.post('/meal/generate-meal-plan', userData);
+        assert.equal(result.data.errMsg, 'You need to calculate your recommended calories');
+      });
+      
     });
 
     describe('get_mealplan-test', async () => {
@@ -620,15 +660,81 @@ describe('application', async () => {
         assert.equal(result.data.errMsg, 'You must be logged in to do that');
       });
 
-      it('does not pull up meal plan if one is not saved');
+      it('does not pull up meal plan if one is not saved', async() => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
 
-      it('does pull up a meal plan if one is saved');
+        const result = await client.get('/meal/get-meal-plan');
+        assert.equal(result.data.errMsg, "You haven't generated your meal plan yet!");
+
+      });
+
+
     });
 
+    describe('save-recipes-test', async () => {
+      
+      it('returns error if user is not logged in', async() => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+        await client.post('/api/logout', user);
+
+        const result = await client.post('/meal/save-recipes');
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+      });
+
+      it('returns error if mealplan is not generated', async() => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+
+        const result = await client.post('/meal/save-recipes');
+        assert.equal(result.data.errMsg, "You haven't generated your meal plan yet!");
+      });
+
+    });
+    
+
     describe('get_recipe-test', async () => {
-      it('returns error if user is not logged in');
-      it('returns error for an invalid recipe');
-      it('returns correct recipe for a valid recipe');
+      it('returns error if user is not logged in', async() => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+        await client.post('/api/logout', user);
+
+        let result = await client.get('/meal/get-breakfast-recipe');
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+        result = await client.get('/meal/get-lunch-recipe');
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+        result = await client.get('/meal/get-dinner-recipe');
+        assert.equal(result.data.errMsg, 'You must be logged in to do that');
+      });
+
+      it('returns error if user has not generated a meal plan', async() => {
+        const user = {
+          username: getRandomString(10),
+          password: getRandomString(10),
+        };
+        await client.post('/api/register', user);
+        
+        let result = await client.get('/meal/get-breakfast-recipe');
+        assert.equal(result.data.errMsg, 'You have not generated your meal plan!');
+        result = await client.get('/meal/get-lunch-recipe');
+        assert.equal(result.data.errMsg, 'You have not generated your meal plan!');
+        result = await client.get('/meal/get-dinner-recipe');
+        assert.equal(result.data.errMsg, 'You have not generated your meal plan!');
+      });
+
     });
   });
 });
