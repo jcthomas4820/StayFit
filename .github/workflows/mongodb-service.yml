@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v1
       - run: cd server && npm ci
       - run: cd server && npm install
-      - run: cd server && npm test "$env:SUPER_SECRET"
+      - run: cd server && npm test
         env:
           API_KEY: ${{ secrets.API_KEY }}
           MONGO_URI: ${{ secrets.MONGO_URI }}
