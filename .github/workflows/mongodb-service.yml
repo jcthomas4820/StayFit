@@ -14,6 +14,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - run: cd server && npm ci
+      - run: cd server && npm install
+      - run: cd server && npm test "$env:SUPER_SECRET"
         env:
           API_KEY: ${{ secrets.API_KEY }}
           MONGO_URI: ${{ secrets.MONGO_URI }}
@@ -21,6 +24,3 @@ jobs:
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }} # get randomly assigned published port
-        - run: cd server && npm ci "$env:SUPER_SECRET"
-        - run: cd server && npm install "$env:SUPER_SECRET"
-        - run: cd server && npm test "$env:SUPER_SECRET"
