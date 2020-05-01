@@ -62,7 +62,6 @@ class MealPlanner extends React.Component {
   //  function used to handle calculate calories
   handleClick(e) {
     let id = e.target.id;
-    console.log(id);
 
     if (id === "calculate") {
       this.refs.calculateModal.showModal();

@@ -60,13 +60,10 @@ class ViewModal extends React.Component {
     let id = e.target.id;
 
     if (id === "breakfast") {
-      console.log("display breakfast");
       this.setState({ breakfastView: true });
     } else if (id === "lunch") {
-      console.log("display lunch");
       this.setState({ lunchView: true });
     } else if (id === "dinner") {
-      console.log("display dinner");
       this.setState({ dinnerView: true });
     }
   }
@@ -97,71 +94,95 @@ class ViewModal extends React.Component {
       //  display the selection screen, containing buttons to load each component
       // target="_blank" opens a new tab   width: 650px; height: 300px;
       return (
-        <CustomModal isOpen={this.state.modalVisible} onHide={this.closeModal}>
-          <Column flexGrow={1}>
-            <Row horizontal="center">
-              <Header2>View Meal Plan</Header2>
-            </Row>
-            <Row horizontal="center">
-              <Error>{this.state.mealErr}</Error>
-            </Row>
-            <Row horizontal="center">
-              <Column flexGrow={1} horizontal="center">
-                <Body>
-                  <b>Breakfast</b>
-                </Body>
-                <Body>{this.state.breakfast.name}</Body>
-                <Body>Ready in: {this.state.breakfast.readyIn}</Body>
-                <Body>Servings: {this.state.breakfast.servings}</Body>
-                <Button id="breakfast" onClick={this.handleClick}>
-                  view recipe
-                </Button>
-              </Column>
+        <div className="ViewModal">
+          {this.state.mealErr === "" ? (
+            <CustomModal
+              isOpen={this.state.modalVisible}
+              onHide={this.closeModal}
+            >
+              <Column flexGrow={1}>
+                <Row horizontal="center">
+                  <Header2>View Meal Plan</Header2>
+                </Row>
+                <Row horizontal="center">
+                  <Error>{this.state.mealErr}</Error>
+                </Row>
+                <Row horizontal="center">
+                  <Column flexGrow={1} horizontal="center">
+                    <Body>
+                      <b>Breakfast</b>
+                    </Body>
+                    <Body>{this.state.breakfast.name}</Body>
+                    <Body>Ready in: {this.state.breakfast.readyIn}</Body>
+                    <Body>Servings: {this.state.breakfast.servings}</Body>
+                    <Button id="breakfast" onClick={this.handleClick}>
+                      view recipe
+                    </Button>
+                  </Column>
 
-              <Column flexGrow={1} horizontal="center">
-                <Body>
-                  <b>Lunch</b>
-                </Body>
-                <Body>{this.state.lunch.name}</Body>
-                <Body>Ready in: {this.state.lunch.readyIn}</Body>
-                <Body>Servings: {this.state.lunch.servings}</Body>
-                <Button id="lunch" onClick={this.handleClick}>
-                  view recipe
-                </Button>
-              </Column>
+                  <Column flexGrow={1} horizontal="center">
+                    <Body>
+                      <b>Lunch</b>
+                    </Body>
+                    <Body>{this.state.lunch.name}</Body>
+                    <Body>Ready in: {this.state.lunch.readyIn}</Body>
+                    <Body>Servings: {this.state.lunch.servings}</Body>
+                    <Button id="lunch" onClick={this.handleClick}>
+                      view recipe
+                    </Button>
+                  </Column>
 
-              <Column flexGrow={1} horizontal="center">
-                <Body>
-                  <b>Dinner</b>
-                </Body>
-                <Body>{this.state.dinner.name}</Body>
-                <Body>Ready in: {this.state.dinner.readyIn}</Body>
-                <Body>Servings: {this.state.dinner.servings}</Body>
-                <Button id="dinner" onClick={this.handleClick}>
-                  view recipe
-                </Button>
+                  <Column flexGrow={1} horizontal="center">
+                    <Body>
+                      <b>Dinner</b>
+                    </Body>
+                    <Body>{this.state.dinner.name}</Body>
+                    <Body>Ready in: {this.state.dinner.readyIn}</Body>
+                    <Body>Servings: {this.state.dinner.servings}</Body>
+                    <Button id="dinner" onClick={this.handleClick}>
+                      view recipe
+                    </Button>
+                  </Column>
+                </Row>
+                <br />
+                <br />
+                <Row horizontal="center">
+                  <Column flexGrow={1} horizontal="center">
+                    <Body>
+                      <b>Nutrients</b>
+                    </Body>
+                    <Body>Calories: {this.state.nutrition.calories}</Body>
+                    <Body>Carbs: {this.state.nutrition.carbs}</Body>
+                    <Body>Fat: {this.state.nutrition.fat}</Body>
+                    <Body>Protein: {this.state.nutrition.protein}</Body>
+                  </Column>
+                </Row>
               </Column>
-            </Row>
-            <br />
-            <br />
-            <Row horizontal="center">
-              <Column flexGrow={1} horizontal="center">
-                <Body>
-                  <b>Nutrients</b>
-                </Body>
-                <Body>Calories: {this.state.nutrition.calories}</Body>
-                <Body>Carbs: {this.state.nutrition.carbs}</Body>
-                <Body>Fat: {this.state.nutrition.fat}</Body>
-                <Body>Protein: {this.state.nutrition.protein}</Body>
-              </Column>
-            </Row>
-          </Column>
-          <br />
-          <br />
-          <Row horizontal="center">
-            <Button onClick={this.closeModal}>close</Button>
-          </Row>
-        </CustomModal>
+              <br />
+              <br />
+              <Row horizontal="center">
+                <Button onClick={this.closeModal}>close</Button>
+              </Row>
+            </CustomModal>
+          ) : (
+            <CustomModal
+              isOpen={this.state.modalVisible}
+              onHide={this.closeModal}
+            >
+              <Row horizontal="center">
+                <Header2>View Meal Plan</Header2>
+              </Row>
+              <Row horizontal="center">
+                <Error>{this.state.mealErr}</Error>
+              </Row>
+              <br />
+              <br />
+              <Row horizontal="center">
+                <Button onClick={this.closeModal}>close</Button>
+              </Row>
+            </CustomModal>
+          )}
+        </div>
       );
     }
   }
