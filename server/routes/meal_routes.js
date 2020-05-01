@@ -67,7 +67,7 @@ router.post('/generate-meal-plan', (req, res) => {
     //  combine to create url for API call
     url = url + calsUrl + timeFrameUrl + dietUrl + excludeUrl;
 
-    //  send request to API
+    //  send request to API (note, api automatically cleans exlude data if not comma separated. confirmed with mock values)
     fetch(url, {
       method: 'GET',
       headers: {
@@ -117,8 +117,6 @@ router.get('/get-meal-plan', (req, res) => {
           errMsg: "You haven't generated your meal plan yet!",
         });
       }
-
-      console.log(data)
 
       const bf = {
         name: data.meals[0].title,

@@ -78,8 +78,8 @@ describe('application', async () => {
     describe('register-test', async () => {
       it('allows a user to register', async () => {
         const result = await client.post('/api/register', {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         });
         assert.equal(result.data, 'New user created');
       });
@@ -87,19 +87,19 @@ describe('application', async () => {
       it('does not allow duplicate usernames', async () => {
         const sampleUser = getRandomString(15);
         await client.post('/api/register', {
-          username: sampleUser,
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         });
         const result = await client.post('/api/register', {
-          username: sampleUser,
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         });
         assert.equal(result.data.regError, 'Username already exists');
       });
 
       it('requires a password to register', async () => {
         const result = await client.post('/api/register', {
-          username: getRandomString(10),
+          username: 'RandomPassword01234!',
           password: '',
         });
         assert.equal(result.data.regError, 'Please enter a valid password');
@@ -108,7 +108,7 @@ describe('application', async () => {
       it('requires a username to register', async () => {
         const result = await client.post('/api/register', {
           username: '',
-          password: getRandomString(10),
+          password: 'RandomPassword01234!',
         });
         assert.equal(result.data.regError, 'Please enter a valid username');
       });
@@ -117,8 +117,8 @@ describe('application', async () => {
     describe('login-test', async () => {
       it('allows a registered user to login', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         const result = await client.post('/api/login', user);
@@ -128,8 +128,8 @@ describe('application', async () => {
 
       it('requires an account with username to exist', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         const result = await client.post('/api/login', user);
         assert.equal(result.data.logError, 'Username does not exist');
@@ -152,8 +152,8 @@ describe('application', async () => {
     describe('logout-test', async () => {
       it('logs out a loggedin user', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         const result = await client.post('/api/logout');
@@ -170,8 +170,8 @@ describe('application', async () => {
       it('correctly pulls up user exercise data from database', async () => {
         // register a user
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -225,8 +225,8 @@ describe('application', async () => {
       it('does not allow for a user to save an exercise without a name, progress or date', async () => {
         // register a user
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -267,8 +267,8 @@ describe('application', async () => {
       it('allows the user to track their exercise name, progress, and date', async () => {
         // register a user
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -287,8 +287,8 @@ describe('application', async () => {
       it('throws error if a registered user tries to track or update exercise without logging in', async () => {
         // register a user
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
@@ -332,8 +332,8 @@ describe('application', async () => {
     describe('edit_grid_row-test', async () => {
       it('rejects operation if user is not logged in', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -359,8 +359,8 @@ describe('application', async () => {
 
       it('properly edits an existing row', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -393,8 +393,8 @@ describe('application', async () => {
     describe('delete_grid_row-test', async () => {
       it('rejects operation if user is not logged in', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -417,8 +417,8 @@ describe('application', async () => {
 
       it('properly deletes an existing row', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -446,8 +446,8 @@ describe('application', async () => {
     describe('calorie_calculation-test', async () => {
       it('rejects input if user is not logged in', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
@@ -460,8 +460,8 @@ describe('application', async () => {
 
       it('rejects blank inputs', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -500,8 +500,8 @@ describe('application', async () => {
       });
       it('rejects invalid number inputs', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -539,8 +539,8 @@ describe('application', async () => {
 
       it('returns the proper calorie recommendation', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -571,8 +571,8 @@ describe('application', async () => {
     describe('get_calories-test', async () => {
       it('rejects if user is not logged in', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
@@ -583,8 +583,8 @@ describe('application', async () => {
 
       it('returns an error if calories were not calculated', async() => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -594,8 +594,8 @@ describe('application', async () => {
 
       it('correctly pulls up calculated calories', async() => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -620,8 +620,8 @@ describe('application', async () => {
     describe('meal_generator-test', async () => {
       it('rejects input if user is not logged in', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
@@ -634,8 +634,8 @@ describe('application', async () => {
 
       it('does not allow generation without calorie calculation', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -650,8 +650,8 @@ describe('application', async () => {
     describe('get_mealplan-test', async () => {
       it('rejects input if user is not logged in', async () => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
@@ -662,8 +662,8 @@ describe('application', async () => {
 
       it('does not pull up meal plan if one is not saved', async() => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -679,8 +679,8 @@ describe('application', async () => {
       
       it('returns error if user is not logged in', async() => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
@@ -691,8 +691,8 @@ describe('application', async () => {
 
       it('returns error if mealplan is not generated', async() => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
 
@@ -706,8 +706,8 @@ describe('application', async () => {
     describe('get_recipe-test', async () => {
       it('returns error if user is not logged in', async() => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         await client.post('/api/logout', user);
@@ -722,8 +722,8 @@ describe('application', async () => {
 
       it('returns error if user has not generated a meal plan', async() => {
         const user = {
-          username: getRandomString(10),
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
         };
         await client.post('/api/register', user);
         
