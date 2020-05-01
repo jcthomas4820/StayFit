@@ -8,7 +8,9 @@ const express = require('express');
 
 const fetch = require('node-fetch');
 
-const key = require('../config/keys.js').app_key;
+require('dotenv').config();
+
+const key = process.env.API_KEY;
 
 const router = express.Router();
 const Rec = require('../models/rec');
