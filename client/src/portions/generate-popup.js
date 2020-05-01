@@ -1,6 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { Header2, Body, Button, Input, CustomModal } from "../styles/custom";
+import {
+  Header2,
+  Body,
+  Button,
+  Input,
+  CustomModal,
+  Error,
+} from "../styles/custom";
 import { Row } from "simple-flexbox";
 
 axios.defaults.withCredentials = true;
@@ -90,6 +97,9 @@ class GenerateModal extends React.Component {
             Fill in the following (if applicable) or just press generate!
           </Body>
         </Row>
+        <Row horizontal="center">
+          <Error>{this.state.genErr}</Error>
+        </Row>
         <br />
         <Row horizontal="center">
           <Body>
@@ -144,7 +154,7 @@ class GenerateModal extends React.Component {
         <br />
         <Row horizontal="center">
           <Body>
-            <b>Foods to exclude (comma-separated): </b>
+            <b>Foods to exclude (comma-separated, no spaces): </b>
           </Body>
         </Row>
         <Row horizontal="center">
@@ -152,7 +162,7 @@ class GenerateModal extends React.Component {
             id="exclude"
             type="text"
             name="exclude"
-            placeholder="ex: shellfish, olives"
+            placeholder="ex: shellfish,olives"
             onChange={this.handleChange}
           ></Input>
         </Row>
