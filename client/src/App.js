@@ -3,9 +3,9 @@ import LoginPage from "./logout/login";
 import HomePage from "./login/selection";
 import MealPlanner from "./mealplanner/mealplanner";
 import Grid from "./grid/grid";
-import BreakfastViewer from "./recipeviewer/breakfastviewer";
-import LunchViewer from "./recipeviewer/lunchviewer";
-import DinnerViewer from "./recipeviewer/dinnerviewer";
+import BreakfastViewer from "./recipes/breakfastviewer";
+import LunchViewer from "./recipes/lunchviewer";
+import DinnerViewer from "./recipes/dinnerviewer";
 import { BrowserRouter as Router } from "react-router-dom";
 import Route from "react-router-dom/Route";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import Home from "./selection";
+import Home from "../login/selection";
 import { shallow } from "enzyme";
 
 describe("page render", () => {

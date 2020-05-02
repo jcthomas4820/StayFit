@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "./login";
+import Login from "../logout/login";
 import { shallow } from "enzyme";
 
 describe("page render", () => {
@@ -28,9 +28,4 @@ describe("login/register component", () => {
     const wrapper = shallow(<Login />);
     expect(wrapper.find("#register").exists()).toBeTruthy();
   });
-
-  test.todo("displays error messages if username is in use on register");
-  test.todo("displays error messages if username does not exist on login");
-  test.todo("displays error messages if password is incorrect on login");
-  test.todo("displays error messages if no password is entered");
 });

@@ -13,6 +13,8 @@ const mealRouter = require('./routes/meal_routes');
 
 app.set('trust proxy', 1);
 
+require('dotenv').config();
+
 // Set up cors. See SOURCES.md
 const config = {
   origin: 'http://localhost:3000',
@@ -22,19 +24,17 @@ app.use(cors(config));
 
 let dbURI;
 
-console.log(process.env.MONGODB_HOST);
-
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
   /* only log http requests when not testing */
   app.use(logger('dev'));
 
   // set the dbURI to the actual database
-  dbURI = require('./config/keys.js').MONGO_URI;
+  dbURI = process.env.MONGO_URI;
   console.log('Connecting to actual database...');
 } else {
   // connect to the test database
-  dbURI = require('./config/keys.js').MONGO_URI_TEST;
+  dbURI = process.env.MONGO_URI_TEST;
   console.log('Connecting to test database...');
 }
 
@@ -51,7 +51,7 @@ mongoose.connection
 // Set up sessions
 // https://medium.com/front-end-weekly/make-sessions-work-with-express-js-using-mongodb-62a8a3423ef5
 const sess = {
-  secret: require('./config/keys.js').SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: { secure: false, sameSite: true }, // only using HTTP, add sameSite to protect against CSRF attacks

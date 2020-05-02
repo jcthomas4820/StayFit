@@ -98,10 +98,21 @@ describe('application', async () => {
 
       it('requires a password to register', async () => {
         const result = await client.post('/api/register', {
-          username: 'RandomPassword01234!',
+          username: 'sampleuser',
           password: '',
         });
         assert.equal(result.data.regError, 'Please enter a valid password');
+      });
+
+      it('requires a secure password to register', async () => {
+        const result = await client.post('/api/register', {
+          username: 'sampleuser',
+          password: getRandomString(10),
+        });
+        assert.equal(
+          result.data.regError,
+          'Password should contain at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&)',
+        );
       });
 
       it('requires a username to register', async () => {
@@ -110,6 +121,26 @@ describe('application', async () => {
           password: 'RandomPassword01234!',
         });
         assert.equal(result.data.regError, 'Please enter a valid username');
+      });
+
+      it('does not allow invalid usernames', async () => {
+        const resultTooShort = await client.post('/api/register', {
+          username: getRandomString(4),
+          password: 'RandomPassword01234!',
+        });
+        assert.equal(
+          resultTooShort.data.regError,
+          'Username should be at least 5 characters long',
+        );
+
+        const resultInvalid = await client.post('/api/register', {
+          username: '-this is!invalid_',
+          password: 'RandomPassword01234!',
+        });
+        assert.equal(
+          resultInvalid.data.regError,
+          'Username should consist of letters or numbers and not begin or end with - or _',
+        );
       });
     });
 
@@ -125,6 +156,33 @@ describe('application', async () => {
         assert.equal(result.data, 'User successfully logged in');
       });
 
+      it('requires an input username and password', async () => {
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const resultNoUsername = await client.post('/api/login', {
+          username: '',
+          password: 'RandomPassword01234!',
+        });
+
+        const resultNoPassword = await client.post('/api/login', {
+          username: 'sampleuser',
+          password: '',
+        });
+
+        assert.equal(
+          resultNoUsername.data.logError,
+          'You must enter a username',
+        );
+        assert.equal(
+          resultNoPassword.data.logError,
+          'You must enter a password',
+        );
+      });
+
       it('requires an account with username to exist', async () => {
         const user = {
           username: 'sampleuser',
@@ -135,12 +193,14 @@ describe('application', async () => {
       });
 
       it('requires the correct password given a username', async () => {
-        const name = getRandomString(10);
-        const user = { username: name, password: getRandomString(10) };
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
         await client.post('/api/register', user);
         const result = await client.post('/api/login', {
-          username: name,
-          password: getRandomString(10),
+          username: 'sampleuser',
+          password: 'ThisPasswordIsIncorrect',
         });
         assert.equal(result.data.logError, 'Incorrect password entered');
       });
@@ -178,22 +238,22 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
         await client.post('/grid/save-grid-data', {
           name: 'inner bicep curl',
           desc: '25lb 4s10r',
-          date: '3/27/2020',
+          date: '03/27/2020',
         });
 
         // get exercise data from database
         let result = await client.get('/grid/get-grid-data');
 
         const list = [
-          { name: 'bicep curl', date: '3/26/2020', description: '25lb 4s10r' },
+          { name: 'bicep curl', date: '03/26/2020', description: '25lb 4s10r' },
           {
             name: 'inner bicep curl',
-            date: '3/27/2020',
+            date: '03/27/2020',
             description: '25lb 4s10r',
           },
         ];
@@ -204,12 +264,12 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'sit ups',
           desc: '4s5r',
-          date: '3/30/2020',
+          date: '03/30/2020',
         });
 
         const subList = {
           name: 'sit ups',
-          date: '3/30/2020',
+          date: '03/30/2020',
           description: '4s5r',
         };
         list.push(subList);
@@ -233,7 +293,7 @@ describe('application', async () => {
         const resultNoName = await client.post('/grid/save-grid-data', {
           name: '',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
         assert.equal(
           resultNoName.data.saveGridError,
@@ -244,7 +304,7 @@ describe('application', async () => {
         const resultNoDesc = await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
         assert.equal(
           resultNoDesc.data.saveGridError,
@@ -275,7 +335,7 @@ describe('application', async () => {
         const result = await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '30lb 4s10r',
-          date: '3/20/2020',
+          date: '03/20/2020',
         });
 
         assert.equal(result.data, 'Your exercise values are saved');
@@ -295,7 +355,7 @@ describe('application', async () => {
         const result = await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         assert.equal(
@@ -309,11 +369,71 @@ describe('application', async () => {
         const result = await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
         assert.equal(
           result.data.saveGridError,
           'You must be logged in to do that',
+        );
+      });
+
+      it('requires valid exercise input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidName = await client.post('/grid/save-grid-data', {
+          name: 'mY3xercise',
+          desc: '25lb 4s10r',
+          date: '03/26/2020',
+        });
+
+        assert.equal(
+          invalidName.data.saveGridError,
+          'Exercise can only contain letters and spaces',
+        );
+      });
+
+      it('requires valid description input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidName = await client.post('/grid/save-grid-data', {
+          name: 'bicep curl',
+          desc: '25lb!4s10r',
+          date: '03/26/2020',
+        });
+
+        assert.equal(
+          invalidName.data.saveGridError,
+          'Description can only contain letters, spaces and numbers',
+        );
+      });
+
+      it('requires valid date input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidDate = await client.post('/grid/save-grid-data', {
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/6/2020',
+        });
+
+        assert.equal(
+          invalidDate.data.saveGridError,
+          'Date must be in the form mm/dd/yyyy',
         );
       });
     });
@@ -339,7 +459,7 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
@@ -349,7 +469,7 @@ describe('application', async () => {
         const result = await client.post('/grid/edit-grid-row', {
           name: 'bicep curl',
           desc: '35lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
           entryToDelete: id,
         });
 
@@ -366,7 +486,7 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
@@ -375,7 +495,7 @@ describe('application', async () => {
         const result = await client.post('/grid/edit-grid-row', {
           name: 'bicep curl',
           desc: '35lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
           entryToDelete: id,
         });
 
@@ -383,9 +503,69 @@ describe('application', async () => {
 
         const result2 = await client.get('/grid/get-grid-data');
         const list = [
-          { date: '3/26/2020', description: '35lb 4s10r', name: 'bicep curl' },
+          { date: '03/26/2020', description: '35lb 4s10r', name: 'bicep curl' },
         ];
         assert.deepEqual(result2.data.exerciseData, list);
+      });
+
+      it('requires valid exercise input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidName = await client.post('/grid/edit-grid-row', {
+          name: 'mY3xercise',
+          desc: '25lb 4s10r',
+          date: '03/26/2020',
+        });
+
+        assert.equal(
+          invalidName.data.editErr,
+          'Exercise can only contain letters and spaces',
+        );
+      });
+
+      it('requires valid description input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidName = await client.post('/grid/edit-grid-row', {
+          name: 'bicep curl',
+          desc: '25lb!4s10r',
+          date: '03/26/2020',
+        });
+
+        assert.equal(
+          invalidName.data.editErr,
+          'Description can only contain letters, spaces and numbers',
+        );
+      });
+
+      it('requires valid date input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidDate = await client.post('/grid/edit-grid-row', {
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/6/2020',
+        });
+
+        assert.equal(
+          invalidDate.data.editErr,
+          'Date must be in the form mm/dd/yyyy',
+        );
       });
     });
 
@@ -400,7 +580,7 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
@@ -424,7 +604,7 @@ describe('application', async () => {
         await client.post('/grid/save-grid-data', {
           name: 'bicep curl',
           desc: '25lb 4s10r',
-          date: '3/26/2020',
+          date: '03/26/2020',
         });
 
         const resultForID = await client.get('/grid/get-grid-data');
@@ -534,6 +714,45 @@ describe('application', async () => {
         assert.equal(result2.data.errMsg, 'Please enter a valid weight');
         const result3 = await client.post('/cal/save-cal-rec', userData3);
         assert.equal(result3.data.errMsg, 'Please enter a valid height');
+      });
+
+      it('rejects non-numerical input', async () => {
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const userData1 = {
+          userGender: 'male',
+          userAge: 'age',
+          userWeight: 100,
+          userHeight: 0,
+          userActivityLevel: 'extra active',
+        };
+
+        const userData2 = {
+          userGender: 'male',
+          userAge: 11,
+          userWeight: 'lbs',
+          userHeight: 0,
+          userActivityLevel: 'extra active',
+        };
+
+        const userData3 = {
+          userGender: 'female',
+          userAge: 90,
+          userWeight: 100,
+          userHeight: 'inches',
+          userActivityLevel: 'extra active',
+        };
+
+        const result1 = await client.post('/cal/save-cal-rec', userData1);
+        assert.equal(result1.data.errMsg, 'Age must be a number');
+        const result2 = await client.post('/cal/save-cal-rec', userData2);
+        assert.equal(result2.data.errMsg, 'Weight must be a number');
+        const result3 = await client.post('/cal/save-cal-rec', userData3);
+        assert.equal(result3.data.errMsg, 'Height must be a number');
       });
 
       it('returns the proper calorie recommendation', async () => {

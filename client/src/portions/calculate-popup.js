@@ -240,7 +240,9 @@ class CalculateModal extends React.Component {
           <Button id="calculate" onClick={this.handleClick}>
             calculate calories
           </Button>
-          <Button onClick={this.closeModal}>cancel</Button>
+          <Button id="cancel" onClick={this.closeModal}>
+            cancel
+          </Button>
         </Row>
       </CustomModal>
     );

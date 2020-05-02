@@ -1,6 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { Header2, Body, Button, Input, CustomModal } from "../styles/custom";
+import {
+  Header2,
+  Body,
+  Button,
+  Input,
+  CustomModal,
+  Error,
+} from "../styles/custom";
 import { Row } from "simple-flexbox";
 
 axios.defaults.withCredentials = true;
@@ -93,6 +100,9 @@ class GenerateModal extends React.Component {
             Fill in the following (if applicable) or just press generate!
           </Body>
         </Row>
+        <Row horizontal="center">
+          <Error>{this.state.genErr}</Error>
+        </Row>
         <br />
         <Row horizontal="center">
           <Body>
@@ -100,6 +110,7 @@ class GenerateModal extends React.Component {
           </Body>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="glutenfree"
               name="diet"
               type="radio"
               value="Gluten Free"
@@ -109,6 +120,7 @@ class GenerateModal extends React.Component {
           </Row>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="keto"
               name="diet"
               type="radio"
               value="Ketogenic"
@@ -118,6 +130,7 @@ class GenerateModal extends React.Component {
           </Row>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="veg"
               name="diet"
               type="radio"
               value="Vegatarian"
@@ -127,6 +140,7 @@ class GenerateModal extends React.Component {
           </Row>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="vegan"
               name="diet"
               type="radio"
               value="Vegan"
@@ -136,6 +150,7 @@ class GenerateModal extends React.Component {
           </Row>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="pesc"
               name="diet"
               type="radio"
               value="Pescetarian"
@@ -147,7 +162,7 @@ class GenerateModal extends React.Component {
         <br />
         <Row horizontal="center">
           <Body>
-            <b>Foods to exclude (comma-separated): </b>
+            <b>Foods to exclude (comma-separated, no spaces): </b>
           </Body>
         </Row>
         <Row horizontal="center">
@@ -155,7 +170,7 @@ class GenerateModal extends React.Component {
             id="exclude"
             type="text"
             name="exclude"
-            placeholder="ex: shellfish, olives"
+            placeholder="ex: shellfish,olives"
             onChange={this.handleChange}
           ></Input>
         </Row>
@@ -165,7 +180,9 @@ class GenerateModal extends React.Component {
           <Button id="generate" onClick={this.handleClick}>
             generate
           </Button>
-          <Button onClick={this.closeModal}>cancel</Button>
+          <Button id="cancel" onClick={this.closeModal}>
+            cancel
+          </Button>
         </Row>
       </CustomModal>
     );
