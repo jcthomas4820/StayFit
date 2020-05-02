@@ -56,90 +56,91 @@ router.post(
         console.log(err);
       });
 
-  function callAPI() {
-    console.log('calling api to generate mealplan');
+    function callAPI() {
+      console.log('calling api to generate mealplan');
 
-    //  extract user entered data
-    const data = req.body;
-    const { cals } = data;
-    const { timeFrame } = data;
-    const { diet } = data;
-    const { exclude } = data;
+      //  extract user entered data
+      const data = req.body;
+      const { cals } = data;
+      const { timeFrame } = data;
+      const { diet } = data;
+      const { exclude } = data;
 
-    let url = `https://api.spoonacular.com/mealplanner/generate?apiKey=${key}`;
-    const calsUrl = `&targetCalories=${cals}`;
-    const timeFrameUrl = `&timeFrame=${timeFrame}`;
-    let dietUrl = '';
-    let excludeUrl = '';
+      let url = `https://api.spoonacular.com/mealplanner/generate?apiKey=${key}`;
+      const calsUrl = `&targetCalories=${cals}`;
+      const timeFrameUrl = `&timeFrame=${timeFrame}`;
+      let dietUrl = '';
+      let excludeUrl = '';
 
-    //  if user enters exclude list, make sure it is comma separated
-    //  clean up if necessary
+      //  if user enters exclude list, make sure it is comma separated
+      //  clean up if necessary
 
-    //  check if user entered optional values
-    if (diet !== '') {
-      dietUrl = `&diet=${diet}`;
-    }
-    if (exclude !== '') {
-      excludeUrl = `&exclude=${exclude}`;
-    }
-
-    //  combine to create url for API call
-    url = url + calsUrl + timeFrameUrl + dietUrl + excludeUrl;
-
-    //  send request to API
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((apiResponse) => {
-        //  save nutrients from apiResponse
-        const myNutrients = [];
-        myNutrients.push(apiResponse.nutrients.calories);
-        myNutrients.push(apiResponse.nutrients.carbohydrates);
-        myNutrients.push(apiResponse.nutrients.fat);
-        myNutrients.push(apiResponse.nutrients.protein);
-
-        //  save all meals from apiResponse
-        const myMeals = apiResponse.meals;
-
-        async function saveMealPlan(mymeals, myUsername, mynutrients) {
-          await Rec.findOneAndUpdate(
-            { username: myUsername },
-            { $set: { meals: mymeals, mealplan_nutrients: mynutrients } },
-          );
-        }
-
-        saveMealPlan(myMeals, req.session.user.toString(), myNutrients);
-        console.log('Successfully Saved Meal Plan');
-        return res.json({ successMsg: 'Successfully saved meal plan' });
-      })
-      .catch((error) => {
-        console.log(error);
-        return res.json({
-          errorMsg: 'Error when saving meal plan. Try again.',
-        });
-      });
-  }
-
-  //  use find one to see if they exist in database
-  Rec.findOne({ username: req.session.user.toString() })
-    .then((data) => {
-      //  if the user does not exist in db, they need to calculate
-      if (data == null) {
-        return res.json({
-          errorMsg: 'Error when saving meal plan. Try again.',
-        });
+      //  check if user entered optional values
+      if (diet !== '') {
+        dietUrl = `&diet=${diet}`;
+      }
+      if (exclude !== '') {
+        excludeUrl = `&exclude=${exclude}`;
       }
 
-      callAPI();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+      //  combine to create url for API call
+      url = url + calsUrl + timeFrameUrl + dietUrl + excludeUrl;
+
+      //  send request to API
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((apiResponse) => {
+          //  save nutrients from apiResponse
+          const myNutrients = [];
+          myNutrients.push(apiResponse.nutrients.calories);
+          myNutrients.push(apiResponse.nutrients.carbohydrates);
+          myNutrients.push(apiResponse.nutrients.fat);
+          myNutrients.push(apiResponse.nutrients.protein);
+
+          //  save all meals from apiResponse
+          const myMeals = apiResponse.meals;
+
+          async function saveMealPlan(mymeals, myUsername, mynutrients) {
+            await Rec.findOneAndUpdate(
+              { username: myUsername },
+              { $set: { meals: mymeals, mealplan_nutrients: mynutrients } },
+            );
+          }
+
+          saveMealPlan(myMeals, req.session.user.toString(), myNutrients);
+          console.log('Successfully Saved Meal Plan');
+          return res.json({ successMsg: 'Successfully saved meal plan' });
+        })
+        .catch((error) => {
+          console.log(error);
+          return res.json({
+            errorMsg: 'Error when saving meal plan. Try again.',
+          });
+        });
+    }
+
+    //  use find one to see if they exist in database
+    Rec.findOne({ username: req.session.user.toString() })
+      .then((data) => {
+        //  if the user does not exist in db, they need to calculate
+        if (data == null) {
+          return res.json({
+            errorMsg: 'Error when saving meal plan. Try again.',
+          });
+        }
+
+        callAPI();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+);
 
 router.get('/get-meal-plan', (req, res) => {
   if (!req.session.user || req.session.user === undefined) {
