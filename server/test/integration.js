@@ -122,6 +122,26 @@ describe('application', async () => {
         });
         assert.equal(result.data.regError, 'Please enter a valid username');
       });
+
+      it('does not allow invalid usernames', async () => {
+        const resultTooShort = await client.post('/api/register', {
+          username: getRandomString(4),
+          password: 'RandomPassword01234!',
+        });
+        assert.equal(
+          resultTooShort.data.regError,
+          'Username should be at least 5 characters long',
+        );
+
+        const resultInvalid = await client.post('/api/register', {
+          username: '-this is!invalid_',
+          password: 'RandomPassword01234!',
+        });
+        assert.equal(
+          resultInvalid.data.regError,
+          'Username should consist of letters or numbers and not begin or end with - or _',
+        );
+      });
     });
 
     describe('login-test', async () => {
@@ -134,6 +154,33 @@ describe('application', async () => {
         const result = await client.post('/api/login', user);
 
         assert.equal(result.data, 'User successfully logged in');
+      });
+
+      it('requires an input username and password', async () => {
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const resultNoUsername = await client.post('/api/login', {
+          username: '',
+          password: 'RandomPassword01234!',
+        });
+
+        const resultNoPassword = await client.post('/api/login', {
+          username: 'sampleuser',
+          password: '',
+        });
+
+        assert.equal(
+          resultNoUsername.data.logError,
+          'You must enter a username',
+        );
+        assert.equal(
+          resultNoPassword.data.logError,
+          'You must enter a password',
+        );
       });
 
       it('requires an account with username to exist', async () => {
@@ -329,6 +376,66 @@ describe('application', async () => {
           'You must be logged in to do that',
         );
       });
+
+      it('requires valid exercise input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidName = await client.post('/grid/save-grid-data', {
+          name: 'mY3xercise',
+          desc: '25lb 4s10r',
+          date: '03/26/2020',
+        });
+
+        assert.equal(
+          invalidName.data.saveGridError,
+          'Exercise can only contain letters and spaces',
+        );
+      });
+
+      it('requires valid description input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidName = await client.post('/grid/save-grid-data', {
+          name: 'bicep curl',
+          desc: '25lb!4s10r',
+          date: '03/26/2020',
+        });
+
+        assert.equal(
+          invalidName.data.saveGridError,
+          'Description can only contain letters, spaces and numbers',
+        );
+      });
+
+      it('requires valid date input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidDate = await client.post('/grid/save-grid-data', {
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/6/2020',
+        });
+
+        assert.equal(
+          invalidDate.data.saveGridError,
+          'Date must be in the form mm/dd/yyyy',
+        );
+      });
     });
 
     /*
@@ -399,6 +506,66 @@ describe('application', async () => {
           { date: '03/26/2020', description: '35lb 4s10r', name: 'bicep curl' },
         ];
         assert.deepEqual(result2.data.exerciseData, list);
+      });
+
+      it('requires valid exercise input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidName = await client.post('/grid/edit-grid-row', {
+          name: 'mY3xercise',
+          desc: '25lb 4s10r',
+          date: '03/26/2020',
+        });
+
+        assert.equal(
+          invalidName.data.editErr,
+          'Exercise can only contain letters and spaces',
+        );
+      });
+
+      it('requires valid description input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidName = await client.post('/grid/edit-grid-row', {
+          name: 'bicep curl',
+          desc: '25lb!4s10r',
+          date: '03/26/2020',
+        });
+
+        assert.equal(
+          invalidName.data.editErr,
+          'Description can only contain letters, spaces and numbers',
+        );
+      });
+
+      it('requires valid date input', async () => {
+        // save exercise without logging in
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const invalidDate = await client.post('/grid/edit-grid-row', {
+          name: 'bicep curl',
+          desc: '25lb 4s10r',
+          date: '3/6/2020',
+        });
+
+        assert.equal(
+          invalidDate.data.editErr,
+          'Date must be in the form mm/dd/yyyy',
+        );
       });
     });
 
@@ -547,6 +714,45 @@ describe('application', async () => {
         assert.equal(result2.data.errMsg, 'Please enter a valid weight');
         const result3 = await client.post('/cal/save-cal-rec', userData3);
         assert.equal(result3.data.errMsg, 'Please enter a valid height');
+      });
+
+      it('rejects non-numerical input', async () => {
+        const user = {
+          username: 'sampleuser',
+          password: 'RandomPassword01234!',
+        };
+        await client.post('/api/register', user);
+
+        const userData1 = {
+          userGender: 'male',
+          userAge: 'age',
+          userWeight: 100,
+          userHeight: 0,
+          userActivityLevel: 'extra active',
+        };
+
+        const userData2 = {
+          userGender: 'male',
+          userAge: 11,
+          userWeight: 'lbs',
+          userHeight: 0,
+          userActivityLevel: 'extra active',
+        };
+
+        const userData3 = {
+          userGender: 'female',
+          userAge: 90,
+          userWeight: 100,
+          userHeight: 'inches',
+          userActivityLevel: 'extra active',
+        };
+
+        const result1 = await client.post('/cal/save-cal-rec', userData1);
+        assert.equal(result1.data.errMsg, 'Age must be a number');
+        const result2 = await client.post('/cal/save-cal-rec', userData2);
+        assert.equal(result2.data.errMsg, 'Weight must be a number');
+        const result3 = await client.post('/cal/save-cal-rec', userData3);
+        assert.equal(result3.data.errMsg, 'Height must be a number');
       });
 
       it('returns the proper calorie recommendation', async () => {

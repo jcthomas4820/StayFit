@@ -98,10 +98,10 @@ router.post(
       .withMessage('Please enter a valid username')
       .trim()
       .isLength({ min: 5 })
-      .withMessage('Username should be at least 3 characters long')
+      .withMessage('Username should be at least 5 characters long')
       .matches(/^[a-zA-Z](([-_a-zA-Z0-9]*)?)[a-zA-Z0-9]{3,}$/)
       .withMessage(
-        'Username should consist of letters and numbers and not begin or end with - or _',
+        'Username should consist of letters or numbers and not begin or end with - or _',
       ),
     check('password')
       .not()

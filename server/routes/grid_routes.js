@@ -61,7 +61,7 @@ router.post(
       .isLength({ min: 1 })
       .withMessage('Description should be at least 1 character long')
       .matches(/^[a-zA-Z0-9]([ a-zA-Z0-9]*?){1,}$/)
-      .withMessage('Exercise can only contain letters, spaces and numbers'),
+      .withMessage('Description can only contain letters, spaces and numbers'),
     check('date')
       .not()
       .isEmpty()
@@ -129,7 +129,7 @@ router.post(
       .isLength({ min: 1 })
       .withMessage('Description should be at least 1 character long')
       .matches(/^[a-zA-Z0-9]([ a-zA-Z0-9]*?){1,}$/)
-      .withMessage('Exercise can only contain letters, spaces and numbers'),
+      .withMessage('Description can only contain letters, spaces and numbers'),
     check('date')
       .not()
       .isEmpty()
