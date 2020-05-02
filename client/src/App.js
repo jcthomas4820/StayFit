@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import LoginPage from "./logout/login";
+import LoginPage from "./components/login";
 import HomePage from "./components/selection";
 import MealPlanner from "./components/mealplanner";
 import Grid from "./components/grid";
