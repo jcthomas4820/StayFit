@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import Navbar from "../portions/navbar";
+import Navbar from "./portions/navbar";
 import ReactTable from "react-table";
 import { Row, Column } from "simple-flexbox";
 import "react-table/react-table.css";
@@ -215,7 +215,7 @@ class Grid extends React.Component {
     return (
       <div className="ExerciseGrid">
         <Column flexGrow={1}>
-          <Navbar />
+          <Navbar id="navigationBar" />
           <Row horizontal="center">
             <Header1>Exercise Grid</Header1>
           </Row>
@@ -234,7 +234,7 @@ class Grid extends React.Component {
           )}
 
           {this.state.willEdit === false ? (
-            <CustomModal isOpen={this.state.modalVisible}>
+            <CustomModal id="editdelete" isOpen={this.state.modalVisible}>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Header2>
                   Would you like to edit or delete this exercise?
@@ -249,11 +249,13 @@ class Grid extends React.Component {
                 </Button>
               </div>
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Button onClick={this.closeModal}>cancel</Button>
+                <Button id="cancel" onClick={this.closeModal}>
+                  cancel
+                </Button>
               </div>
             </CustomModal>
           ) : (
-            <CustomModal isOpen={this.state.modalVisible}>
+            <CustomModal id="editentry" isOpen={this.state.modalVisible}>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Header2>Edit Exercise</Header2>
               </div>
@@ -287,7 +289,9 @@ class Grid extends React.Component {
                 <Button id="editSave" onClick={this.handleEditDelete}>
                   save
                 </Button>
-                <Button onClick={this.closeModal}>cancel</Button>
+                <Button id="cancel" onClick={this.closeModal}>
+                  cancel
+                </Button>
               </div>
             </CustomModal>
           )}

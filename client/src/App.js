@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import LoginPage from "./logout/login";
-import HomePage from "./login/selection";
-import MealPlanner from "./mealplanner/mealplanner";
-import Grid from "./grid/grid";
-import BreakfastViewer from "./recipeviewer/breakfastviewer";
-import LunchViewer from "./recipeviewer/lunchviewer";
-import DinnerViewer from "./recipeviewer/dinnerviewer";
+import LoginPage from "./components/login";
+import HomePage from "./components/selection";
+import MealPlanner from "./components/mealplanner";
+import Grid from "./components/grid";
+import BreakfastViewer from "./components/breakfastviewer";
+import LunchViewer from "./components/lunchviewer";
+import DinnerViewer from "./components/dinnerviewer";
 import { BrowserRouter as Router } from "react-router-dom";
 import Route from "react-router-dom/Route";
 

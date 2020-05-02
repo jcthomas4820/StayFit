@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Header2, Body, CustomModal, Button, Error } from "../styles/custom";
+import { Header2, Body, CustomModal, Button, Error } from "../../styles/custom";
 import { Row, Column } from "simple-flexbox";
 import { Redirect } from "react-router-dom";
 
@@ -161,7 +161,9 @@ class ViewModal extends React.Component {
               <br />
               <br />
               <Row horizontal="center">
-                <Button onClick={this.closeModal}>close</Button>
+                <Button id="cancel" onClick={this.closeModal}>
+                  close
+                </Button>
               </Row>
             </CustomModal>
           ) : (
@@ -178,7 +180,9 @@ class ViewModal extends React.Component {
               <br />
               <br />
               <Row horizontal="center">
-                <Button onClick={this.closeModal}>close</Button>
+                <Button id="cancel" onClick={this.closeModal}>
+                  close
+                </Button>
               </Row>
             </CustomModal>
           )}

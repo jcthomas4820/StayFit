@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import Navbar from "../portions/navbar";
+import Navbar from "./portions/navbar";
 import { Header1, Header2, Body, Error } from "../styles/custom";
 import { Row, Column } from "simple-flexbox";
 

@@ -7,7 +7,7 @@ import {
   Input,
   CustomModal,
   Error,
-} from "../styles/custom";
+} from "../../styles/custom";
 import { Row } from "simple-flexbox";
 
 axios.defaults.withCredentials = true;
@@ -107,6 +107,7 @@ class GenerateModal extends React.Component {
           </Body>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="glutenfree"
               name="diet"
               type="radio"
               value="Gluten Free"
@@ -116,6 +117,7 @@ class GenerateModal extends React.Component {
           </Row>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="keto"
               name="diet"
               type="radio"
               value="Ketogenic"
@@ -125,6 +127,7 @@ class GenerateModal extends React.Component {
           </Row>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="veg"
               name="diet"
               type="radio"
               value="Vegatarian"
@@ -134,6 +137,7 @@ class GenerateModal extends React.Component {
           </Row>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="vegan"
               name="diet"
               type="radio"
               value="Vegan"
@@ -143,6 +147,7 @@ class GenerateModal extends React.Component {
           </Row>
           <Row flexGrow={0} horizontal="center">
             <input
+              id="pesc"
               name="diet"
               type="radio"
               value="Pescetarian"
@@ -172,7 +177,9 @@ class GenerateModal extends React.Component {
           <Button id="generate" onClick={this.handleClick}>
             generate
           </Button>
-          <Button onClick={this.closeModal}>cancel</Button>
+          <Button id="cancel" onClick={this.closeModal}>
+            cancel
+          </Button>
         </Row>
       </CustomModal>
     );
