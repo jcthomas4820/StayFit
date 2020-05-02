@@ -310,6 +310,10 @@ jobs:
           node-version: 12.x
       - run: cd server && npm ci && npm run test-save_recipes
         env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST}}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
