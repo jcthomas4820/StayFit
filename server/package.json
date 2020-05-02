@@ -19,6 +19,7 @@
     "test-meal_generator": "npm run test -- -g 'meal_generator-test'",
     "test-get_mealplan": "npm run test -- -g 'get_mealplan-test'",
     "test-get_recipe": "npm run test -- -g 'get_recipe-test'",
+    "test-save_recipes": "npm run test -- -g 'save-recipes-test'",
     "test-for-coverage": "npm test -- -R min || exit 0",
     "coverage": "cross-env NODE_ENV=test nyc --check-coverage=true --reporter=lcov --reporter=text npm run test-for-coverage"
   },

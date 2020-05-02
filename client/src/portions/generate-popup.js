@@ -63,13 +63,16 @@ class GenerateModal extends React.Component {
           let err = res.data.errMsg;
 
           if (err) {
+            console.log(err)
             this.setState({ genErr: err });
           } else {
             this.setState({ modalVisible: false });
             window.location.reload(false);
+            axios.post("http://localhost:3001/meal/save-recipes", data)     //  save recipes for each generated meal
           }
         });
-    }
+
+      }
   }
 
   showModal() {
