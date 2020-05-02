@@ -112,7 +112,7 @@ class LoginPage extends React.Component {
             <Row horizontal="center">
               <Input
                 id="password"
-                type="text"
+                type="password"
                 name="password"
                 placeholder="password"
                 value={this.state.password}
