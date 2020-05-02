@@ -100,3 +100,7 @@ I ran into an issue with the express-session not persisting across axios calls. 
 - Documentation: https://www.npmjs.com/package/react-modal
 - How to use styled components with it: https://github.com/reactjs/react-modal/issues/627
 - Using between components: https://stackoverflow.com/questions/39748007/react-js-open-same-modal-from-different-components
+
+#### Regex expression for passwords
+
+- https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a

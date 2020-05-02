@@ -14,7 +14,7 @@ class LoginPage extends React.Component {
     this.state = {
       loginError: true,
       needsToRegister: false,
-      errorMessage: null,
+      errorMessage: "",
       username: "",
       password: "",
     };
@@ -43,7 +43,6 @@ class LoginPage extends React.Component {
 
   handleClick(e) {
     let id = e.target.id;
-    console.log(id);
     if (id === "login") {
       const returningUser = {
         username: this.state.username,
@@ -71,6 +70,7 @@ class LoginPage extends React.Component {
 
       axios.post("http://localhost:3001/api/register", newUser).then((res) => {
         let err = res.data.regError;
+        console.log(err);
         if (err) {
           this.setState({ errorMessage: err });
           this.setState({ loginError: true });
@@ -139,5 +139,3 @@ class LoginPage extends React.Component {
 }
 
 export default LoginPage;
-
-// <Row horizontal='center'><Button id="register" onClick={this.handleClick}>register</Button></Row>
