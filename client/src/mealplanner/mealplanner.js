@@ -1,11 +1,11 @@
 import React from "react";
 import axios from "axios";
-import Navbar from "./portions/navbar";
+import Navbar from "../portions/navbar";
 import { Header1, Header2, Button } from "../styles/custom";
 import { Row } from "simple-flexbox";
-import CalculateModal from "./portions/calculate-popup";
-import GenerateModal from "./portions/generate-popup";
-import ViewModal from "./portions/view-popup";
+import CalculateModal from "../portions/calculate-popup";
+import GenerateModal from "../portions/generate-popup";
+import ViewModal from "../portions/view-popup";
 
 axios.defaults.withCredentials = true;
 

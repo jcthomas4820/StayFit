@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import axios from "axios";
 
 import LogoImg from "../homepage.png";
-import Navbar from "./portions/navbar";
+import Navbar from "../portions/navbar";
 import { Row, Column } from "simple-flexbox";
 import { Header1, Header2, Body } from "../styles/custom";
 

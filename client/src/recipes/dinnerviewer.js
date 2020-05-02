@@ -1,13 +1,13 @@
 import React from "react";
 import axios from "axios";
-import Navbar from "./portions/navbar";
+import Navbar from "../portions/navbar";
 import { Header1, Header2, Body, Error } from "../styles/custom";
 import { Row, Column } from "simple-flexbox";
 
 axios.defaults.withCredentials = true;
 
 //  allow user to calculate their recommended daily macros
-class BreakfastViewer extends React.Component {
+class DinnerViewer extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -22,7 +22,7 @@ class BreakfastViewer extends React.Component {
     // It will expect an array with the ingredients, and an array with the instructions
     // LET ME KNOW IF U NEED HELP PARSING OUT THE DATA ON THE BACKEND/FRONTEND
     /*
-    axios.get("http://localhost:3001/meal/GET-BREAKFAST-ROUTE").then((res) => {
+    axios.get("http://localhost:3001/meal/GET-DINNER-ROUTE").then((res) => {
       let err = res.data.errMsg;
 
       if (err) {
@@ -38,11 +38,11 @@ class BreakfastViewer extends React.Component {
   //  note: radio buttons only allow one selection per name attribute
   render() {
     return (
-      <div className="RecipeViewer">
+      <div className="DinnerViewer">
         <Navbar id="navigationBar" />
         <Column flexGrow={1}>
           <Row horizontal="center">
-            <Header1>Breakfast Recipe</Header1>
+            <Header1>Dinner Recipe</Header1>
           </Row>
           <Row horizontal="center">
             <Error>{this.state.err}</Error>
@@ -89,4 +89,4 @@ class BreakfastViewer extends React.Component {
   }
 }
 
-export default BreakfastViewer;
+export default DinnerViewer;

@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Header2, Body, CustomModal, Button, Error } from "../../styles/custom";
+import { Header2, Body, CustomModal, Button, Error } from "../styles/custom";
 import { Row, Column } from "simple-flexbox";
 import { Redirect } from "react-router-dom";
 
@@ -113,7 +113,9 @@ class ViewModal extends React.Component {
                       <b>Breakfast</b>
                     </Body>
                     <Body>{this.state.breakfast.name}</Body>
-                    <Body>Ready in: {this.state.breakfast.readyIn}</Body>
+                    <Body>
+                      Ready in: {this.state.breakfast.readyIn} minutes
+                    </Body>
                     <Body>Servings: {this.state.breakfast.servings}</Body>
                     <Button id="breakfast" onClick={this.handleClick}>
                       view recipe
@@ -125,7 +127,7 @@ class ViewModal extends React.Component {
                       <b>Lunch</b>
                     </Body>
                     <Body>{this.state.lunch.name}</Body>
-                    <Body>Ready in: {this.state.lunch.readyIn}</Body>
+                    <Body>Ready in: {this.state.lunch.readyIn} minutes</Body>
                     <Body>Servings: {this.state.lunch.servings}</Body>
                     <Button id="lunch" onClick={this.handleClick}>
                       view recipe
@@ -137,7 +139,7 @@ class ViewModal extends React.Component {
                       <b>Dinner</b>
                     </Body>
                     <Body>{this.state.dinner.name}</Body>
-                    <Body>Ready in: {this.state.dinner.readyIn}</Body>
+                    <Body>Ready in: {this.state.dinner.readyIn} minutes</Body>
                     <Body>Servings: {this.state.dinner.servings}</Body>
                     <Button id="dinner" onClick={this.handleClick}>
                       view recipe

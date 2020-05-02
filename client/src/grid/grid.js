@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import Navbar from "./portions/navbar";
+import Navbar from "../portions/navbar";
 import ReactTable from "react-table";
 import { Row, Column } from "simple-flexbox";
 import "react-table/react-table.css";

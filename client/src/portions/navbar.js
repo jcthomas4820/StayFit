@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import { Nav, NavHeader, Logo, CustomLink } from "../../styles/custom";
+import { Nav, NavHeader, Logo, CustomLink } from "../styles/custom";
 
 axios.defaults.withCredentials = true;
 

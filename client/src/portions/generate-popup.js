@@ -7,7 +7,7 @@ import {
   Input,
   CustomModal,
   Error,
-} from "../../styles/custom";
+} from "../styles/custom";
 import { Row } from "simple-flexbox";
 
 axios.defaults.withCredentials = true;
