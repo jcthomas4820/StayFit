@@ -245,3 +245,23 @@ jobs:
           MONGODB_HOST: mongodb
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
           CI: true
+  
+  grade-13:
+    name: save_recipes tests
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: cd server && npm ci && npm run test-save_recipes
+        env:
+          MONGODB_HOST: mongodb
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
+          CI: true
