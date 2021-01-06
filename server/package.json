@@ -38,7 +38,7 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-cookiejar-support": "^0.5.1",
     "cross-env": "^7.0.2",
     "eslint": "^6.1.0",
